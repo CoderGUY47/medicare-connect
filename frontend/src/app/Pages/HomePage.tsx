@@ -7,6 +7,7 @@ import SpecializationsSection from "../../components/SpecializationsSection";
 import FeaturedDoctorsSection from "../../components/FeaturedDoctorsSection";
 import CapabilitiesSection from "../../components/CapabilitiesSection";
 import TestimonialsSection from "../../components/TestimonialsSection";
+import ContactForm from "../../components/ContactForm";
 import ScrollAnimate from "../../components/ScrollAnimate";
 
 export default function HomePage() {
@@ -31,6 +32,9 @@ export default function HomePage() {
 
       {/* 6. Testimonials Reviews Carousel Section */}
       <TestimonialsSection />
+
+      {/* 7. Contact Form Section */}
+      <ContactForm />
     </div>
   );
 }
