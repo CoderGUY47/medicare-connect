@@ -50,13 +50,13 @@ export default function ContactForm() {
   ];
 
   const inputClass =
-    'w-full rounded-xl border border-zinc-800 bg-zinc-950 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/15 px-4 py-3 text-sm text-white placeholder:text-zinc-600 outline-none transition-all duration-200';
+    'w-full rounded-xl border border-zinc-700/60 bg-zinc-950/70 backdrop-blur-sm focus:border-rose-500 focus:ring-2 focus:ring-rose-500/15 px-4 py-3 text-sm text-white placeholder:text-zinc-600 outline-none transition-all duration-200';
 
   return (
     <ScrollAnimate>
       <section className="w-full bg-zinc-950 text-white select-none pt-16 md:pt-20 overflow-hidden transition-colors duration-300">
         <div className="container mx-auto px-6 max-w-7xl">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-stretch">
 
             {/* ── Left Column: Info Panel ── */}
             <div className="lg:col-span-5 relative flex flex-col gap-8">
@@ -106,11 +106,22 @@ export default function ContactForm() {
               </div>
             </div>
 
-            {/* ── Right Column: Form + Image ── */}
-            <div className="lg:col-span-7 flex flex-col lg:flex-row gap-6 items-stretch">
+            {/* ── Right Column: Image as BG + Form on top ── */}
+            <div className="lg:col-span-7 relative rounded-2xl overflow-hidden min-h-[520px]">
 
-              {/* Form */}
-              <div className="flex-1 space-y-6">
+              {/* Full-cover background image */}
+              <img
+                src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=1200"
+                alt="Healthcare coordination center"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+
+              {/* Dark gradient overlay — heavy on the left so form is readable */}
+              <div className="absolute inset-0 bg-gradient-to-r from-zinc-950/95 via-zinc-950/80 to-zinc-900/60" />
+
+              {/* Form Content floated above the image */}
+              <div className="relative z-10 p-8 md:p-10 h-full flex flex-col justify-center space-y-6">
+
                 {/* Form header */}
                 <div className="space-y-1">
                   <div className="flex items-center gap-1.5 text-rose-500 font-bold text-xs uppercase tracking-widest">
@@ -214,17 +225,8 @@ export default function ContactForm() {
                   </button>
                 </form>
               </div>
-
-              {/* Side Image */}
-              <div className="hidden lg:block w-48 xl:w-56 shrink-0 rounded-2xl overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=400"
-                  alt="Healthcare coordination"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
             </div>
+
           </div>
         </div>
       </section>
