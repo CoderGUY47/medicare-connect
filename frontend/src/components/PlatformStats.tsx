@@ -58,28 +58,36 @@ export default function PlatformStats() {
       id: 'stat-docs',
       label: 'Total Doctors',
       value: stats.doctors,
-      icon: <Stethoscope className="h-5 w-5 text-rose-600 dark:text-rose-500" />,
+      accentColor: 'text-rose-500',
+      bgGlow: 'bg-rose-500/8 dark:bg-rose-500/10',
+      bgIcon: <Stethoscope className="w-28 h-28 text-rose-500/20 dark:text-rose-400/15" />,
       desc: 'Active specialists'
     },
     {
       id: 'stat-pats',
       label: 'Total Patients',
       value: stats.patients,
-      icon: <Users className="h-5 w-5 text-emerald-600 dark:text-emerald-500" />,
+      accentColor: 'text-emerald-500',
+      bgGlow: 'bg-emerald-500/8 dark:bg-emerald-500/10',
+      bgIcon: <Users className="w-28 h-28 text-emerald-500/20 dark:text-emerald-400/15" />,
       desc: 'Registered users'
     },
     {
       id: 'stat-apts',
       label: 'Total Appointments',
       value: stats.appointments,
-      icon: <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-500" />,
+      accentColor: 'text-blue-500',
+      bgGlow: 'bg-blue-500/8 dark:bg-blue-500/10',
+      bgIcon: <Calendar className="w-28 h-28 text-blue-500/20 dark:text-blue-400/15" />,
       desc: 'Scheduled visits'
     },
     {
       id: 'stat-revs',
       label: 'Total Reviews',
       value: stats.reviews,
-      icon: <Star className="h-5 w-5 text-amber-600 dark:text-amber-500" />,
+      accentColor: 'text-amber-500',
+      bgGlow: 'bg-amber-500/8 dark:bg-amber-500/10',
+      bgIcon: <Star className="w-28 h-28 text-amber-500/20 dark:text-amber-400/15" />,
       desc: 'Verified patient feedback'
     }
   ];
@@ -113,32 +121,33 @@ export default function PlatformStats() {
           {/* Side-by-Side Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch pt-2">
 
-             {/* Left Column: 2x2 Numeric Summary Cards (5/12 width) */}
+            {/* Left Column: 2x2 Numeric Summary Cards (5/12 width) */}
             <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {statItems.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white dark:bg-zinc-900 p-6 flex flex-col justify-between shadow-xs hover:shadow-lg hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300 rounded-[16px] border-none group relative overflow-hidden"
+                  className="bg-white dark:bg-zinc-900 p-6 flex flex-col justify-between shadow-xs hover:shadow-lg hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300 rounded-[16px] border-none group relative overflow-hidden min-h-[170px]"
                 >
-                  {/* Subtle background glow effect on hover */}
-                  <div className="absolute -top-12 -left-12 w-24 h-24 bg-rose-500/5 rounded-full blur-xl pointer-events-none group-hover:scale-150 transition-transform duration-500" />
+                  {/* Large icon as decorative card background */}
+                  <div className="absolute -bottom-4 -right-4 pointer-events-none select-none group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-500">
+                    {item.bgIcon}
+                  </div>
 
-                  <div className="space-y-4">
-                    <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-zinc-950 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
-                      {item.icon}
-                    </div>
-                    <div className="space-y-1">
-                      <span className="text-[11px] font-extrabold text-slate-550 dark:text-zinc-450 uppercase tracking-widest block">{item.label}</span>
-                      <div className="text-3xl font-black text-slate-900 dark:text-white tracking-tight font-outfit">
-                        {mounted && item.value > 0 ? (
-                          <AnimatedCounter target={item.value} showPlus={true} />
-                        ) : (
-                          '0'
-                        )}
-                      </div>
+                  {/* Subtle top-left glow accent */}
+                  <div className={`absolute -top-8 -left-8 w-20 h-20 ${item.bgGlow} rounded-full blur-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+
+                  <div className="space-y-3 relative z-10">
+                    <span className="text-[11px] font-extrabold text-slate-500 dark:text-zinc-400 uppercase tracking-widest block">{item.label}</span>
+                    <div className={`text-4xl font-black tracking-tight font-outfit ${item.accentColor}`}>
+                      {mounted && item.value > 0 ? (
+                        <AnimatedCounter target={item.value} showPlus={true} />
+                      ) : (
+                        '0'
+                      )}
                     </div>
                   </div>
-                  <p className="text-xs text-slate-500 dark:text-zinc-400 mt-4 pt-3 border-t border-slate-100 dark:border-zinc-800/60 font-semibold leading-relaxed">
+
+                  <p className="text-xs text-slate-500 dark:text-zinc-400 mt-4 pt-3 border-t border-slate-100/80 dark:border-zinc-800/50 font-medium leading-relaxed relative z-10">
                     {item.desc}
                   </p>
                 </div>
