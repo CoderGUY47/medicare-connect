@@ -192,7 +192,7 @@ export default function Navbar() {
                   )}
 
                   {isProfileOpen && (
-                    <div className="absolute right-0 mt-2 w-64 origin-top-right border border-slate-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 shadow-xl rounded-xl z-50">
+                    <div className="absolute right-0 top-full mt-2 w-64 origin-top-right border border-slate-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 shadow-xl rounded-xl z-50">
                       {user ? (
                         <>
                           <div className="px-3 py-2.5 border-b border-slate-100 dark:border-zinc-800 mb-1.5 flex items-center gap-2.5">
