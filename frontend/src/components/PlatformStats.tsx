@@ -112,21 +112,24 @@ export default function PlatformStats() {
 
           {/* Side-by-Side Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch pt-2">
-            
+
             {/* Left Column: 2x2 Numeric Summary Cards (5/12 width) */}
             <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {statItems.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white dark:bg-zinc-900 border border-slate-200/60 dark:border-zinc-800/80 p-5 flex flex-col justify-between shadow-xs hover:shadow-md transition-all duration-300 rounded-[10px]"
+                  className="bg-white dark:bg-zinc-900 p-5 flex flex-col justify-between shadow-xs hover:shadow-md hover:scale-[1.02] transition-all duration-300 rounded-[12px] border-none group relative overflow-hidden"
                 >
-                  <div className="space-y-3">
-                    <div className="p-2.5 h-fit w-fit rounded-lg bg-slate-50 dark:bg-zinc-850/50 shadow-xs shrink-0">
+                  {/* Subtle background glow effect on hover */}
+                  <div className="absolute -top-12 -left-12 w-24 h-24 bg-rose-500/5 rounded-full blur-xl pointer-events-none group-hover:scale-150 transition-transform duration-500" />
+
+                  <div className="space-y-4">
+                    <div className="p-4.5 h-fit w-fit shadow-xs shrink-0">
                       {item.icon}
                     </div>
-                    <div className="space-y-0.5">
-                      <span className="text-[9px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest">{item.label}</span>
-                      <div className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                    <div className="space-y-1">
+                      <span className="text-xs font-extrabold text-slate-400 dark:text-zinc-500 uppercase tracking-widest block">{item.label}</span>
+                      <div className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                         {mounted && item.value > 0 ? (
                           <AnimatedCounter target={item.value} showPlus={true} />
                         ) : (
@@ -135,7 +138,7 @@ export default function PlatformStats() {
                       </div>
                     </div>
                   </div>
-                  <p className="text-[11px] text-slate-500 dark:text-zinc-400 mt-3 pt-2 border-t border-slate-100 dark:border-zinc-850/60">
+                  <p className="text-[11px] text-slate-500 dark:text-zinc-400 mt-4 border-t border-slate-100 dark:border-zinc-850/60 pt-3 font-semibold leading-relaxed">
                     {item.desc}
                   </p>
                 </div>
@@ -143,7 +146,7 @@ export default function PlatformStats() {
             </div>
 
             {/* Right Column: Recharts Custom Visualizer Card (7/12 width) */}
-            <div className="lg:col-span-7 bg-white dark:bg-zinc-900 border border-slate-200/60 dark:border-zinc-800/80 p-6 flex flex-col justify-between shadow-xs rounded-[10px] min-h-[350px]">
+            <div className="lg:col-span-7 bg-white dark:bg-zinc-900 p-6 flex flex-col justify-between shadow-xs rounded-[12px] border-none min-h-[350px]">
               <div className="space-y-1 pb-4">
                 <h3 className="text-sm font-bold text-slate-800 dark:text-zinc-200 uppercase tracking-wider">Metrics Distribution Analysis</h3>
                 <p className="text-[11px] text-slate-400 dark:text-zinc-500 font-medium">Graphical scale mapping patient interactions and specialist activity</p>
@@ -172,15 +175,15 @@ export default function PlatformStats() {
                           <stop offset="100%" stopColor="#f59e0b" stopOpacity={0.15}/>
                         </linearGradient>
                       </defs>
-                      <XAxis 
-                        dataKey="name" 
-                        stroke="currentColor" 
-                        className="text-[10px] text-slate-450 dark:text-zinc-500 font-bold uppercase tracking-wider" 
+                      <XAxis
+                        dataKey="name"
+                        stroke="currentColor"
+                        className="text-[10px] text-slate-450 dark:text-zinc-500 font-bold uppercase tracking-wider"
                         tickLine={false}
                         axisLine={false}
                       />
-                      <YAxis 
-                        stroke="currentColor" 
+                      <YAxis
+                        stroke="currentColor"
                         className="text-[10px] text-slate-400 dark:text-zinc-500 font-semibold"
                         tickLine={false}
                         axisLine={false}
