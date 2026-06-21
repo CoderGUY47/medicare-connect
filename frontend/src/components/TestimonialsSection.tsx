@@ -124,33 +124,33 @@ export default function TestimonialsSection() {
             >
               {mockReviews.map((rev) => (
                 <SwiperSlide key={rev.id}>
-                  <div className="review-card bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800/80 flex items-stretch overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 w-full rounded-none">
+                  <div className="review-card bg-zinc-900 border border-zinc-800/80 flex items-stretch overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 w-full rounded-none">
                     {/* Left Part: Content */}
                     <div className="w-[65%] p-6 flex flex-col justify-between space-y-4">
                       <div className="space-y-2">
                         {/* Quote Mark */}
-                        <div className="text-5xl font-serif text-rose-500/10 dark:text-rose-500/20 leading-none select-none h-4">
+                        <div className="text-5xl font-serif text-rose-500/20 leading-none select-none h-4">
                           “
                         </div>
-                        <div className="text-base text-slate-700 dark:text-zinc-300 leading-relaxed font-medium pt-1">
+                        <div className="text-base text-zinc-350 leading-relaxed font-medium pt-1">
                           {rev.reviewText}
                         </div>
                       </div>
                       
-                      <div className="space-y-0.5 pt-3 border-t border-slate-100 dark:border-zinc-800">
-                        <div className="text-xs font-bold text-slate-900 dark:text-white">
+                      <div className="space-y-0.5 pt-3 border-t border-zinc-800">
+                        <div className="text-xs font-bold text-white">
                           Verified patient
                         </div>
-                        <div className="text-[11px] text-slate-500 dark:text-zinc-500 font-semibold">
+                        <div className="text-[11px] text-zinc-500 font-semibold">
                           {rev.location}
                         </div>
                       </div>
                     </div>
 
                     {/* Right Part: Image with Shade */}
-                    <div className="w-[35%] relative min-h-full overflow-hidden select-none bg-slate-50 dark:bg-zinc-950">
+                    <div className="w-[35%] relative min-h-full overflow-hidden select-none bg-zinc-950">
                       {/* Shade/gradient overlay to fade into the card's background */}
-                      <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-white dark:from-zinc-900 to-transparent z-10" />
+                      <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-zinc-900 to-transparent z-10" />
                       <img
                         src={rev.image}
                         alt="Verified patient review context"
