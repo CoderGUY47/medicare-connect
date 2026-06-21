@@ -39,7 +39,7 @@ export default function TestimonialsSection() {
     <ScrollAnimate>
       <section className="py-16 px-6 lg:px-8 space-y-8 bg-transparent select-none">
         <div className="container space-y-3">
-          <div className="flex items-center gap-1.5 text-[#D81B60] font-bold text-xs uppercase tracking-wider">
+          <div className="flex items-center gap-1.5 text-rose-650 font-bold text-xs uppercase tracking-wider">
             <span className="text-sm font-black">+</span>
             <span>Care in Action</span>
           </div>
@@ -77,7 +77,7 @@ export default function TestimonialsSection() {
                   <div className="bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800/85 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all duration-300 min-h-[240px] flex flex-col justify-between space-y-4">
                     <div className="space-y-2">
                       {/* Lilac Quote Mark */}
-                      <div className="text-5xl font-serif text-[#C5B3E6] dark:text-purple-900/40 leading-none select-none h-4">
+                      <div className="text-5xl font-serif text-rose-250 dark:text-rose-900/40 leading-none select-none h-4">
                         “
                       </div>
                       <p className="text-[13px] md:text-[14px] text-slate-700 dark:text-zinc-300 leading-relaxed font-medium pt-1">
@@ -104,7 +104,7 @@ export default function TestimonialsSection() {
             {/* Previous Slide Button */}
             <button
               onClick={() => swiperRef?.slidePrev()}
-              className="h-9 w-9 rounded-full border border-slate-300 dark:border-zinc-700 flex items-center justify-center text-slate-500 dark:text-zinc-450 hover:bg-[#4A2E80]/5 dark:hover:bg-zinc-800 hover:border-[#4A2E80] dark:hover:border-purple-500 hover:text-[#4A2E80] dark:hover:text-purple-400 transition-all cursor-pointer bg-white dark:bg-zinc-900"
+              className="h-9 w-9 rounded-full border border-slate-300 dark:border-zinc-700 flex items-center justify-center text-slate-500 dark:text-zinc-450 hover:bg-rose-500/5 dark:hover:bg-zinc-800 hover:border-rose-500 dark:hover:border-rose-500 hover:text-rose-600 dark:hover:text-rose-400 transition-all cursor-pointer bg-white dark:bg-zinc-900"
               aria-label="Previous slide"
             >
               <ChevronLeft className="h-4.5 w-4.5" />
@@ -117,8 +117,8 @@ export default function TestimonialsSection() {
                   key={idx}
                   className={`h-1 rounded-full transition-all duration-300 ${
                     activeIndex % 4 === idx
-                      ? 'w-8 bg-[#4A2E80] dark:bg-purple-400'
-                      : 'w-6 bg-purple-100 dark:bg-zinc-800/80'
+                      ? 'w-8 bg-rose-650 dark:bg-rose-500'
+                      : 'w-6 bg-rose-100/60 dark:bg-zinc-800'
                   }`}
                 />
               ))}
@@ -127,7 +127,7 @@ export default function TestimonialsSection() {
             {/* Next Slide Button */}
             <button
               onClick={() => swiperRef?.slideNext()}
-              className="h-9 w-9 rounded-full border border-slate-300 dark:border-zinc-700 flex items-center justify-center text-slate-500 dark:text-zinc-450 hover:bg-[#4A2E80]/5 dark:hover:bg-zinc-800 hover:border-[#4A2E80] dark:hover:border-purple-500 hover:text-[#4A2E80] dark:hover:text-purple-400 transition-all cursor-pointer bg-white dark:bg-zinc-900"
+              className="h-9 w-9 rounded-full border border-slate-300 dark:border-zinc-700 flex items-center justify-center text-slate-500 dark:text-zinc-450 hover:bg-rose-500/5 dark:hover:bg-zinc-800 hover:border-rose-500 dark:hover:border-rose-500 hover:text-rose-600 dark:hover:text-rose-400 transition-all cursor-pointer bg-white dark:bg-zinc-900"
               aria-label="Next slide"
             >
               <ChevronRight className="h-4.5 w-4.5" />

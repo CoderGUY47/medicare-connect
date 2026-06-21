@@ -44,20 +44,20 @@ export default function ContactPage() {
       bg: 'bg-rose-500/5 dark:bg-rose-500/10 border-rose-500/20 dark:border-rose-500/30'
     },
     {
-      icon: <Phone className="h-6 w-6 text-blue-500" />,
+      icon: <Phone className="h-6 w-6 text-rose-500" />,
       label: 'General Registry',
       sub: 'Mon–Fri, 08:00 AM – 06:00 PM',
       value: '+251 11 678-1234',
       desc: 'Main hospital reception, patient inquiries, and appointments desk.',
-      bg: 'bg-blue-500/5 dark:bg-blue-500/10 border-blue-500/20 dark:border-blue-500/30'
+      bg: 'bg-rose-500/5 dark:bg-rose-500/10 border-rose-500/20 dark:border-rose-500/30'
     },
     {
-      icon: <Mail className="h-6 w-6 text-emerald-500" />,
+      icon: <Mail className="h-6 w-6 text-rose-550" />,
       label: 'Email Support',
       sub: 'Response within 12-24 hours',
       value: 'contact@medi-doc-hospital.org',
       desc: 'Reach out to administrative desks, billing inquiries, or lab support.',
-      bg: 'bg-emerald-500/5 dark:bg-emerald-500/10 border-emerald-500/20 dark:border-emerald-500/30'
+      bg: 'bg-rose-500/5 dark:bg-rose-500/10 border-rose-500/20 dark:border-rose-500/30'
     }
   ];
 

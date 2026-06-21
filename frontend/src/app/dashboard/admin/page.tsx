@@ -105,7 +105,7 @@ export default function AdminOverviewPage() {
         
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 relative z-10">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-1.5 bg-rose-500/10 text-rose-600 dark:text-rose-450 px-2.5 py-1 rounded-[6px] text-[10px] font-extrabold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-1.5 bg-rose-500/10 text-rose-600 dark:text-rose-400 px-2.5 py-1 rounded-[6px] text-[10px] font-extrabold uppercase tracking-wider">
               <BrainCircuit className="h-3.5 w-3.5 animate-pulse text-rose-500" />
               Medi-Doc AI Copilot Active
             </div>
@@ -145,7 +145,7 @@ export default function AdminOverviewPage() {
               title: "Pharmacy Supply Low", 
               desc: "Amoxicillin 250mg dosage prescriptions are up 34% this week. Out of stock warning in 3 days.", 
               action: "Restock Pharmacy",
-              color: "text-rose-600 dark:text-rose-455 bg-rose-500/10"
+              color: "text-rose-600 dark:text-rose-400 bg-rose-500/10"
             },
             { 
               title: "Wait Time Optimization", 
@@ -350,15 +350,15 @@ export default function AdminOverviewPage() {
                   <h3 className="text-sm font-bold text-slate-800 dark:text-zinc-150">Revenue Summary</h3>
                   <p className="text-[10px] text-slate-400 mt-0.5">Today's breakdown</p>
                 </div>
-                <Link href="/dashboard/admin/payments" className="text-[10px] font-bold text-rose-600 hover:text-rose-700 dark:text-rose-455 hover:underline">
+                <Link href="/dashboard/admin/payments" className="text-[10px] font-bold text-rose-600 hover:text-rose-700 dark:text-rose-400 hover:underline">
                   View Details
                 </Link>
               </div>
 
               {/* Rose banner container */}
               <div className="bg-rose-500/5 p-3.5 rounded-[10px] text-left mb-6">
-                <span className="text-[9px] font-semibold text-rose-600/70 dark:text-rose-450/70 tracking-wide block uppercase">Total Revenue</span>
-                <div className="text-xl font-extrabold text-rose-600 dark:text-rose-450 tracking-tight mt-0.5">2.40M ETB</div>
+                <span className="text-[9px] font-semibold text-rose-600/70 dark:text-rose-400/70 tracking-wide block uppercase">Total Revenue</span>
+                <div className="text-xl font-extrabold text-rose-600 dark:text-rose-400 tracking-tight mt-0.5">2.40M ETB</div>
                 <span className="text-[10px] font-bold text-emerald-600 mt-1 inline-block">+15.2% from yesterday</span>
               </div>
 
@@ -416,7 +416,7 @@ export default function AdminOverviewPage() {
                   <h3 className="text-sm font-bold text-slate-800 dark:text-zinc-150">OPD vs IPD Distribution</h3>
                   <p className="text-[10px] text-slate-400 mt-0.5">Patient count for today</p>
                 </div>
-                <Link href="/dashboard/admin/appointments" className="text-[10px] font-bold text-rose-600 hover:text-rose-700 dark:text-rose-450 hover:underline">
+                <Link href="/dashboard/admin/appointments" className="text-[10px] font-bold text-rose-600 hover:text-rose-700 dark:text-rose-400 hover:underline">
                   View Details
                 </Link>
               </div>
@@ -465,7 +465,7 @@ export default function AdminOverviewPage() {
               <div className="grid grid-cols-2 gap-2 text-center py-2.5 border-b border-slate-100 dark:border-zinc-800 text-xs">
                 <div>
                   <span className="text-[9px] text-slate-400 block lowercase font-medium">OPD ratio</span>
-                  <span className="font-extrabold text-rose-600 dark:text-rose-455 text-sm">78.1%</span>
+                  <span className="font-extrabold text-rose-600 dark:text-rose-400 text-sm">78.1%</span>
                 </div>
                 <div>
                   <span className="text-[9px] text-slate-400 block lowercase font-medium">IPD ratio</span>
@@ -506,7 +506,7 @@ export default function AdminOverviewPage() {
                   <h3 className="text-sm font-bold text-slate-800 dark:text-zinc-150">Department Performance</h3>
                   <p className="text-[10px] text-slate-400 mt-0.5">Today's efficiency metrics</p>
                 </div>
-                <Link href="/dashboard/admin/emergency" className="text-[10px] font-bold text-rose-600 hover:text-rose-700 dark:text-rose-450 hover:underline">
+                <Link href="/dashboard/admin/emergency" className="text-[10px] font-bold text-rose-600 hover:text-rose-700 dark:text-rose-400 hover:underline">
                   Full Report
                 </Link>
               </div>
@@ -620,7 +620,7 @@ export default function AdminOverviewPage() {
                       )}
                     </div>
                     <div className="mt-2.5">
-                      <h4 className="text-[11px] font-bold text-slate-850 dark:text-zinc-200 group-hover:text-rose-655 dark:group-hover:text-rose-455 transition-colors truncate">
+                      <h4 className="text-[11px] font-bold text-slate-850 dark:text-zinc-200 group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors truncate">
                         {module.title}
                       </h4>
                       <p className="text-[9px] text-slate-400 dark:text-zinc-500 leading-tight mt-0.5 line-clamp-2">
@@ -628,7 +628,7 @@ export default function AdminOverviewPage() {
                       </p>
                     </div>
                   </div>
-                  <div className="text-[9px] font-bold text-rose-600 dark:text-rose-455 flex items-center justify-end gap-0.5 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="text-[9px] font-bold text-rose-600 dark:text-rose-400 flex items-center justify-end gap-0.5 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <span>Manage</span>
                     <ChevronRight className="h-3 w-3" />
                   </div>
@@ -646,7 +646,7 @@ export default function AdminOverviewPage() {
                 <h3 className="text-sm font-bold text-slate-800 dark:text-zinc-150">System Alerts</h3>
                 <p className="text-[10px] text-slate-400 mt-0.5">Recent notifications</p>
               </div>
-              <Link href="#" className="text-[10px] font-bold text-rose-600 hover:text-rose-700 dark:text-rose-455 hover:underline">
+              <Link href="#" className="text-[10px] font-bold text-rose-600 hover:text-rose-700 dark:text-rose-400 hover:underline">
                 View All
               </Link>
             </div>

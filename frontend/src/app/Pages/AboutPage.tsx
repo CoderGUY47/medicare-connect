@@ -15,22 +15,22 @@ export default function AboutPage() {
     {
       title: 'Patient-First Focus',
       desc: 'Our portal respects your schedule. Choose from real-time calendar slots, manage consultations seamlessly, and coordinate care directly from your secure patient dashboard.',
-      icon: <Users className="h-6 w-6 text-blue-500" />,
-      bg: 'bg-blue-500/5 dark:bg-blue-500/10 border-blue-500/20 dark:border-blue-500/30'
+      icon: <Users className="h-6 w-6 text-rose-500" />,
+      bg: 'bg-rose-500/5 dark:bg-rose-500/10 border-rose-500/20 dark:border-rose-500/30'
     },
     {
       title: 'Integrated Digital Health',
       desc: 'Access complete electronic medical logs, diagnosis histories, lab results, and e-prescriptions digitally in a unified, secure, and privacy-first portal.',
-      icon: <HeartPulse className="h-6 w-6 text-emerald-500" />,
-      bg: 'bg-emerald-500/5 dark:bg-emerald-500/10 border-emerald-500/20 dark:border-emerald-500/30'
+      icon: <HeartPulse className="h-6 w-6 text-rose-550" />,
+      bg: 'bg-rose-500/5 dark:bg-rose-500/10 border-rose-500/20 dark:border-rose-500/30'
     },
   ];
 
   const stats = [
     { label: 'Verified Specialists', value: '150+', icon: <Stethoscope className="h-5 w-5 text-rose-500" /> },
-    { label: 'Specialized Departments', value: '25+', icon: <Building className="h-5 w-5 text-blue-500" /> },
-    { label: 'Patient Satisfaction', value: '98.4%', icon: <Award className="h-5 w-5 text-emerald-500" /> },
-    { label: 'Years of Excellence', value: '14+', icon: <Activity className="h-5 w-5 text-amber-500" /> },
+    { label: 'Specialized Departments', value: '25+', icon: <Building className="h-5 w-5 text-rose-500" /> },
+    { label: 'Patient Satisfaction', value: '98.4%', icon: <Award className="h-5 w-5 text-rose-500" /> },
+    { label: 'Years of Excellence', value: '14+', icon: <Activity className="h-5 w-5 text-rose-500" /> },
   ];
 
   const milestones = [

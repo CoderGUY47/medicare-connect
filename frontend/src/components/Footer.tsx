@@ -94,7 +94,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-[#4A2E80] dark:bg-[#1e113a] text-white transition-colors duration-300 w-full border-t border-purple-800 dark:border-zinc-800">
+    <footer className="bg-zinc-950 dark:bg-zinc-950 text-white transition-colors duration-300 w-full border-t border-zinc-900 dark:border-zinc-900">
       {/* Upper Grid Layout (Stretched full width with side padding) */}
       <div className="w-full px-6 md:px-12 lg:px-16 pt-16 pb-12 space-y-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
@@ -108,7 +108,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-purple-100 hover:text-white transition-colors block py-0.5"
+                      className="text-zinc-400 hover:text-rose-500 transition-colors block py-0.5"
                     >
                       {link.label}
                     </Link>
@@ -123,20 +123,20 @@ export default function Footer() {
             <h3 className="text-[13px] font-bold text-white uppercase tracking-wider pb-2 border-b border-white/10">
               Contact & Support
             </h3>
-            <div className="space-y-3 text-xs font-semibold text-purple-100">
+            <div className="space-y-3 text-xs font-semibold text-zinc-400">
               <div>
                 <span className="block text-white font-bold mb-0.5">Main Campus Address:</span>
-                <p className="leading-relaxed text-purple-200/90">
+                <p className="leading-relaxed text-zinc-400">
                   100 Medical Plaza, Suite 500,<br />Boston, MA 02111
                 </p>
               </div>
               <div>
                 <span className="block text-white font-bold mb-0.5">General Inquiries:</span>
-                <a href="tel:+15550123456" className="hover:text-white text-purple-200/90 transition-colors block">+1 (555) 012-3456</a>
+                <a href="tel:+15550123456" className="hover:text-rose-500 text-zinc-450 transition-colors block">+1 (555) 012-3456</a>
               </div>
               <div>
                 <span className="block text-white font-bold mb-0.5">Email Support:</span>
-                <a href="mailto:info@medi-doc.com" className="hover:text-white text-purple-200/90 transition-colors block">info@medi-doc.com</a>
+                <a href="mailto:info@medi-doc.com" className="hover:text-rose-500 text-zinc-455 transition-colors block">info@medi-doc.com</a>
               </div>
               
               {/* Emergency Hotline Card */}
@@ -164,7 +164,7 @@ export default function Footer() {
             </svg>
             <div className="flex flex-col">
               <span className="font-extrabold tracking-tight font-outfit text-[15px] leading-none text-white">MEDI-DOC</span>
-              <span className="text-[8px] font-extrabold tracking-[0.25em] text-purple-200 uppercase leading-none mt-0.5">HEALTH</span>
+              <span className="text-[8px] font-extrabold tracking-[0.25em] text-rose-500 uppercase leading-none mt-0.5">HEALTH</span>
             </div>
           </div>
 
@@ -191,23 +191,23 @@ export default function Footer() {
       </div>
 
       {/* Copyright and legal links (Slightly darker bottom bar) */}
-      <div className="w-full px-6 md:px-12 lg:px-16 py-6 bg-[#3d246b] dark:bg-[#160c2b] border-t border-purple-900/50 dark:border-zinc-900">
-        <div className="text-[11px] sm:text-xs font-semibold text-purple-200 text-center flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 leading-normal">
+      <div className="w-full px-6 md:px-12 lg:px-16 py-6 bg-zinc-900 dark:bg-zinc-900 border-t border-zinc-900/50 dark:border-zinc-900">
+        <div className="text-[11px] sm:text-xs font-semibold text-zinc-400 text-center flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 leading-normal">
           <span>&copy; 2026 Medi-Doc Health</span>
-          <span className="hidden sm:inline text-purple-300/40 font-normal">&bull;</span>
-          <Link href="/about" className="hover:text-white transition-colors">Privacy Policy</Link>
-          <span className="text-purple-300/40 font-normal">&bull;</span>
-          <Link href="#" className="hover:text-white transition-colors">Terms & Conditions</Link>
-          <span className="text-purple-300/40 font-normal">&bull;</span>
-          <Link href="#" className="hover:text-white transition-colors">Notice of Nondiscrimination</Link>
-          <span className="text-purple-300/40 font-normal">&bull;</span>
-          <Link href="#" className="hover:text-white transition-colors">Patient Bill of Rights</Link>
-          <span className="text-purple-300/40 font-normal">&bull;</span>
-          <Link href="#" className="hover:text-white transition-colors">Disclaimer</Link>
-          <span className="text-purple-300/40 font-normal">&bull;</span>
-          <Link href="#" className="hover:text-white transition-colors">Price Transparency</Link>
-          <span className="text-purple-300/40 font-normal">&bull;</span>
-          <Link href="#" className="hover:text-white transition-colors">Vendors</Link>
+          <span className="hidden sm:inline text-zinc-700 font-normal">&bull;</span>
+          <Link href="/about" className="hover:text-rose-500 transition-colors">Privacy Policy</Link>
+          <span className="text-zinc-700 font-normal">&bull;</span>
+          <Link href="#" className="hover:text-rose-500 transition-colors">Terms & Conditions</Link>
+          <span className="text-zinc-700 font-normal">&bull;</span>
+          <Link href="#" className="hover:text-rose-500 transition-colors">Notice of Nondiscrimination</Link>
+          <span className="text-zinc-700 font-normal">&bull;</span>
+          <Link href="#" className="hover:text-rose-500 transition-colors">Patient Bill of Rights</Link>
+          <span className="text-zinc-700 font-normal">&bull;</span>
+          <Link href="#" className="hover:text-rose-500 transition-colors">Disclaimer</Link>
+          <span className="text-zinc-700 font-normal">&bull;</span>
+          <Link href="#" className="hover:text-rose-500 transition-colors">Price Transparency</Link>
+          <span className="text-zinc-700 font-normal">&bull;</span>
+          <Link href="#" className="hover:text-rose-500 transition-colors">Vendors</Link>
         </div>
       </div>
     </footer>

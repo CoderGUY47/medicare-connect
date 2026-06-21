@@ -46,7 +46,7 @@ export default function ServicePortals() {
       <div className="container mx-auto max-w-7xl">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
-          <span className="text-[10px] font-extrabold tracking-[0.2em] text-[#4A2E80] dark:text-purple-400 uppercase bg-purple-500/10 dark:bg-purple-500/20 px-3.5 py-1.5 rounded-full inline-block">
+          <span className="text-[10px] font-extrabold tracking-[0.2em] text-rose-600 dark:text-rose-400 uppercase bg-rose-500/10 dark:bg-rose-500/20 px-3.5 py-1.5 rounded-full inline-block">
             Services & Portals
           </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-800 dark:text-zinc-100 tracking-tight font-outfit">
@@ -65,7 +65,7 @@ export default function ServicePortals() {
               <Link
                 key={portal.title}
                 href={portal.href}
-                className="group relative bg-white/70 dark:bg-zinc-900/50 backdrop-blur-sm p-7 md:p-8 rounded-3xl border border-slate-100 dark:border-zinc-800/45 shadow-md dark:shadow-black/35 hover:bg-white dark:hover:bg-zinc-900/80 hover:shadow-2xl hover:shadow-purple-500/10 dark:hover:shadow-black/70 hover:-translate-y-1.5 transition-all duration-350 flex flex-col justify-between min-h-[280px]"
+                className="group relative bg-white/70 dark:bg-zinc-900/50 backdrop-blur-sm p-7 md:p-8 rounded-3xl border border-slate-100 dark:border-zinc-800/45 shadow-md dark:shadow-black/35 hover:bg-white dark:hover:bg-zinc-900/80 hover:shadow-2xl hover:shadow-rose-500/10 dark:hover:shadow-black/70 hover:-translate-y-1.5 transition-all duration-350 flex flex-col justify-between min-h-[280px]"
               >
                 <div>
                   <div className="flex items-center justify-between">
@@ -80,7 +80,7 @@ export default function ServicePortals() {
                   </div>
 
                   <div className="space-y-2.5 mt-7">
-                    <h3 className="text-base sm:text-lg font-bold text-slate-800 dark:text-white group-hover:text-purple-650 dark:group-hover:text-purple-400 transition-colors">
+                    <h3 className="text-base sm:text-lg font-bold text-slate-800 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
                       {portal.title}
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-500 dark:text-white/60 leading-relaxed font-medium">
@@ -89,7 +89,7 @@ export default function ServicePortals() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1 text-xs font-bold text-purple-650 dark:text-white/80 group-hover:translate-x-1.5 transition-transform duration-300 mt-6">
+                <div className="flex items-center gap-1 text-xs font-bold text-rose-600 dark:text-white/80 group-hover:translate-x-1.5 transition-transform duration-300 mt-6">
                   <span>{portal.linkText}</span>
                   <ChevronRight className="h-3.5 w-3.5" />
                 </div>

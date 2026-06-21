@@ -74,7 +74,7 @@ export default function Navbar() {
     <div className="w-full sticky top-0 z-50 shadow-md">
 
       {/* Main Navbar (Outside Container, Spans Full Width) */}
-      <nav className="w-full bg-[#4A2E80] border-b border-purple-800 dark:bg-[#2e1c53] dark:border-zinc-800 transition-colors duration-300">
+      <nav className="w-full bg-zinc-950 border-b border-zinc-900 dark:bg-zinc-950 dark:border-zinc-900 transition-colors duration-300">
         <div className="w-full px-6 md:px-12 lg:px-16">
           <div className="flex h-16 items-center justify-between">
 
@@ -91,12 +91,9 @@ export default function Navbar() {
                 </svg>
                 <div className="flex flex-col">
                   <span className="font-extrabold tracking-tight font-outfit text-[15px] leading-none text-white">MEDI-DOC</span>
-                  <span className="text-[8px] font-extrabold tracking-[0.25em] text-purple-200 uppercase leading-none mt-0.5">HEALTH</span>
+                  <span className="text-[8px] font-extrabold tracking-[0.25em] text-rose-500 uppercase leading-none mt-0.5">HEALTH</span>
                 </div>
               </Link>
-              <span className="hidden lg:inline-flex items-center border border-white/20 bg-white/10 px-2 py-0.5 rounded-full text-[8px] font-mono text-purple-200 uppercase tracking-wider font-semibold">
-                v2.4.0-prod
-              </span>
             </div>
 
             {/* Desktop Navigation & Actions (Right Side Container) */}
@@ -109,8 +106,8 @@ export default function Navbar() {
                     href={link.href}
                     className={`text-[13px] font-semibold px-3 py-2 transition-colors flex items-center gap-1 cursor-pointer ${
                       isActive(link.href)
-                        ? 'text-white font-bold'
-                        : 'text-purple-100 hover:text-white'
+                        ? 'text-rose-500 font-bold'
+                        : 'text-zinc-300 hover:text-rose-500'
                     }`}
                   >
                     <span>{link.label}</span>
@@ -131,9 +128,9 @@ export default function Navbar() {
                       setIsSearchExpanded(false);
                     }
                   }}
-                  className="flex items-center gap-1.5 text-[13px] font-semibold text-purple-100 hover:text-white transition-all cursor-pointer relative"
+                  className="flex items-center gap-1.5 text-[13px] font-semibold text-zinc-300 hover:text-rose-500 transition-all cursor-pointer relative"
                 >
-                  <Search className="h-4 w-4 text-purple-200 shrink-0" />
+                  <Search className="h-4 w-4 text-zinc-400 shrink-0" />
                   <span className={`transition-all duration-300 ${isSearchExpanded ? 'w-0 opacity-0 overflow-hidden font-semibold' : 'w-auto opacity-100 font-semibold'}`}>
                     Search
                   </span>
@@ -153,7 +150,7 @@ export default function Navbar() {
                       value={searchVal}
                       onChange={(e) => setSearchVal(e.target.value)}
                       placeholder="Search doctors..."
-                      className="bg-purple-950/40 text-white placeholder:text-purple-200/50 border border-purple-400/20 rounded-md px-2.5 py-1 text-xs outline-none focus:border-white focus:ring-1 focus:ring-white w-full font-medium"
+                      className="bg-zinc-900/60 text-white placeholder:text-zinc-500 border border-zinc-800 rounded-md px-2.5 py-1 text-xs outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 w-full font-medium"
                     />
                   </form>
                 </div>
@@ -161,15 +158,15 @@ export default function Navbar() {
                 {/* Theme Toggle as Icon Only */}
                 <button
                   onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-                  className="flex items-center justify-center p-2 rounded-full hover:bg-white/10 text-purple-100 hover:text-white transition-colors bg-transparent border-none cursor-pointer"
+                  className="flex items-center justify-center p-2 rounded-full hover:bg-white/10 text-zinc-300 hover:text-rose-500 transition-colors bg-transparent border-none cursor-pointer"
                   aria-label="Toggle theme"
                 >
                   {!mounted ? (
                     <div className="h-4.5 w-4.5" />
                   ) : resolvedTheme === 'dark' ? (
-                    <Moon className="h-4.5 w-4.5 text-purple-200 group-hover:text-white" />
+                    <Moon className="h-4.5 w-4.5 text-zinc-400 group-hover:text-white" />
                   ) : (
-                    <Sun className="h-4.5 w-4.5 text-purple-200 group-hover:text-white" />
+                    <Sun className="h-4.5 w-4.5 text-zinc-400 group-hover:text-white" />
                   )}
                 </button>
 
@@ -187,7 +184,7 @@ export default function Navbar() {
                             alt={user.name}
                           />
                         )}
-                        <AvatarFallback className="bg-purple-700 text-white font-bold text-xs flex items-center justify-center h-full w-full">
+                        <AvatarFallback className="bg-rose-650 text-white font-bold text-xs flex items-center justify-center h-full w-full">
                           {getInitials(user.name)}
                         </AvatarFallback>
                       </Avatar>
@@ -195,15 +192,15 @@ export default function Navbar() {
                   ) : (
                     <button
                       onClick={toggleProfile}
-                      className="bg-white hover:bg-purple-50 text-[#4A2E80] dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-700 px-5 py-2 text-[13px] font-semibold rounded-full transition-all shadow-md flex items-center gap-1 cursor-pointer"
+                      className="bg-rose-600 hover:bg-rose-700 text-white px-5 py-2 text-[13px] font-semibold rounded-full transition-all shadow-md flex items-center gap-1 cursor-pointer"
                     >
                       <span>Login / Register</span>
-                      <ChevronDown className="h-3.5 w-3.5 text-[#4A2E80] dark:text-white" />
+                      <ChevronDown className="h-3.5 w-3.5 text-white" />
                     </button>
                   )}
 
                   {isProfileOpen && (
-                    <div className="absolute right-0 top-full mt-2 w-80 origin-top-right border border-slate-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 shadow-xl rounded-xl z-50">
+                    <div className="absolute right-0 top-full mt-2 w-80 origin-top-right border border-slate-150 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 shadow-xl rounded-xl z-50">
                       {user ? (
                         <>
                           <div className="px-3 py-2.5 border-b border-slate-100 dark:border-zinc-800 mb-1.5 flex items-center gap-2.5">
@@ -214,7 +211,7 @@ export default function Navbar() {
                                   alt={user.name}
                                 />
                               )}
-                              <AvatarFallback className="bg-purple-700 text-white font-bold text-xs flex items-center justify-center h-full w-full">
+                              <AvatarFallback className="bg-rose-650 text-white font-bold text-xs flex items-center justify-center h-full w-full">
                                 {getInitials(user.name)}
                               </AvatarFallback>
                             </Avatar>
@@ -286,7 +283,7 @@ export default function Navbar() {
             <div className="flex items-center md:hidden space-x-2">
               <button
                 onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-                className="rounded-xl p-2 text-purple-200 hover:text-white hover:bg-white/10 transition-colors"
+                className="rounded-xl p-2 text-zinc-400 hover:text-rose-500 hover:bg-white/10 transition-colors"
                 aria-label="Toggle theme"
               >
                 {!mounted ? (
@@ -300,7 +297,7 @@ export default function Navbar() {
 
               <button
                 onClick={toggleMenu}
-                className="rounded-xl p-2 text-purple-200 hover:text-white hover:bg-white/10 transition-colors"
+                className="rounded-xl p-2 text-zinc-400 hover:text-rose-500 hover:bg-white/10 transition-colors"
               >
                 {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
@@ -311,14 +308,14 @@ export default function Navbar() {
 
         {/* Mobile Drawer Menu */}
         {isOpen && (
-          <div className="md:hidden border-t border-purple-800 dark:border-zinc-800 bg-[#4A2E80] dark:bg-zinc-900 px-4 py-3 space-y-2 animate-in slide-in-from-top duration-200">
+          <div className="md:hidden border-t border-zinc-900 bg-zinc-950 px-4 py-3 space-y-2 animate-in slide-in-from-top duration-200">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
                 className={`block rounded-xl px-3 py-2 text-base font-semibold transition-colors hover:bg-white/10 ${
-                  isActive(link.href) ? 'text-white bg-white/10' : 'text-purple-100 hover:text-white'
+                  isActive(link.href) ? 'text-rose-500 bg-white/10' : 'text-zinc-300 hover:text-rose-500'
                 }`}
               >
                 {link.label}
@@ -326,7 +323,7 @@ export default function Navbar() {
             ))}
 
             {user ? (
-              <div className="border-t border-purple-800 dark:border-zinc-800 pt-3 mt-3 space-y-2">
+              <div className="border-t border-zinc-900 pt-3 mt-3 space-y-2">
                 <div className="flex items-center gap-3 px-3 py-1 mb-2">
                   <Avatar className="h-9 w-9 border border-white/10 shadow-sm shrink-0">
                     {user.photo && (
@@ -335,31 +332,31 @@ export default function Navbar() {
                         alt={user.name}
                       />
                     )}
-                    <AvatarFallback className="bg-purple-700 text-white font-bold text-xs flex items-center justify-center h-full w-full">
+                    <AvatarFallback className="bg-rose-650 text-white font-bold text-xs flex items-center justify-center h-full w-full">
                       {getInitials(user.name)}
                     </AvatarFallback>
                   </Avatar>
                   <div>
                     <div className="text-sm font-bold text-white">{user.name}</div>
-                    <div className="text-xs text-purple-200 truncate">{user.email}</div>
+                    <div className="text-xs text-zinc-450 truncate">{user.email}</div>
                   </div>
                 </div>
 
                 <Link
                   href={getProfileLink()}
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-base text-purple-100 hover:text-white hover:bg-white/10"
+                  className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-base text-zinc-300 hover:text-rose-500 hover:bg-white/10"
                 >
-                  <UserIcon className="h-5 w-5 text-purple-200" />
+                  <UserIcon className="h-5 w-5 text-zinc-400" />
                   Profile
                 </Link>
 
                 <Link
                   href={getDashboardLink()}
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-base text-purple-100 hover:text-white hover:bg-white/10"
+                  className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-base text-zinc-300 hover:text-rose-500 hover:bg-white/10"
                 >
-                  <LayoutDashboard className="h-5 w-5 text-purple-200" />
+                  <LayoutDashboard className="h-5 w-5 text-zinc-400" />
                   Dashboard
                 </Link>
 
@@ -376,18 +373,18 @@ export default function Navbar() {
                 </button>
               </div>
             ) : (
-              <div className="border-t border-purple-800 dark:border-zinc-800 pt-3 mt-3 flex flex-col space-y-2">
+              <div className="border-t border-zinc-900 pt-3 mt-3 flex flex-col space-y-2">
                 <Link
                   href="/login"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center rounded-xl border border-white/10 py-2 text-base font-bold text-purple-100 hover:bg-white/10"
+                  className="flex items-center justify-center rounded-xl border border-white/10 py-2 text-base font-bold text-zinc-300 hover:bg-white/10"
                 >
                   Log In
                 </Link>
                 <Link
                   href="/register"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center rounded-xl bg-white py-2 text-base font-bold text-[#4A2E80] hover:bg-purple-50"
+                  className="flex items-center justify-center rounded-xl bg-rose-600 py-2 text-base font-bold text-white hover:bg-rose-700"
                 >
                   Register
                 </Link>

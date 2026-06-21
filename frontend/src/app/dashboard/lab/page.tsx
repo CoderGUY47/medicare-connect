@@ -76,7 +76,7 @@ export default function LabOverviewPage() {
               <tbody>
                 {specimens.map((s) => (
                   <tr key={s.id} className="border-b border-slate-50 dark:border-zinc-800/50 hover:bg-slate-50/50 dark:hover:bg-zinc-800/20 text-slate-700 dark:text-zinc-300 font-medium">
-                    <td className="py-3 font-mono font-bold text-rose-600 dark:text-rose-455">{s.id}</td>
+                    <td className="py-3 font-mono font-bold text-rose-600 dark:text-rose-400">{s.id}</td>
                     <td className="py-3 font-bold">{s.patient}</td>
                     <td className="py-3 text-[11px] text-slate-500">{s.test}</td>
                     <td className="py-3 text-center">

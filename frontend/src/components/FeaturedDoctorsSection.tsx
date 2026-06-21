@@ -24,7 +24,7 @@ export default function FeaturedDoctorsSection() {
           {/* Section Header */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="text-center sm:text-left space-y-3">
-              <span className="text-[10px] font-extrabold tracking-[0.2em] text-[#4A2E80] dark:text-purple-400 uppercase bg-purple-500/10 dark:bg-purple-500/20 px-3.5 py-1.5 rounded-full inline-block">
+              <span className="text-[10px] font-extrabold tracking-[0.2em] text-rose-600 dark:text-rose-400 uppercase bg-rose-500/10 dark:bg-rose-500/20 px-3.5 py-1.5 rounded-full inline-block">
                 Our Specialists
               </span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-800 dark:text-zinc-100 tracking-tight font-outfit">
@@ -36,7 +36,7 @@ export default function FeaturedDoctorsSection() {
             </div>
             <Link
               href="/find-doctors"
-              className="border border-slate-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/50 hover:bg-white dark:hover:bg-zinc-900 text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full text-slate-700 dark:text-zinc-300 hover:text-[#4A2E80] dark:hover:text-purple-400 hover:border-purple-500/30 transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+              className="border border-slate-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/50 hover:bg-white dark:hover:bg-zinc-900 text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-full text-slate-700 dark:text-zinc-300 hover:text-rose-600 dark:hover:text-rose-400 hover:border-rose-500/30 transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
             >
               <span>Browse All Directories</span>
               <ChevronRight className="h-4 w-4" />
@@ -58,7 +58,7 @@ export default function FeaturedDoctorsSection() {
                     className="h-full w-full object-cover group-hover:scale-105 transition-all duration-500"
                   />
                   <button
-                    className="absolute top-3 right-3 h-8 w-8 rounded-md border border-slate-250/10 dark:border-zinc-800/30 bg-white/90 dark:bg-zinc-900/90 text-slate-400 hover:text-red-500 flex items-center justify-center transition-colors shadow-sm cursor-pointer"
+                    className="absolute top-3 right-3 h-8 w-8 rounded-md border border-slate-250/10 dark:border-zinc-800/30 bg-white/90 dark:bg-zinc-900/90 text-slate-450 hover:text-red-500 flex items-center justify-center transition-colors shadow-sm cursor-pointer"
                     title="Save to favorites"
                   >
                     <Heart className="h-4 w-4" />
@@ -71,7 +71,7 @@ export default function FeaturedDoctorsSection() {
                     <span className="inline-flex border border-rose-500/20 bg-rose-500/10 px-2.5 py-0.5 rounded-md text-[9px] font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wide">
                       {doc.specialization}
                     </span>
-                    <h3 className="text-base font-bold text-slate-800 dark:text-white group-hover:text-purple-650 dark:group-hover:text-purple-400 transition-colors truncate">
+                    <h3 className="text-base font-bold text-slate-800 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors truncate">
                       {doc.doctorName}
                     </h3>
                     <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-white/60">
@@ -111,7 +111,7 @@ export default function FeaturedDoctorsSection() {
 
                   <Link
                     href={`/doctors/${doc.id}`}
-                    className="flex w-full items-center justify-center gap-1.5 bg-[#4A2E80] hover:bg-purple-700 dark:bg-purple-650 dark:hover:bg-purple-600 text-white text-xs font-bold uppercase py-3 rounded-md hover:shadow-md hover:shadow-purple-500/10 active:scale-[0.98] transition-all cursor-pointer"
+                    className="flex w-full items-center justify-center gap-1.5 bg-rose-600 hover:bg-rose-700 dark:bg-rose-600 dark:hover:bg-rose-700 text-white text-xs font-bold uppercase py-3 rounded-md hover:shadow-md hover:shadow-rose-500/10 active:scale-[0.98] transition-all cursor-pointer"
                   >
                     <span>Book Appointment</span>
                     <ArrowRight className="h-3.5 w-3.5" />

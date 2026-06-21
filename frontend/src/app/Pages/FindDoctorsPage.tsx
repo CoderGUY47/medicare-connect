@@ -223,7 +223,7 @@ export default function FindDoctorsPage() {
             </div>
             <div className="flex items-center gap-4">
               <div className="text-slate-500 dark:text-zinc-400 font-medium hidden sm:block">
-                Total: <strong className="text-rose-500 dark:text-rose-450 font-bold">{doctors.length}</strong> registered specialists
+                Total: <strong className="text-rose-500 dark:text-rose-400 font-bold">{doctors.length}</strong> registered specialists
               </div>
               <div className="flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 px-2.5 py-1 text-xs focus-within:border-rose-500 focus-within:ring-1 focus-within:ring-rose-500/10">
                 <ArrowUpDown className="h-3.5 w-3.5 text-slate-455 dark:text-zinc-550 shrink-0" />

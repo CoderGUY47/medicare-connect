@@ -70,7 +70,7 @@ export default function UserPublicProfilePage() {
           </p>
           <button 
             onClick={() => router.push('/')}
-            className="mt-6 inline-flex items-center gap-2 bg-[#4A2E80] hover:bg-purple-750 text-white text-xs font-bold px-6 py-2.5 rounded-md cursor-pointer transition-all"
+            className="mt-6 inline-flex items-center gap-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-6 py-2.5 rounded-md cursor-pointer transition-all"
           >
             <ArrowLeft className="h-4 w-4" />
             Go to Homepage
@@ -83,7 +83,7 @@ export default function UserPublicProfilePage() {
   if (!profileUser) {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
-        <div className="h-8 w-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <div className="h-8 w-8 border-4 border-rose-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
         <p className="text-xs text-slate-500 mt-4">Loading profile details...</p>
       </div>
     );
@@ -97,9 +97,9 @@ export default function UserPublicProfilePage() {
     <div className="container mx-auto px-6 py-10 max-w-[1100px] space-y-8">
       {/* Breadcrumbs */}
       <div className="flex items-center gap-2 text-[10px] text-slate-400 dark:text-zinc-500 font-bold uppercase tracking-widest">
-        <Link href="/" className="hover:text-purple-650 transition-colors">Home</Link>
+        <Link href="/" className="hover:text-rose-600 transition-colors">Home</Link>
         <ChevronRight className="h-3 w-3" />
-        <span className="text-purple-600 dark:text-purple-400">Profile</span>
+        <span className="text-rose-600 dark:text-rose-400">Profile</span>
         <ChevronRight className="h-3 w-3" />
         <span className="text-slate-600 dark:text-zinc-300">{profileUser.name}</span>
       </div>
@@ -108,11 +108,11 @@ export default function UserPublicProfilePage() {
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
         {/* Left Side: Avatar Card */}
         <div className="md:col-span-4 bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-sm flex flex-col items-center p-6 text-center h-full">
-          <Avatar className="h-28 w-28 border-4 border-purple-50 dark:border-zinc-800 shadow-lg">
+          <Avatar className="h-28 w-28 border-4 border-rose-50 dark:border-zinc-800 shadow-lg">
             {profileUser.photo && (
               <AvatarImage src={profileUser.photo} alt={profileUser.name} />
             )}
-            <AvatarFallback className="bg-purple-700 text-white font-extrabold text-2xl flex items-center justify-center w-full h-full">
+            <AvatarFallback className="bg-rose-700 text-white font-extrabold text-2xl flex items-center justify-center w-full h-full">
               {getInitials(profileUser.name)}
             </AvatarFallback>
           </Avatar>
@@ -120,13 +120,13 @@ export default function UserPublicProfilePage() {
           <h2 className="text-lg font-extrabold text-slate-900 dark:text-white mt-5 leading-snug">
             {profileUser.name}
           </h2>
-          <span className="inline-flex items-center border border-purple-200 dark:border-purple-800/40 bg-purple-50/50 dark:bg-purple-950/20 px-3 py-1 rounded-full text-[10px] font-bold text-purple-700 dark:text-purple-400 uppercase tracking-wider mt-2.5">
+          <span className="inline-flex items-center border border-rose-200 dark:border-rose-800/40 bg-rose-50/50 dark:bg-rose-950/20 px-3 py-1 rounded-full text-[10px] font-bold text-rose-700 dark:text-rose-400 uppercase tracking-wider mt-2.5">
             {profileUser.role}
           </span>
 
           <div className="w-full border-t border-slate-100 dark:border-zinc-800/60 mt-6 pt-5 text-left space-y-4">
             <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-zinc-350">
-              <Mail className="h-4 w-4 text-purple-600 shrink-0" />
+              <Mail className="h-4 w-4 text-rose-600 shrink-0" />
               <div className="truncate">
                 <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wide">Email Address</div>
                 <div className="font-medium mt-0.5 truncate">{profileUser.email}</div>
@@ -135,7 +135,7 @@ export default function UserPublicProfilePage() {
 
             {profileUser.phone && (
               <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-zinc-350">
-                <Phone className="h-4 w-4 text-purple-600 shrink-0" />
+                <Phone className="h-4 w-4 text-rose-600 shrink-0" />
                 <div>
                   <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wide">Phone Number</div>
                   <div className="font-medium mt-0.5">{profileUser.phone}</div>
@@ -144,7 +144,7 @@ export default function UserPublicProfilePage() {
             )}
 
             <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-zinc-350">
-              <Calendar className="h-4 w-4 text-purple-600 shrink-0" />
+              <Calendar className="h-4 w-4 text-rose-600 shrink-0" />
               <div>
                 <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wide">Member Since</div>
                 <div className="font-medium mt-0.5">{memberSince}</div>
@@ -159,14 +159,14 @@ export default function UserPublicProfilePage() {
             <div className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl shadow-sm overflow-hidden h-full flex flex-col justify-between">
               <div>
                 <div className="px-6 py-5 border-b border-slate-100 dark:border-zinc-800/80 bg-slate-50/50 dark:bg-zinc-950/20 flex items-center gap-2.5">
-                  <Stethoscope className="h-5 w-5 text-purple-600" />
+                  <Stethoscope className="h-5 w-5 text-rose-600" />
                   <h3 className="text-sm font-bold text-slate-800 dark:text-white">Professional Directory Profile</h3>
                 </div>
 
                 <div className="p-6 space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div className="flex items-start gap-3 bg-slate-50 dark:bg-zinc-800/30 p-3.5 rounded-xl border border-slate-100 dark:border-zinc-800/30">
-                      <Award className="h-5 w-5 text-purple-600 shrink-0 mt-0.5" />
+                      <Award className="h-5 w-5 text-rose-600 shrink-0 mt-0.5" />
                       <div>
                         <div className="text-xs font-bold text-slate-400 dark:text-zinc-550 uppercase tracking-widest">Qualifications</div>
                         <div className="text-base font-bold text-slate-800 dark:text-zinc-200 mt-1">{profileDoctor.qualifications}</div>
@@ -174,25 +174,25 @@ export default function UserPublicProfilePage() {
                     </div>
 
                     <div className="flex items-start gap-3 bg-slate-50 dark:bg-zinc-800/30 p-3.5 rounded-xl border border-slate-100 dark:border-zinc-800/30">
-                      <Stethoscope className="h-5 w-5 text-purple-600 shrink-0 mt-0.5" />
+                      <Stethoscope className="h-5 w-5 text-rose-600 shrink-0 mt-0.5" />
                       <div>
-                        <div className="text-xs font-bold text-slate-400 dark:text-zinc-550 uppercase tracking-widest">Specialization</div>
+                        <div className="text-xs font-bold text-slate-400 dark:text-zinc-555 uppercase tracking-widest">Specialization</div>
                         <div className="text-base font-bold text-slate-800 dark:text-zinc-200 mt-1">{profileDoctor.specialization}</div>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-3 bg-slate-50 dark:bg-zinc-800/30 p-3.5 rounded-xl border border-slate-100 dark:border-zinc-800/30">
-                      <Building2 className="h-5 w-5 text-purple-600 shrink-0 mt-0.5" />
+                      <Building2 className="h-5 w-5 text-rose-600 shrink-0 mt-0.5" />
                       <div>
-                        <div className="text-xs font-bold text-slate-400 dark:text-zinc-550 uppercase tracking-widest">Hospital / Clinic</div>
+                        <div className="text-xs font-bold text-slate-400 dark:text-zinc-555 uppercase tracking-widest">Hospital / Clinic</div>
                         <div className="text-base font-bold text-slate-800 dark:text-zinc-200 mt-1">{profileDoctor.hospitalName}</div>
                       </div>
                     </div>
 
                     <div className="flex items-start gap-3 bg-slate-50 dark:bg-zinc-800/30 p-3.5 rounded-xl border border-slate-100 dark:border-zinc-800/30">
-                      <DollarSign className="h-5 w-5 text-purple-600 shrink-0 mt-0.5" />
+                      <DollarSign className="h-5 w-5 text-rose-600 shrink-0 mt-0.5" />
                       <div>
-                        <div className="text-xs font-bold text-slate-400 dark:text-zinc-550 uppercase tracking-widest">Consultation Fee</div>
+                        <div className="text-xs font-bold text-slate-400 dark:text-zinc-555 uppercase tracking-widest">Consultation Fee</div>
                         <div className="text-base font-extrabold text-slate-800 dark:text-white mt-1">${profileDoctor.consultationFee}</div>
                       </div>
                     </div>
@@ -200,8 +200,8 @@ export default function UserPublicProfilePage() {
 
                   {/* Verification Checkmark */}
                   {profileDoctor.verificationStatus === 'verified' && (
-                    <div className="flex items-center gap-2 bg-emerald-500/5 border border-emerald-500/10 rounded-xl px-4 py-3 text-emerald-600 dark:text-emerald-400 text-xs font-semibold">
-                      <CheckCircle className="h-4.5 w-4.5 text-emerald-500" />
+                    <div className="flex items-center gap-2 bg-rose-500/5 border border-rose-500/10 rounded-xl px-4 py-3 text-rose-600 dark:text-rose-400 text-xs font-semibold">
+                      <CheckCircle className="h-4.5 w-4.5 text-rose-600" />
                       <span>This doctor is fully verified and licensed by Medi-Doc Health Systems.</span>
                     </div>
                   )}
@@ -226,7 +226,7 @@ export default function UserPublicProfilePage() {
                         <div className="text-xs font-bold text-slate-500 dark:text-zinc-400 w-24 shrink-0">Active Hours:</div>
                         <div className="flex flex-wrap gap-1.5">
                           {profileDoctor.availableSlots.map(slot => (
-                            <span key={slot} className="bg-purple-100/50 dark:bg-purple-950/20 text-purple-700 dark:text-purple-400 px-2.5 py-1 rounded-md text-[10px] font-bold flex items-center gap-1">
+                            <span key={slot} className="bg-rose-100/50 dark:bg-rose-950/20 text-rose-700 dark:text-rose-400 px-2.5 py-1 rounded-md text-[10px] font-bold flex items-center gap-1">
                               <Clock className="h-3 w-3" />
                               {slot}
                             </span>
@@ -243,7 +243,7 @@ export default function UserPublicProfilePage() {
               <div className="space-y-6">
                 <div>
                   <h3 className="text-sm font-bold text-slate-800 dark:text-white border-b border-slate-100 dark:border-zinc-800 pb-3 flex items-center gap-2">
-                    <UserIcon className="h-4 w-4 text-purple-600" />
+                    <UserIcon className="h-4 w-4 text-rose-600" />
                     Account Details
                   </h3>
                 </div>
@@ -255,7 +255,7 @@ export default function UserPublicProfilePage() {
                   </div>
                   <div className="flex justify-between py-3 border-b border-slate-100 dark:border-zinc-800/40">
                     <span className="text-slate-400 font-medium">Status</span>
-                    <span className="text-emerald-600 dark:text-emerald-450 font-bold capitalize">{profileUser.status}</span>
+                    <span className="text-rose-600 dark:text-rose-400 font-bold capitalize">{profileUser.status}</span>
                   </div>
                   <div className="flex justify-between py-3 border-b border-slate-100 dark:border-zinc-800/40">
                     <span className="text-slate-400 font-medium">Gender</span>
@@ -263,12 +263,12 @@ export default function UserPublicProfilePage() {
                   </div>
                   <div className="flex justify-between py-3 border-b border-slate-100 dark:border-zinc-800/40">
                     <span className="text-slate-400 font-medium">Verified Member</span>
-                    <span className="text-purple-600 dark:text-purple-400 font-bold">Yes</span>
+                    <span className="text-rose-600 dark:text-rose-400 font-bold">Yes</span>
                   </div>
                 </div>
 
-                <div className="bg-purple-500/5 border border-purple-500/10 rounded-xl p-4 flex items-start gap-3 mt-4">
-                  <FolderHeart className="h-5 w-5 text-purple-600 shrink-0 mt-0.5" />
+                <div className="bg-rose-500/5 border border-rose-500/10 rounded-xl p-4 flex items-start gap-3 mt-4">
+                  <FolderHeart className="h-5 w-5 text-rose-650 shrink-0 mt-0.5" />
                   <div>
                     <h4 className="text-xs font-bold text-slate-800 dark:text-zinc-100">Care Center Services</h4>
                     <p className="text-[11px] text-slate-500 dark:text-zinc-400 mt-1 leading-relaxed">
@@ -286,7 +286,7 @@ export default function UserPublicProfilePage() {
       <div className="flex justify-end pt-4">
         <button 
           onClick={() => router.push('/')}
-          className="inline-flex items-center gap-2 bg-[#4A2E80] hover:bg-purple-750 text-white text-xs font-bold px-6 py-2.5 rounded-md cursor-pointer transition-all shadow-sm shadow-purple-500/15"
+          className="inline-flex items-center gap-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-6 py-2.5 rounded-md cursor-pointer transition-all shadow-sm shadow-rose-500/15"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Home
