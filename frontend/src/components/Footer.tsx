@@ -181,7 +181,7 @@ export default function Footer() {
               <a
                 key={idx}
                 href={social.href}
-                className="h-8 w-8 rounded-full border border-white/20 hover:border-white/50 bg-white/5 hover:bg-white/15 text-white flex items-center justify-center transition-all hover:scale-[1.05]"
+                className="text-white/60 hover:text-white flex items-center justify-center transition-all duration-200 hover:-translate-y-1"
               >
                 {social.icon}
               </a>
