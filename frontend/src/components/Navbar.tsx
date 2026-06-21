@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from 'next-themes';
@@ -151,25 +152,51 @@ export default function Navbar() {
                   )}
                 </button>
 
-                {/* "I Want To..." Pill Button */}
-                <div className="relative">
-                  <button
-                    onClick={toggleProfile}
-                    className="bg-white hover:bg-purple-50 text-[#4A2E80] dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-700 px-5 py-2 text-[13px] font-semibold rounded-full transition-all shadow-md flex items-center gap-1 cursor-pointer"
-                  >
-                    <span>{user ? 'Profile' : 'Login / Register'}</span>
-                    <ChevronDown className="h-3.5 w-3.5 text-[#4A2E80] dark:text-white" />
-                  </button>
+                {/* "I Want To..." Pill Button / User Avatar */}
+                <div className="relative flex items-center">
+                  {user ? (
+                    <button
+                      onClick={toggleProfile}
+                      className="relative h-9 w-9 rounded-full overflow-hidden border border-white/20 hover:scale-105 transition-all shadow-md cursor-pointer flex items-center justify-center shrink-0"
+                    >
+                      <Image
+                        src={user.photo || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200'}
+                        alt={user.name || 'User Avatar'}
+                        fill
+                        sizes="36px"
+                        className="object-cover"
+                      />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={toggleProfile}
+                      className="bg-white hover:bg-purple-50 text-[#4A2E80] dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-700 px-5 py-2 text-[13px] font-semibold rounded-full transition-all shadow-md flex items-center gap-1 cursor-pointer"
+                    >
+                      <span>Login / Register</span>
+                      <ChevronDown className="h-3.5 w-3.5 text-[#4A2E80] dark:text-white" />
+                    </button>
+                  )}
 
                   {isProfileOpen && (
-                    <div className="absolute right-0 mt-2 w-56 origin-top-right border border-slate-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 shadow-xl rounded-xl z-50">
+                    <div className="absolute right-0 mt-2 w-64 origin-top-right border border-slate-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 shadow-xl rounded-xl z-50">
                       {user ? (
                         <>
-                          <div className="px-3 py-2.5 border-b border-slate-100 dark:border-zinc-800 mb-1.5">
-                            <div className="text-xs font-bold text-slate-800 dark:text-zinc-200">{user.name}</div>
-                            <div className="text-sm text-slate-400 dark:text-zinc-400 truncate">{user.email}</div>
-                            <div className="mt-2 inline-flex items-center border border-rose-500/20 bg-rose-500/5 px-2 py-0.5 text-[8px] font-mono font-bold text-rose-600 dark:text-rose-400 uppercase rounded-md">
-                              {user.role}
+                          <div className="px-3 py-2.5 border-b border-slate-100 dark:border-zinc-800 mb-1.5 flex items-center gap-2.5">
+                            <div className="relative h-9 w-9 rounded-full overflow-hidden shrink-0 border border-slate-200 dark:border-zinc-700">
+                              <Image
+                                src={user.photo || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200'}
+                                alt={user.name}
+                                fill
+                                sizes="36px"
+                                className="object-cover"
+                              />
+                            </div>
+                            <div className="overflow-hidden">
+                              <div className="text-xs font-bold text-slate-800 dark:text-zinc-200 truncate">{user.name}</div>
+                              <div className="text-[10px] text-slate-400 dark:text-zinc-400 truncate leading-none mt-0.5">{user.email}</div>
+                              <div className="mt-1.5 inline-flex items-center border border-rose-500/20 bg-rose-500/5 px-2 py-0.5 text-[8px] font-mono font-bold text-rose-600 dark:text-rose-400 uppercase rounded-md">
+                                {user.role}
+                              </div>
                             </div>
                           </div>
 
@@ -183,8 +210,8 @@ export default function Navbar() {
                           </Link>
 
                           <button
-                            onClick={() => {
-                              logout();
+                            onClick={async () => {
+                              await logout();
                               setIsProfileOpen(false);
                               window.location.href = '/';
                             }}

@@ -55,7 +55,7 @@ export default function LoginForm() {
       }
       await signIn.social({
         provider: 'google',
-        callbackURL: '/dashboard',
+        callbackURL: '/',
       });
     } catch (err: any) {
       setErrorMsg(err.message || 'Google authentication failed.');

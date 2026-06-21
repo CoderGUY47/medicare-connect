@@ -36,7 +36,7 @@ export default function RegisterPage() {
       }
       await signIn.social({
         provider: 'google',
-        callbackURL: '/dashboard',
+        callbackURL: '/',
       });
     } catch (err: any) {
       setErrorMsg(err.message || 'Google authentication failed.');
@@ -54,7 +54,7 @@ export default function RegisterPage() {
     setErrorMsg(''); setLoading(true);
     try {
       const registeredUser = await registerUser(values.name, values.email, values.role, values.phone, values.gender as 'male' | 'female' | 'other');
-      router.push(`/dashboard/${registeredUser.role}`);
+      router.push('/');
     } catch (err: any) {
       setErrorMsg(err.message || 'Failed to register account.');
     } finally {

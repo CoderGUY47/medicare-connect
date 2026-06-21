@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { db, User, Doctor } from '../lib/mockDb';
-import { useSession } from '../lib/auth-client';
+import { useSession, signOut } from '../lib/auth-client';
 
 interface AuthContextType {
   user: User | null;
@@ -10,7 +10,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password?: string) => Promise<User>;
   registerUser: (name: string, email: string, role: 'patient' | 'doctor', phone: string, gender: 'male' | 'female' | 'other' | '') => Promise<User>;
-  logout: () => void;
+  logout: () => void | Promise<void>;
   updateProfile: (updates: Partial<User>) => void;
   updateDoctorProfile: (updates: Partial<Doctor>) => void;
   getDoctorProfile: (docId: string) => Doctor | undefined;
@@ -231,9 +231,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await signOut();
+    } catch (err) {
+      console.error("SignOut error:", err);
+    }
     deleteCookie('mc_jwt_token');
     deleteCookie('mc_user_email');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('oauth_selected_role');
+      localStorage.clear();
+    }
     setUser(null);
   };
 
