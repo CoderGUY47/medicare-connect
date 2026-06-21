@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { db, User, Doctor } from '../lib/mockDb';
+import { useSession } from '../lib/auth-client';
 
 interface AuthContextType {
   user: User | null;
@@ -42,24 +43,87 @@ function deleteCookie(name: string) {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { data: session, isPending } = useSession();
 
   useEffect(() => {
-    // Load session from cookie
-    const token = getCookie('mc_jwt_token');
-    const email = getCookie('mc_user_email');
-    if (token && email) {
+    if (isPending) return;
+
+    if (session?.user) {
       const users = db.getUsers();
-      const matchedUser = users.find(u => u.email === email);
-      if (matchedUser && matchedUser.status === 'active') {
-        setUser(matchedUser);
+      let matchedUser = users.find(u => u.email.toLowerCase() === session.user.email.toLowerCase());
+      
+      if (!matchedUser) {
+        // Retrieve selected role from localStorage or default to patient
+        const selectedRole = (typeof window !== 'undefined' ? localStorage.getItem('oauth_selected_role') : null) || 'patient';
+        const role = (selectedRole === 'doctor' || selectedRole === 'patient') ? selectedRole : 'patient';
+        const newUserId = `${role === 'doctor' ? 'doc' : 'pat'}-${Date.now()}`;
+        
+        matchedUser = {
+          id: newUserId,
+          name: session.user.name,
+          email: session.user.email,
+          role: role,
+          photo: session.user.image || (role === 'doctor' 
+            ? 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=200'
+            : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200'),
+          phone: '',
+          gender: 'other',
+          status: 'active',
+          createdAt: new Date().toISOString(),
+          password: 'google-oauth-login'
+        };
+        
+        db.setUsers([...users, matchedUser]);
+        
+        // Initialize doctor profile in mock database if registering as doctor
+        if (role === 'doctor') {
+          const doctors = db.getDoctors();
+          const newDoc = {
+            id: newUserId,
+            userId: newUserId,
+            doctorName: session.user.name,
+            specialization: 'General Practice',
+            qualifications: 'MD/MBBS (Google Verified)',
+            experience: 3,
+            consultationFee: 75,
+            hospitalName: 'Medi-Doc Hospital',
+            profileImage: matchedUser.photo,
+            availableDays: ['Monday', 'Wednesday', 'Friday'],
+            availableSlots: ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM'],
+            verificationStatus: 'verified' as const
+          };
+          db.setDoctors([...doctors, newDoc]);
+        }
+        
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('oauth_selected_role');
+        }
+      }
+      
+      // Sync mock session cookies so REST verification also works
+      setCookie('mc_jwt_token', `mock-jwt-header.payload-${matchedUser.id}.signature`, 7);
+      setCookie('mc_user_email', matchedUser.email, 7);
+      setUser(matchedUser);
+    } else {
+      // Default cookie loading if no active Better Auth session
+      const token = getCookie('mc_jwt_token');
+      const email = getCookie('mc_user_email');
+      if (token && email) {
+        const users = db.getUsers();
+        const matchedUser = users.find(u => u.email === email);
+        if (matchedUser && matchedUser.status === 'active') {
+          setUser(matchedUser);
+        } else {
+          deleteCookie('mc_jwt_token');
+          deleteCookie('mc_user_email');
+          setUser(null);
+        }
       } else {
-        // Clear stale session
-        deleteCookie('mc_jwt_token');
-        deleteCookie('mc_user_email');
+        setUser(null);
       }
     }
     setIsLoading(false);
-  }, []);
+  }, [session, isPending]);
 
   const login = async (email: string, password?: string): Promise<User> => {
     setIsLoading(true);

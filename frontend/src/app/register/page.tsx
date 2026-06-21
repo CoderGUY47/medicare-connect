@@ -31,6 +31,9 @@ export default function RegisterPage() {
   const handleGoogleSignIn = async () => {
     setErrorMsg('');
     try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('oauth_selected_role', selectedRole);
+      }
       await signIn.social({
         provider: 'google',
         callbackURL: '/dashboard',
