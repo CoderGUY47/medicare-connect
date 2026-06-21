@@ -41,7 +41,7 @@ export default function TestimonialsSection() {
 
   return (
     <ScrollAnimate>
-      <section className="w-full bg-zinc-950 text-white select-none border-b border-zinc-900 rounded-none py-16 md:py-24">
+      <section className="w-full bg-slate-50 dark:bg-zinc-950 text-slate-800 dark:text-white select-none border-b border-slate-200/60 dark:border-zinc-900 rounded-none py-16 md:py-24 transition-colors duration-300">
         
         {/* Swiper focus/height transitions via CSS */}
         <style>{`
@@ -89,14 +89,14 @@ export default function TestimonialsSection() {
         <div className="container mx-auto px-6 max-w-7xl space-y-10 rounded-none">
           {/* Title & Description Block */}
           <div className="space-y-3">
-            <div className="flex items-center gap-1.5 text-rose-500 font-bold text-xs uppercase tracking-wider">
+            <div className="flex items-center gap-1.5 text-rose-600 dark:text-rose-500 font-bold text-xs uppercase tracking-wider">
               <span className="text-sm font-black">+</span>
               <span>Care in Action</span>
             </div>
-            <h2 className="text-2xl md:text-3.5xl font-black text-white font-outfit tracking-tight">
+            <h2 className="text-2xl md:text-3.5xl font-black text-slate-900 dark:text-white font-outfit tracking-tight">
               Why patients choose our expert care
             </h2>
-            <div className="text-base text-zinc-400 leading-relaxed font-semibold max-w-3xl">
+            <div className="text-base text-slate-650 dark:text-zinc-400 leading-relaxed font-semibold max-w-3xl">
               With the most 5-star hospitals in the Carolinas, our commitment to quality, safety
               and compassion shows in every experience. Patients consistently choose and
               recommend Novant Health for expert, trusted care.
@@ -124,33 +124,33 @@ export default function TestimonialsSection() {
             >
               {mockReviews.map((rev) => (
                 <SwiperSlide key={rev.id}>
-                  <div className="review-card bg-zinc-900 border border-zinc-800/80 flex items-stretch overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 w-full rounded-none">
+                  <div className="review-card bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800/80 flex items-stretch overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 w-full rounded-none">
                     {/* Left Part: Content */}
                     <div className="w-[65%] p-6 flex flex-col justify-between space-y-4">
                       <div className="space-y-2">
                         {/* Quote Mark */}
-                        <div className="text-5xl font-serif text-rose-500/20 leading-none select-none h-4">
+                        <div className="text-5xl font-serif text-rose-500/10 dark:text-rose-500/20 leading-none select-none h-4">
                           “
                         </div>
-                        <div className="text-base text-zinc-350 leading-relaxed font-medium pt-1">
+                        <div className="text-base text-slate-700 dark:text-zinc-300 leading-relaxed font-medium pt-1">
                           {rev.reviewText}
                         </div>
                       </div>
                       
-                      <div className="space-y-0.5 pt-3 border-t border-zinc-800">
-                        <div className="text-xs font-bold text-white">
+                      <div className="space-y-0.5 pt-3 border-t border-slate-100 dark:border-zinc-800">
+                        <div className="text-xs font-bold text-slate-900 dark:text-white">
                           Verified patient
                         </div>
-                        <div className="text-[11px] text-zinc-500 font-semibold">
+                        <div className="text-[11px] text-slate-500 dark:text-zinc-500 font-semibold">
                           {rev.location}
                         </div>
                       </div>
                     </div>
 
                     {/* Right Part: Image with Shade */}
-                    <div className="w-[35%] relative min-h-full overflow-hidden select-none bg-zinc-950">
+                    <div className="w-[35%] relative min-h-full overflow-hidden select-none bg-slate-50 dark:bg-zinc-950">
                       {/* Shade/gradient overlay to fade into the card's background */}
-                      <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-zinc-900 to-transparent z-10" />
+                      <div className="absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-white dark:from-zinc-900 to-transparent z-10" />
                       <img
                         src={rev.image}
                         alt="Verified patient review context"
@@ -168,7 +168,7 @@ export default function TestimonialsSection() {
             {/* Previous Slide Button */}
             <button
               onClick={() => swiperRef?.slidePrev()}
-              className="h-9 w-9 border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-900 hover:border-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer rounded-none"
+              className="h-9 w-9 border border-slate-300 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 hover:bg-slate-50 dark:hover:bg-zinc-900 hover:border-slate-400 dark:hover:border-zinc-700 text-slate-600 dark:text-zinc-300 hover:text-rose-600 dark:hover:text-rose-400 flex items-center justify-center transition-all cursor-pointer rounded-none"
               aria-label="Previous slide"
             >
               <ChevronLeft className="h-4.5 w-4.5" />
@@ -182,7 +182,7 @@ export default function TestimonialsSection() {
                   className={`h-1 rounded-full transition-all duration-300 ${
                     activeIndex % 4 === idx
                       ? 'w-8 bg-rose-600'
-                      : 'w-6 bg-zinc-800'
+                      : 'w-6 bg-slate-200 dark:bg-zinc-800'
                   }`}
                 />
               ))}
@@ -191,7 +191,7 @@ export default function TestimonialsSection() {
             {/* Next Slide Button */}
             <button
               onClick={() => swiperRef?.slideNext()}
-              className="h-9 w-9 border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-900 hover:border-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer rounded-none"
+              className="h-9 w-9 border border-slate-300 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 hover:bg-slate-50 dark:hover:bg-zinc-900 hover:border-slate-400 dark:hover:border-zinc-700 text-slate-600 dark:text-zinc-300 hover:text-rose-600 dark:hover:text-rose-400 flex items-center justify-center transition-all cursor-pointer rounded-none"
               aria-label="Next slide"
             >
               <ChevronRight className="h-4.5 w-4.5" />
