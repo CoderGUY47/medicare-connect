@@ -41,7 +41,7 @@ export default function TestimonialsSection() {
 
   return (
     <ScrollAnimate>
-      <section className="w-full bg-slate-50 dark:bg-zinc-950 text-slate-800 dark:text-white select-none border-b border-slate-200/60 dark:border-zinc-900 rounded-none py-16 md:py-24 transition-colors duration-300">
+      <section className="w-full bg-zinc-950 text-white select-none border-b border-zinc-900 rounded-none py-16 md:py-24">
         
         {/* Swiper focus/height transitions via CSS */}
         <style>{`
@@ -89,14 +89,14 @@ export default function TestimonialsSection() {
         <div className="container mx-auto px-6 max-w-7xl space-y-10 rounded-none">
           {/* Title & Description Block */}
           <div className="space-y-3">
-            <div className="flex items-center gap-1.5 text-rose-600 dark:text-rose-500 font-bold text-xs uppercase tracking-wider">
+            <div className="flex items-center gap-1.5 text-rose-500 font-bold text-xs uppercase tracking-wider">
               <span className="text-sm font-black">+</span>
               <span>Care in Action</span>
             </div>
-            <h2 className="text-2xl md:text-3.5xl font-black text-slate-900 dark:text-white font-outfit tracking-tight">
+            <h2 className="text-2xl md:text-3.5xl font-black text-white font-outfit tracking-tight">
               Why patients choose our expert care
             </h2>
-            <div className="text-base text-slate-650 dark:text-zinc-400 leading-relaxed font-semibold max-w-3xl">
+            <div className="text-base text-zinc-400 leading-relaxed font-semibold max-w-3xl">
               With the most 5-star hospitals in the Carolinas, our commitment to quality, safety
               and compassion shows in every experience. Patients consistently choose and
               recommend Novant Health for expert, trusted care.
@@ -168,7 +168,7 @@ export default function TestimonialsSection() {
             {/* Previous Slide Button */}
             <button
               onClick={() => swiperRef?.slidePrev()}
-              className="h-9 w-9 border border-slate-300 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 hover:bg-slate-50 dark:hover:bg-zinc-900 hover:border-slate-400 dark:hover:border-zinc-700 text-slate-600 dark:text-zinc-300 hover:text-rose-600 dark:hover:text-rose-400 flex items-center justify-center transition-all cursor-pointer rounded-none"
+              className="h-9 w-9 border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-900 hover:border-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer rounded-none"
               aria-label="Previous slide"
             >
               <ChevronLeft className="h-4.5 w-4.5" />
@@ -182,7 +182,7 @@ export default function TestimonialsSection() {
                   className={`h-1 rounded-full transition-all duration-300 ${
                     activeIndex % 4 === idx
                       ? 'w-8 bg-rose-600'
-                      : 'w-6 bg-slate-200 dark:bg-zinc-800'
+                      : 'w-6 bg-zinc-800'
                   }`}
                 />
               ))}
@@ -191,7 +191,7 @@ export default function TestimonialsSection() {
             {/* Next Slide Button */}
             <button
               onClick={() => swiperRef?.slideNext()}
-              className="h-9 w-9 border border-slate-300 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 hover:bg-slate-50 dark:hover:bg-zinc-900 hover:border-slate-400 dark:hover:border-zinc-700 text-slate-600 dark:text-zinc-300 hover:text-rose-600 dark:hover:text-rose-400 flex items-center justify-center transition-all cursor-pointer rounded-none"
+              className="h-9 w-9 border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-900 hover:border-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer rounded-none"
               aria-label="Next slide"
             >
               <ChevronRight className="h-4.5 w-4.5" />
