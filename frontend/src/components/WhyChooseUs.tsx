@@ -58,15 +58,15 @@ export default function WhyChooseUs() {
           </div>
 
           {/* Advantages Grid: 4-Columns on Desktop */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
             {advantages.map((adv) => (
               <div
                 key={adv.id}
-                className="bg-white dark:bg-zinc-900 border-none shadow-xs hover:shadow-lg hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300 rounded-[16px] overflow-hidden flex flex-col justify-between group min-h-[380px]"
+                className="bg-white dark:bg-zinc-900 border-none shadow-xl hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden flex flex-col justify-between group min-h-[380px]"
               >
                 {/* Top Image Card Part */}
                 <div className="relative h-48 w-full overflow-hidden select-none bg-slate-100 dark:bg-zinc-950">
-                  <div className="absolute top-4 left-4 z-20 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md text-[10px] font-extrabold text-rose-600 dark:text-rose-400 uppercase tracking-widest px-3 py-1 rounded-full shadow-xs border border-slate-200/20 dark:border-zinc-800/20">
+                  <div className="absolute top-4 left-4 z-20 bg-white/95 dark:bg-black/90 backdrop-blur-md shadow-xl text-[10px] font-bold text-rose-600 dark:text-rose-400 uppercase tracking-widest px-3 py-1 rounded-full border border-slate-200/20 dark:border-zinc-800/20">
                     {adv.badge}
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent z-10 opacity-70 group-hover:opacity-85 transition-opacity duration-300" />
@@ -87,7 +87,7 @@ export default function WhyChooseUs() {
                       {adv.desc}
                     </p>
                   </div>
-                  
+
                   {/* Interactive accent indicator bar */}
                   <div className="pt-2">
                     <div className="h-[3px] w-10 bg-gradient-to-r from-rose-500 to-amber-500 group-hover:w-full transition-all duration-500 ease-out rounded-full" />
