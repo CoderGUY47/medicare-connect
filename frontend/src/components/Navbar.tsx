@@ -55,6 +55,14 @@ export default function Navbar() {
     return `/dashboard/${user.role}`;
   };
 
+  const getProfileLink = () => {
+    if (!user) return '/login';
+    if (user.role === 'patient' || user.role === 'doctor') {
+      return `/dashboard/${user.role}/profile`;
+    }
+    return `/dashboard/${user.role}`;
+  };
+
   const navLinks = [
     { label: 'Home', href: '/' },
     { label: 'Find Doctors', href: '/find-doctors' },
@@ -192,7 +200,7 @@ export default function Navbar() {
                   )}
 
                   {isProfileOpen && (
-                    <div className="absolute right-0 top-full mt-2 w-64 origin-top-right border border-slate-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 shadow-xl rounded-xl z-50">
+                    <div className="absolute right-0 top-full mt-2 w-80 origin-top-right border border-slate-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 shadow-xl rounded-xl z-50">
                       {user ? (
                         <>
                           <div className="px-3 py-2.5 border-b border-slate-100 dark:border-zinc-800 mb-1.5 flex items-center gap-2.5">
@@ -209,12 +217,21 @@ export default function Navbar() {
                             </Avatar>
                             <div className="overflow-hidden">
                               <div className="text-xs font-bold text-slate-800 dark:text-zinc-200 truncate">{user.name}</div>
-                              <div className="text-[10px] text-slate-400 dark:text-zinc-400 truncate leading-none mt-0.5">{user.email}</div>
+                              <div className="text-base text-slate-400 dark:text-zinc-400 truncate leading-none mt-1">{user.email}</div>
                               <div className="mt-1.5 inline-flex items-center border border-rose-500/20 bg-rose-500/5 px-2 py-0.5 text-[8px] font-mono font-bold text-rose-600 dark:text-rose-400 uppercase rounded-md">
                                 {user.role}
                               </div>
                             </div>
                           </div>
+
+                          <Link
+                            href={getProfileLink()}
+                            onClick={() => setIsProfileOpen(false)}
+                            className="flex w-full items-center gap-2.5 px-3 py-2 text-xs font-semibold text-slate-700 dark:text-zinc-200 hover:bg-slate-50 dark:hover:bg-zinc-800/40 transition-colors rounded-lg"
+                          >
+                            <UserIcon className="h-4 w-4 text-slate-400" />
+                            Profile
+                          </Link>
 
                           <Link
                             href={getDashboardLink()}
@@ -324,6 +341,15 @@ export default function Navbar() {
                     <div className="text-xs text-purple-200 truncate">{user.email}</div>
                   </div>
                 </div>
+
+                <Link
+                  href={getProfileLink()}
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-base text-purple-100 hover:text-white hover:bg-white/10"
+                >
+                  <UserIcon className="h-5 w-5 text-purple-200" />
+                  Profile
+                </Link>
 
                 <Link
                   href={getDashboardLink()}
