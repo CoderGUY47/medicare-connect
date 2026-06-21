@@ -57,10 +57,7 @@ export default function Navbar() {
 
   const getProfileLink = () => {
     if (!user) return '/login';
-    if (user.role === 'patient' || user.role === 'doctor') {
-      return `/dashboard/${user.role}/profile`;
-    }
-    return `/dashboard/${user.role}`;
+    return `/profile/${user.id}`;
   };
 
   const navLinks = [
