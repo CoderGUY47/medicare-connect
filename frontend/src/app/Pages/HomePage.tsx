@@ -7,6 +7,9 @@ import SpecializationsSection from "../../components/SpecializationsSection";
 import FeaturedDoctorsSection from "../../components/FeaturedDoctorsSection";
 import CapabilitiesSection from "../../components/CapabilitiesSection";
 import TestimonialsSection from "../../components/TestimonialsSection";
+import PlatformStats from "../../components/PlatformStats";
+import SuccessStories from "../../components/SuccessStories";
+import WhyChooseUs from "../../components/WhyChooseUs";
 import ContactForm from "../../components/ContactForm";
 import ScrollAnimate from "../../components/ScrollAnimate";
 
@@ -33,7 +36,16 @@ export default function HomePage() {
       {/* 6. Testimonials Reviews Carousel Section */}
       <TestimonialsSection />
 
-      {/* 7. Contact Form Section */}
+      {/* 7. Platform Statistics Section */}
+      <PlatformStats />
+
+      {/* 8. Patient Success Stories Section */}
+      <SuccessStories />
+
+      {/* 9. Why Choose Us Section */}
+      <WhyChooseUs />
+
+      {/* 10. Contact Form Section */}
       <ContactForm />
     </div>
   );

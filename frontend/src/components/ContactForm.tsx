@@ -36,7 +36,7 @@ export default function ContactForm() {
 
   return (
     <ScrollAnimate>
-      <section className="w-full bg-slate-50 dark:bg-zinc-950 text-slate-800 dark:text-white select-none border-b border-slate-200/60 dark:border-zinc-900 rounded-none py-16 md:py-24 transition-colors duration-300">
+      <section className="w-full bg-white dark:bg-zinc-900 text-slate-800 dark:text-white select-none border-b border-slate-200/60 dark:border-zinc-800/40 rounded-none py-16 md:py-24 transition-colors duration-300">
         <div className="container mx-auto px-6 max-w-7xl rounded-none">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             

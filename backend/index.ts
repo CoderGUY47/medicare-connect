@@ -395,6 +395,35 @@ app.put("/users/:userId/role", async (req: Request, res: Response) => {
   }
 });
 
+// 18. Platform Statistics Endpoint
+app.get("/stats", async (req: Request, res: Response) => {
+  try {
+    const totalDoctors = await doctorsCollection.countDocuments({});
+    const totalPatients = await usersCollection.countDocuments({ role: { $in: ["patient", "user"] } });
+    const totalAppointments = await appointmentsCollection.countDocuments({});
+    const totalReviews = await reviewsCollection.countDocuments({});
+    
+    res.json({
+      totalDoctors,
+      totalPatients,
+      totalAppointments,
+      totalReviews
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch platform statistics" });
+  }
+});
+
+// 19. All Reviews Endpoint for Patient Success Stories
+app.get("/reviews", async (req: Request, res: Response) => {
+  try {
+    const reviews = await reviewsCollection.find({}).limit(10).toArray();
+    res.json(reviews);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch reviews" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
