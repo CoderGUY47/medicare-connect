@@ -5,6 +5,10 @@ import { ThemeProvider } from "../components/ThemeProvider";
 import { AuthProvider } from "../context/AuthContext";
 import MainLayoutWrapper from "../components/MainLayoutWrapper";
 import { ToastContainer } from "react-toastify";
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: "Medi-Doc | Doctor Appointments & Prescriptions",
@@ -18,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
