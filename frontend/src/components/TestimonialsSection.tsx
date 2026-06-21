@@ -61,11 +61,7 @@ export default function TestimonialsSection() {
             z-index: 10;
           }
           .testimonial-swiper .review-card {
-            height: 300px;
-            transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-          }
-          .testimonial-swiper .swiper-slide-next .review-card {
-            height: 400px !important;
+            height: 360px !important;
           }
           @media (max-width: 1023px) {
             .testimonial-swiper .swiper-wrapper {
@@ -87,19 +83,39 @@ export default function TestimonialsSection() {
         `}</style>
 
         <div className="container mx-auto px-6 max-w-7xl space-y-10 rounded-none">
-          {/* Title & Description Block */}
-          <div className="space-y-3">
-            <div className="flex items-center gap-1.5 text-rose-500 font-bold text-xs uppercase tracking-wider">
-              <span className="text-sm font-black">+</span>
-              <span>Care in Action</span>
+          {/* Header Block: Title/Description on Left, Navigation on Right */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="space-y-3">
+              <div className="flex items-center gap-1.5 text-rose-500 font-bold text-xs uppercase tracking-wider">
+                <span className="text-sm font-black">+</span>
+                <span>Care in Action</span>
+              </div>
+              <h2 className="text-2xl md:text-3.5xl font-black text-white font-outfit tracking-tight">
+                Why patients choose our expert care
+              </h2>
+              <div className="text-base text-zinc-400 leading-relaxed font-semibold max-w-3xl">
+                With the most 5-star hospitals in the Carolinas, our commitment to quality, safety
+                and compassion shows in every experience. Patients consistently choose and
+                recommend Novant Health for expert, trusted care.
+              </div>
             </div>
-            <h2 className="text-2xl md:text-3.5xl font-black text-white font-outfit tracking-tight">
-              Why patients choose our expert care
-            </h2>
-            <div className="text-base text-zinc-400 leading-relaxed font-semibold max-w-3xl">
-              With the most 5-star hospitals in the Carolinas, our commitment to quality, safety
-              and compassion shows in every experience. Patients consistently choose and
-              recommend Novant Health for expert, trusted care.
+
+            {/* Navigation controls aligned to the right of the header */}
+            <div className="flex items-center gap-3 shrink-0 pb-1">
+              <button
+                onClick={() => swiperRef?.slidePrev()}
+                className="h-9 w-9 border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-900 hover:border-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer rounded-none"
+                aria-label="Previous slide"
+              >
+                <ChevronLeft className="h-4.5 w-4.5" />
+              </button>
+              <button
+                onClick={() => swiperRef?.slideNext()}
+                className="h-9 w-9 border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-900 hover:border-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer rounded-none"
+                aria-label="Next slide"
+              >
+                <ChevronRight className="h-4.5 w-4.5" />
+              </button>
             </div>
           </div>
 
@@ -161,41 +177,6 @@ export default function TestimonialsSection() {
                 </SwiperSlide>
               ))}
             </Swiper>
-          </div>
-
-          {/* Custom Pagination Indicator Controls */}
-          <div className="flex items-center justify-center gap-6 mt-6">
-            {/* Previous Slide Button */}
-            <button
-              onClick={() => swiperRef?.slidePrev()}
-              className="h-9 w-9 border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-900 hover:border-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer rounded-none"
-              aria-label="Previous slide"
-            >
-              <ChevronLeft className="h-4.5 w-4.5" />
-            </button>
-
-            {/* Line indicator bars */}
-            <div className="flex items-center gap-2">
-              {Array.from({ length: 4 }).map((_, idx) => (
-                <div
-                  key={idx}
-                  className={`h-1 rounded-full transition-all duration-300 ${
-                    activeIndex % 4 === idx
-                      ? 'w-8 bg-rose-600'
-                      : 'w-6 bg-zinc-800'
-                  }`}
-                />
-              ))}
-            </div>
-
-            {/* Next Slide Button */}
-            <button
-              onClick={() => swiperRef?.slideNext()}
-              className="h-9 w-9 border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-900 hover:border-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition-all cursor-pointer rounded-none"
-              aria-label="Next slide"
-            >
-              <ChevronRight className="h-4.5 w-4.5" />
-            </button>
           </div>
 
         </div>

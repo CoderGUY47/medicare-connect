@@ -54,7 +54,7 @@ export default function SuccessStories() {
   return (
     <ScrollAnimate>
       <section className="w-full bg-white dark:bg-zinc-950 text-slate-800 dark:text-white select-none border-b border-slate-200/60 dark:border-zinc-900 rounded-none py-16 md:py-20 transition-colors duration-300">
-        
+
         {/* Style block for stories-swiper height stability to prevent screen jumping */}
         <style>{`
           .stories-swiper {
@@ -122,13 +122,13 @@ export default function SuccessStories() {
                             />
                           ))}
                         </div>
-                        <div className="text-rose-500/10 dark:text-rose-500/20 group-hover:text-rose-500/25 transition-colors">
-                          <FaQuoteLeft className="h-6 w-6" />
+                        <div className="text-rose-500/10 dark:text-white/60 group-hover:text-rose-500/25 transition-colors">
+                          <FaQuoteLeft className="h-10 w-10" />
                         </div>
                       </div>
 
                       {/* Review Text */}
-                      <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-350 leading-relaxed font-semibold italic line-clamp-5">
+                      <p className="text-sm sm:text-base text-black/60 dark:text-white/60 leading-relaxed font-semibold italic line-clamp-5">
                         "{rev.reviewText}"
                       </p>
                     </div>
@@ -149,9 +149,6 @@ export default function SuccessStories() {
                         </span>
                       </div>
                     </div>
-
-                    {/* Decorative Hover Line */}
-                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 to-rose-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                   </div>
                 </SwiperSlide>
               ))}
