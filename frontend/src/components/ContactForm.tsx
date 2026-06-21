@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, MessageSquare, HeartPulse, Clock } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Clock, HeartPulse, ArrowRight } from 'lucide-react';
 import ScrollAnimate from './ScrollAnimate';
 import { toast } from 'react-toastify';
 
@@ -19,10 +19,7 @@ export default function ContactForm() {
       toast.error('Please fill in all required fields.');
       return;
     }
-    
     setIsSubmitting(true);
-    
-    // Simulate API call
     setTimeout(() => {
       toast.success(`Message sent successfully to the ${department} department!`);
       setName('');
@@ -34,148 +31,196 @@ export default function ContactForm() {
     }, 1000);
   };
 
+  const contactDetails = [
+    {
+      icon: <Phone className="h-5 w-5 text-rose-400" />,
+      label: 'Phone Support',
+      value: '+251 11 678-1234',
+      sub: 'Registry desk open daily, 08:00 AM – 06:00 PM',
+    },
+    {
+      icon: <Mail className="h-5 w-5 text-rose-400" />,
+      label: 'Email Support',
+      value: 'contact@medi-doc-hospital.org',
+      sub: 'Response within 12 to 24 business hours',
+    },
+    {
+      icon: <MapPin className="h-5 w-5 text-rose-400" />,
+      label: 'Central Campus',
+      value: 'Bole Sub-City, Addis Ababa',
+      sub: 'Road 3, Ring Road Gate 4, Addis Ababa',
+    },
+  ];
+
+  const inputClass =
+    'w-full rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/15 px-4 py-3 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-600 outline-none transition-all duration-200';
+
   return (
     <ScrollAnimate>
-      <section className="w-full bg-white dark:bg-zinc-900 text-slate-800 dark:text-white select-none border-b border-slate-200/60 dark:border-zinc-800/40 rounded-none py-16 md:py-24 transition-colors duration-300">
-        <div className="container mx-auto px-6 max-w-7xl rounded-none">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-            
-            {/* Left Column: Heading & Contact Info */}
-            <div className="lg:col-span-5 space-y-8">
-              <div className="space-y-4">
-                <div className="flex items-center gap-1.5 text-rose-600 dark:text-rose-500 font-bold text-xs uppercase tracking-wider">
-                  <span className="text-sm font-black">+</span>
-                  <span>Contact Our Team</span>
-                </div>
-                <h2 className="text-2xl md:text-3.5xl font-black text-slate-900 dark:text-white font-outfit tracking-tight">
-                  Reach out to our care coordinators
-                </h2>
-                <div className="text-base text-slate-650 dark:text-zinc-400 leading-relaxed font-semibold max-w-xl">
-                  Have questions about booking appointments, services, or records? We are here to help you get the expert care you need.
-                </div>
+      <section className="w-full bg-white dark:bg-zinc-900 text-slate-800 dark:text-white select-none border-b border-slate-200/60 dark:border-zinc-800/40 rounded-none transition-colors duration-300 overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-5 min-h-[620px]">
+
+          {/* ── Left Panel: Dark gradient with info ── */}
+          <div className="lg:col-span-2 relative bg-zinc-950 px-8 py-16 md:px-12 flex flex-col justify-between overflow-hidden">
+            {/* Decorative blobs */}
+            <div className="absolute -top-20 -left-20 w-72 h-72 bg-rose-600/15 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-16 -right-16 w-64 h-64 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-zinc-800/40 rounded-full blur-2xl pointer-events-none" />
+
+            <div className="relative z-10 space-y-8">
+              {/* Badge */}
+              <div className="flex items-center gap-2 text-rose-500 font-bold text-xs uppercase tracking-widest">
+                <HeartPulse className="h-3.5 w-3.5" />
+                <span>Contact Our Team</span>
               </div>
 
-              {/* Information Cards List */}
+              {/* Heading */}
+              <div className="space-y-4">
+                <h2 className="text-3xl md:text-4xl font-black text-white font-outfit tracking-tight leading-tight">
+                  Reach out to our care coordinators
+                </h2>
+                <p className="text-sm text-zinc-400 leading-relaxed font-medium max-w-xs">
+                  Have questions about booking appointments, services, or records? We are here to help you get the expert care you need.
+                </p>
+              </div>
+
+              {/* Contact Info Cards */}
               <div className="space-y-4 pt-2">
-                <div className="flex gap-4 p-4 bg-white dark:bg-zinc-900 border border-slate-200/60 dark:border-zinc-800/80 rounded-[10px] shadow-xs">
-                  <div className="p-3 h-fit rounded-lg bg-rose-50 dark:bg-zinc-850/50 shadow-sm shrink-0">
-                    <Phone className="h-5 w-5 text-rose-600 dark:text-rose-500" />
+                {contactDetails.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-start gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/8 border border-white/8 hover:border-white/15 transition-all duration-200 group"
+                  >
+                    <div className="mt-0.5 p-2.5 rounded-lg bg-rose-500/15 shrink-0 group-hover:bg-rose-500/25 transition-colors duration-200">
+                      {item.icon}
+                    </div>
+                    <div className="space-y-0.5 min-w-0">
+                      <span className="text-[10px] font-extrabold text-zinc-500 uppercase tracking-widest block">
+                        {item.label}
+                      </span>
+                      <div className="text-sm font-bold text-white truncate">{item.value}</div>
+                      <p className="text-[11px] text-zinc-500 leading-relaxed">{item.sub}</p>
+                    </div>
                   </div>
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest">Phone Support</span>
-                    <div className="text-base font-bold text-slate-900 dark:text-white tracking-tight">+251 11 678-1234</div>
-                    <p className="text-[11px] text-slate-500 dark:text-zinc-400">Registry desk open daily, 08:00 AM – 06:00 PM</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4 p-4 bg-white dark:bg-zinc-900 border border-slate-200/60 dark:border-zinc-800/80 rounded-[10px] shadow-xs">
-                  <div className="p-3 h-fit rounded-lg bg-rose-50 dark:bg-zinc-850/50 shadow-sm shrink-0">
-                    <Mail className="h-5 w-5 text-rose-600 dark:text-rose-500" />
-                  </div>
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest">Email Support</span>
-                    <div className="text-base font-bold text-slate-900 dark:text-white tracking-tight">contact@medi-doc-hospital.org</div>
-                    <p className="text-[11px] text-slate-500 dark:text-zinc-400">Response within 12 to 24 business hours</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4 p-4 bg-white dark:bg-zinc-900 border border-slate-200/60 dark:border-zinc-800/80 rounded-[10px] shadow-xs">
-                  <div className="p-3 h-fit rounded-lg bg-rose-50 dark:bg-zinc-850/50 shadow-sm shrink-0">
-                    <MapPin className="h-5 w-5 text-rose-600 dark:text-rose-500" />
-                  </div>
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest">Central Campus</span>
-                    <div className="text-base font-bold text-slate-900 dark:text-white tracking-tight">Bole Sub-City, Addis Ababa</div>
-                    <p className="text-[11px] text-slate-500 dark:text-zinc-400">Road 3, Ring Road Gate 4, Addis Ababa</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
-            {/* Right Column: Dynamic Message Form */}
-            <div className="lg:col-span-7 w-full rounded-[10px] border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 shadow-sm overflow-hidden">
-              <div className="border-b border-slate-100 dark:border-zinc-800/80 px-6 py-4 flex items-center gap-3">
-                <MessageSquare className="h-5 w-5 text-rose-600 dark:text-rose-500" />
-                <h2 className="text-base md:text-lg font-bold text-slate-900 dark:text-white">Send Secure Inquiry</h2>
+            {/* Bottom hours tag */}
+            <div className="relative z-10 flex items-center gap-2 mt-10 text-zinc-500 text-xs font-semibold">
+              <Clock className="h-3.5 w-3.5 text-rose-500 shrink-0" />
+              <span>24/7 Emergency line available. Regular hours 08:00–18:00</span>
+            </div>
+          </div>
+
+          {/* ── Right Panel: Form ── */}
+          <div className="lg:col-span-3 px-8 py-16 md:px-12 bg-white dark:bg-zinc-900 flex flex-col justify-center">
+            <div className="max-w-xl w-full space-y-8">
+              {/* Form header */}
+              <div className="space-y-1">
+                <div className="flex items-center gap-1.5 text-rose-600 dark:text-rose-500 font-bold text-xs uppercase tracking-wider">
+                  <span className="text-sm font-black">+</span>
+                  <span>Send Secure Inquiry</span>
+                </div>
+                <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white font-outfit tracking-tight">
+                  We'll respond within 24 hours
+                </h3>
               </div>
 
-              <form onSubmit={handleSubmit} className="p-6 space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Row 1 */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">Your Full Name <span className="text-rose-500">*</span></label>
+                    <label className="text-[11px] font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">
+                      Full Name <span className="text-rose-500">*</span>
+                    </label>
                     <input
                       type="text"
                       required
                       placeholder="e.g. Abebe Kebede"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full rounded-[8px] border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/10 px-3.5 py-2.5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-650 outline-none transition-all"
+                      className={inputClass}
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">Email Address <span className="text-rose-500">*</span></label>
+                    <label className="text-[11px] font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">
+                      Email Address <span className="text-rose-500">*</span>
+                    </label>
                     <input
                       type="email"
                       required
                       placeholder="e.g. abebe@domain.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full rounded-[8px] border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/10 px-3.5 py-2.5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-650 outline-none transition-all"
+                      className={inputClass}
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {/* Row 2 */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">Target Department <span className="text-rose-500">*</span></label>
+                    <label className="text-[11px] font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">
+                      Department <span className="text-rose-500">*</span>
+                    </label>
                     <select
                       value={department}
                       onChange={(e) => setDepartment(e.target.value)}
-                      className="w-full rounded-[8px] border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/10 px-3.5 py-2.5 text-sm text-slate-900 dark:text-white outline-none transition-all cursor-pointer"
+                      className={inputClass}
                     >
                       <option value="General Inquiry">General Inquiry</option>
                       <option value="Emergency Desk">Emergency & Critical Care</option>
                       <option value="Billing & Admissions">Billing & Admissions</option>
-                      <option value="Laboratory Services">Laboratory & Diagnostic Wing</option>
+                      <option value="Laboratory Services">Laboratory & Diagnostics</option>
                       <option value="Pharmacy Desk">Pharmacy Services</option>
                     </select>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">Subject (Optional)</label>
+                    <label className="text-[11px] font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">
+                      Subject <span className="text-zinc-400 font-normal normal-case tracking-normal">(optional)</span>
+                    </label>
                     <input
                       type="text"
-                      placeholder="e.g. Appointment rescheduling help"
+                      placeholder="e.g. Appointment rescheduling"
                       value={subject}
                       onChange={(e) => setSubject(e.target.value)}
-                      className="w-full rounded-[8px] border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/10 px-3.5 py-2.5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-650 outline-none transition-all"
+                      className={inputClass}
                     />
                   </div>
                 </div>
 
+                {/* Message */}
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">Message / Inquiry Details <span className="text-rose-500">*</span></label>
+                  <label className="text-[11px] font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-wider">
+                    Message <span className="text-rose-500">*</span>
+                  </label>
                   <textarea
                     required
-                    rows={4}
+                    rows={5}
                     placeholder="Please describe your query in detail..."
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="w-full rounded-[8px] border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-955 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/10 p-3.5 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-650 outline-none transition-all resize-none"
+                    className={`${inputClass} resize-none`}
                   />
                 </div>
 
+                {/* Submit */}
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-[8px] bg-rose-600 hover:bg-rose-700 text-white font-semibold text-sm px-6 py-3 shadow-sm hover:shadow-md transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                  className="group inline-flex items-center justify-center gap-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-[0.98] text-white font-bold text-sm px-7 py-3.5 shadow-md hover:shadow-rose-500/25 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
                 >
-                  <Send className="h-4 w-4" />
-                  {isSubmitting ? 'Sending Message...' : 'Send secure message'}
+                  <Send className="h-4 w-4 group-hover:-rotate-12 transition-transform duration-200" />
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                  {!isSubmitting && (
+                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" />
+                  )}
                 </button>
               </form>
             </div>
-
           </div>
+
         </div>
       </section>
     </ScrollAnimate>
