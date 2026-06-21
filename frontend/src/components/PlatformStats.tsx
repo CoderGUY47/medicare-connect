@@ -113,23 +113,23 @@ export default function PlatformStats() {
           {/* Side-by-Side Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch pt-2">
 
-            {/* Left Column: 2x2 Numeric Summary Cards (5/12 width) */}
+             {/* Left Column: 2x2 Numeric Summary Cards (5/12 width) */}
             <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {statItems.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white dark:bg-zinc-900 p-5 flex flex-col justify-between shadow-xs hover:shadow-md hover:scale-[1.02] transition-all duration-300 rounded-[12px] border-none group relative overflow-hidden"
+                  className="bg-white dark:bg-zinc-900 p-6 flex flex-col justify-between shadow-xs hover:shadow-lg hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300 rounded-[16px] border-none group relative overflow-hidden"
                 >
                   {/* Subtle background glow effect on hover */}
                   <div className="absolute -top-12 -left-12 w-24 h-24 bg-rose-500/5 rounded-full blur-xl pointer-events-none group-hover:scale-150 transition-transform duration-500" />
 
                   <div className="space-y-4">
-                    <div className="p-4.5 h-fit w-fit shadow-xs shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-zinc-950 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
                       {item.icon}
                     </div>
                     <div className="space-y-1">
-                      <span className="text-xs font-extrabold text-slate-400 dark:text-zinc-500 uppercase tracking-widest block">{item.label}</span>
-                      <div className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                      <span className="text-[11px] font-extrabold text-slate-550 dark:text-zinc-450 uppercase tracking-widest block">{item.label}</span>
+                      <div className="text-3xl font-black text-slate-900 dark:text-white tracking-tight font-outfit">
                         {mounted && item.value > 0 ? (
                           <AnimatedCounter target={item.value} showPlus={true} />
                         ) : (
@@ -138,7 +138,7 @@ export default function PlatformStats() {
                       </div>
                     </div>
                   </div>
-                  <p className="text-[11px] text-slate-500 dark:text-zinc-400 mt-4 border-t border-slate-100 dark:border-zinc-850/60 pt-3 font-semibold leading-relaxed">
+                  <p className="text-xs text-slate-500 dark:text-zinc-400 mt-4 pt-3 border-t border-slate-100 dark:border-zinc-800/60 font-semibold leading-relaxed">
                     {item.desc}
                   </p>
                 </div>
