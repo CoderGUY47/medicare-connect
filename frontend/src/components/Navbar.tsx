@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from 'next-themes';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -37,9 +37,12 @@ export default function Navbar() {
   const { user, logout } = useAuth();
   const { theme, setTheme, resolvedTheme } = useTheme();
   const pathname = usePathname();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [searchVal, setSearchVal] = useState('');
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
   React.useEffect(() => {
     setMounted(true);
@@ -65,24 +68,10 @@ export default function Navbar() {
     { label: 'Find Doctors', href: '/find-doctors' },
     { label: 'About Us', href: '/about' },
     { label: 'Contact Us', href: '/contact' },
-    { label: 'Dashboard', href: getDashboardLink() },
   ];
 
   return (
     <div className="w-full sticky top-0 z-50 shadow-md">
-      {/* Top Location Bar (Outside Container, Spans Full Width) */}
-      <div className="bg-white dark:bg-zinc-950 text-[#4A2E80] dark:text-white border-b border-slate-200 dark:border-zinc-800 text-xs font-semibold py-2">
-        <div className="w-full px-6 md:px-12 lg:px-16 flex items-center justify-between">
-          <button className="flex items-center gap-1.5 hover:opacity-80 transition-opacity cursor-pointer">
-            <MapPin className="h-3.5 w-3.5 text-[#4A2E80] dark:text-white/80" />
-            <span className="text-[#4A2E80] dark:text-white font-medium">Select your location</span>
-            <ChevronDown className="h-3 w-3 text-[#4A2E80] dark:text-white/60" />
-          </button>
-          <div className="hidden md:block text-[11px] text-slate-450 dark:text-zinc-500">
-            {/* Kept empty on the right side to match reference */}
-          </div>
-        </div>
-      </div>
 
       {/* Main Navbar (Outside Container, Spans Full Width) */}
       <nav className="w-full bg-[#4A2E80] border-b border-purple-800 dark:bg-[#2e1c53] dark:border-zinc-800 transition-colors duration-300">
@@ -134,23 +123,40 @@ export default function Navbar() {
 
               {/* Actions: Theme Toggle & User Profile */}
               <div className="flex items-center space-x-5">
-                {/* MyNovant */}
-                <Link
-                  href={getDashboardLink()}
-                  className="flex items-center gap-1.5 text-[13px] font-semibold text-purple-100 hover:text-white transition-colors"
-                >
-                  <FolderHeart className="h-4.5 w-4.5 text-purple-200" />
-                  <span>MyNovant</span>
-                </Link>
-
                 {/* Search */}
-                <Link
-                  href="/find-doctors"
-                  className="flex items-center gap-1.5 text-[13px] font-semibold text-purple-100 hover:text-white transition-colors"
+                <div 
+                  onMouseEnter={() => setIsSearchExpanded(true)}
+                  onMouseLeave={() => {
+                    if (!searchVal) {
+                      setIsSearchExpanded(false);
+                    }
+                  }}
+                  className="flex items-center gap-1.5 text-[13px] font-semibold text-purple-100 hover:text-white transition-all cursor-pointer relative"
                 >
-                  <Search className="h-4 w-4 text-purple-200" />
-                  <span>Search</span>
-                </Link>
+                  <Search className="h-4 w-4 text-purple-200 shrink-0" />
+                  <span className={`transition-all duration-300 ${isSearchExpanded ? 'w-0 opacity-0 overflow-hidden font-semibold' : 'w-auto opacity-100 font-semibold'}`}>
+                    Search
+                  </span>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (searchVal.trim()) {
+                        router.push(`/find-doctors?search=${encodeURIComponent(searchVal)}`);
+                      }
+                    }}
+                    className={`transition-all duration-300 overflow-hidden ${
+                      isSearchExpanded ? 'w-40 opacity-100 px-1' : 'w-0 opacity-0 pointer-events-none'
+                    }`}
+                  >
+                    <input
+                      type="text"
+                      value={searchVal}
+                      onChange={(e) => setSearchVal(e.target.value)}
+                      placeholder="Search doctors..."
+                      className="bg-purple-950/40 text-white placeholder:text-purple-200/50 border border-purple-400/20 rounded-md px-2.5 py-1 text-xs outline-none focus:border-white focus:ring-1 focus:ring-white w-full font-medium"
+                    />
+                  </form>
+                </div>
 
                 {/* Theme Toggle as Icon Only */}
                 <button
