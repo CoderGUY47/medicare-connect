@@ -45,9 +45,15 @@ export default function SuccessStories() {
     fetchReviews();
   }, []);
 
+  // Duplicate the reviews array if there are 3 or fewer reviews to ensure
+  // Swiper has enough slides to loop and slide smoothly in all viewports.
+  const displayReviews = reviews.length > 0 && reviews.length <= 3
+    ? [...reviews, ...reviews, ...reviews]
+    : reviews;
+
   return (
     <ScrollAnimate>
-      <section className="w-full bg-white dark:bg-zinc-900 text-slate-800 dark:text-white select-none border-b border-slate-200/60 dark:border-zinc-800/40 rounded-none py-16 md:py-20 transition-colors duration-300">
+      <section className="w-full bg-white dark:bg-zinc-950 text-slate-800 dark:text-white select-none border-b border-slate-200/60 dark:border-zinc-900 rounded-none py-16 md:py-20 transition-colors duration-300">
         
         {/* Style block for stories-swiper height stability to prevent screen jumping */}
         <style>{`
@@ -89,7 +95,7 @@ export default function SuccessStories() {
                 delay: 5000,
                 disableOnInteraction: false,
               }}
-              loop={reviews.length > 3}
+              loop={displayReviews.length > 3}
               spaceBetween={24}
               breakpoints={{
                 320: { slidesPerView: 1 },
@@ -98,9 +104,9 @@ export default function SuccessStories() {
               }}
               className="stories-swiper w-full pb-6 pt-2"
             >
-              {reviews.map((rev) => (
-                <SwiperSlide key={rev.id}>
-                  <div className="relative bg-slate-50 dark:bg-zinc-950 border border-slate-200/60 dark:border-zinc-850 p-6 flex flex-col justify-between h-[340px] lg:h-[310px] shadow-xs hover:shadow-md hover:scale-[1.01] transition-all duration-300 rounded-[12px] overflow-hidden group">
+              {displayReviews.map((rev, idx) => (
+                <SwiperSlide key={`${rev.id}-${idx}`}>
+                  <div className="relative bg-slate-50 dark:bg-zinc-900 border-none p-6 flex flex-col justify-between h-[340px] lg:h-[310px] shadow-xs hover:shadow-md hover:scale-[1.01] transition-all duration-300 rounded-[12px] overflow-hidden group">
                     <div className="space-y-4">
                       {/* Rating Stars & Quote */}
                       <div className="flex items-center justify-between">
@@ -128,11 +134,11 @@ export default function SuccessStories() {
                     </div>
 
                     {/* Profile Footer */}
-                    <div className="flex items-center gap-3 pt-4 border-t border-slate-200/50 dark:border-zinc-850/60">
+                    <div className="flex items-center gap-3 pt-4 border-t border-slate-200/50 dark:border-zinc-800/80">
                       <img
                         src={rev.patientPhoto || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100'}
                         alt={rev.patientName}
-                        className="h-10 w-10 rounded-full object-cover border border-slate-200 dark:border-zinc-800 grayscale group-hover:grayscale-0 transition-all duration-500 shrink-0"
+                        className="h-10 w-10 rounded-full object-cover border border-slate-250/20 dark:border-zinc-800 grayscale group-hover:grayscale-0 transition-all duration-500 shrink-0"
                       />
                       <div className="min-w-0">
                         <h4 className="text-xs sm:text-sm font-bold text-slate-800 dark:text-white truncate">
@@ -171,7 +177,7 @@ export default function SuccessStories() {
                     key={idx}
                     className={`h-1.5 rounded-full transition-all duration-300 ${
                       activeIndex % Math.min(reviews.length, 6) === idx
-                        ? 'w-6 bg-rose-650'
+                        ? 'w-6 bg-rose-655'
                         : 'w-2 bg-slate-200 dark:bg-zinc-800'
                     }`}
                   />
@@ -181,7 +187,7 @@ export default function SuccessStories() {
               {/* Next Button */}
               <button
                 onClick={() => swiperRef?.slideNext()}
-                className="h-9 w-9 border border-slate-300 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 hover:bg-slate-50 dark:hover:bg-zinc-900 hover:border-slate-400 dark:hover:border-zinc-700 text-slate-650 dark:text-zinc-300 hover:text-rose-650 dark:hover:text-rose-400 flex items-center justify-center transition-all cursor-pointer rounded-none"
+                className="h-9 w-9 border border-slate-300 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 hover:bg-slate-50 dark:hover:bg-zinc-900 hover:border-slate-400 dark:hover:border-zinc-700 text-slate-655 dark:text-zinc-300 hover:text-rose-655 dark:hover:text-rose-400 flex items-center justify-center transition-all cursor-pointer rounded-none"
                 aria-label="Next story"
               >
                 <ChevronRight className="h-4.5 w-4.5" />
