@@ -43,35 +43,45 @@ export default function TestimonialsSection() {
     <ScrollAnimate>
       <section className="w-full bg-zinc-950 text-white select-none border-b border-zinc-900 rounded-none py-16 md:py-24">
         
-        {/* Swiper focus/scaling transitions via CSS */}
+        {/* Swiper focus/height transitions via CSS */}
         <style>{`
+          .testimonial-swiper .swiper-wrapper {
+            align-items: flex-end !important;
+          }
           .testimonial-swiper .swiper-slide {
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: scale(0.95);
+            transition: opacity 0.5s ease;
             opacity: 0.6;
           }
           .testimonial-swiper .swiper-slide-active {
-            transform: scale(0.95);
             opacity: 0.6;
           }
           /* The second card (on the right) is the active focal point */
           .testimonial-swiper .swiper-slide-next {
-            transform: scale(1.04) !important;
             opacity: 1 !important;
             z-index: 10;
           }
+          .testimonial-swiper .review-card {
+            height: 300px;
+            transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+          }
+          .testimonial-swiper .swiper-slide-next .review-card {
+            height: 400px !important;
+          }
           @media (max-width: 1023px) {
+            .testimonial-swiper .swiper-wrapper {
+              align-items: stretch !important;
+            }
             .testimonial-swiper .swiper-slide {
-              transform: scale(1);
               opacity: 1;
             }
             .testimonial-swiper .swiper-slide-active {
-              transform: scale(1);
               opacity: 1;
             }
             .testimonial-swiper .swiper-slide-next {
-              transform: scale(1) !important;
               opacity: 1 !important;
+            }
+            .testimonial-swiper .review-card {
+              height: 300px !important;
             }
           }
         `}</style>
@@ -110,11 +120,11 @@ export default function TestimonialsSection() {
                 768: { slidesPerView: 1.5 },
                 1024: { slidesPerView: 2 }
               }}
-              className="testimonial-swiper w-full pb-8 pt-4"
+              className="testimonial-swiper w-full pb-8 pt-4 animate-fade-in"
             >
               {mockReviews.map((rev) => (
                 <SwiperSlide key={rev.id}>
-                  <div className="bg-zinc-900 border border-zinc-800/80 flex items-stretch overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 min-h-[300px] md:min-h-[320px] w-full rounded-none">
+                  <div className="review-card bg-zinc-900 border border-zinc-800/80 flex items-stretch overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 w-full rounded-none">
                     {/* Left Part: Content */}
                     <div className="w-[65%] p-6 flex flex-col justify-between space-y-4">
                       <div className="space-y-2">
