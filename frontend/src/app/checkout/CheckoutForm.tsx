@@ -11,10 +11,10 @@ export default function CheckoutForm() {
   const { user } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const doctorId = searchParams.get('doctorId') || '';
-  const date = searchParams.get('date') || '';
-  const time = searchParams.get('time') || '';
-  const symptoms = searchParams.get('symptoms') || '';
+  const doctorId = searchParams ? searchParams.get('doctorId') || '' : '';
+  const date = searchParams ? searchParams.get('date') || '' : '';
+  const time = searchParams ? searchParams.get('time') || '' : '';
+  const symptoms = searchParams ? searchParams.get('symptoms') || '' : '';
 
   const [doctor, setDoctor] = useState<Doctor | null>(null);
   const [cardNumber, setCardNumber] = useState('');

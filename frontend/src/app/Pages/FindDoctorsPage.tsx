@@ -25,7 +25,7 @@ export default function FindDoctorsPage() {
   const router = useRouter();
 
   // Initial params
-  const initialSearch = searchParams.get('search') || '';
+  const initialSearch = searchParams ? searchParams.get('search') || '' : '';
 
   // States
   const [searchTerm, setSearchTerm] = useState(initialSearch);
@@ -47,7 +47,7 @@ export default function FindDoctorsPage() {
 
   // Sync state if URL param changes
   useEffect(() => {
-    const urlSearch = searchParams.get('search') || '';
+    const urlSearch = searchParams ? searchParams.get('search') || '' : '';
     if (urlSearch !== searchTerm) {
       setSearchTerm(urlSearch);
     }
