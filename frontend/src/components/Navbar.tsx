@@ -104,7 +104,7 @@ export default function Navbar() {
                   <Link
                     key={link.label}
                     href={link.href}
-                    className={`text-[13px] font-semibold px-3 py-2 transition-colors flex items-center gap-1 cursor-pointer ${
+                    className={`text-base font-semibold px-3 py-2 transition-colors flex items-center gap-1 cursor-pointer ${
                       isActive(link.href)
                         ? 'text-rose-500 font-bold'
                         : 'text-zinc-300 hover:text-rose-500'
@@ -121,7 +121,7 @@ export default function Navbar() {
               {/* Actions: Theme Toggle & User Profile */}
               <div className="flex items-center space-x-5">
                 {/* Search */}
-                <div 
+                <div
                   onMouseEnter={() => setIsSearchExpanded(true)}
                   onMouseLeave={() => {
                     if (!searchVal) {
