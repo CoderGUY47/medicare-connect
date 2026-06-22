@@ -216,9 +216,12 @@ async function run(): Promise<void> {
     );
 
     // Seed database static accounts
-    const hasBengaliNames = await usersCollection.findOne({ name: /[\u0985-\u09B9\u09C0-\u09E3]/ });
+    const dbUsers = await usersCollection.find({}).toArray();
+    const dbDoctors = await doctorsCollection.find({}).toArray();
+    const hasBengaliNames = dbUsers.some(u => /[\u0985-\u09B9\u09C0-\u09E3]/.test(u.name || '')) ||
+                             dbDoctors.some(d => /[\u0985-\u09B9\u09C0-\u09E3]/.test(d.doctorName || ''));
     if (hasBengaliNames) {
-      console.log("Detected native Bengali letters in user names in MongoDB. Wiping database collections to force clean English-transliterated seeding...");
+      console.log("Detected native Bengali letters in MongoDB. Wiping database collections to force clean English-transliterated seeding...");
       await usersCollection.deleteMany({});
       await doctorsCollection.deleteMany({});
       await appointmentsCollection.deleteMany({});

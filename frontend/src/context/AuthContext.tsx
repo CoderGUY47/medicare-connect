@@ -62,8 +62,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const res = await fetch(`${backendUrl}/api/db-dump`);
         if (res.ok) {
           const data = await res.json();
-          // Check if MongoDB has users. If not, seed MongoDB from local SEEDs!
-          if (!data.users || data.users.length === 0) {
+          // Check if MongoDB is empty or incomplete. If so, seed MongoDB from local SEEDs!
+          if (!data.doctors || data.doctors.length < 25) {
             const users = db.getUsers();
             const doctors = db.getDoctors();
             const appointments = db.getAppointments();
