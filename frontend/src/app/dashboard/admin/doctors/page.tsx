@@ -281,7 +281,7 @@ export default function AdminDoctorsPage() {
                       {/* Fee */}
                       <td className="px-5 py-4">
                         <div className="text-sm font-bold text-slate-800 dark:text-zinc-100">
-                          ${d.consultationFee}
+                          ৳{d.consultationFee}
                         </div>
                         <div className="text-[10px] text-slate-400">per visit</div>
                       </td>

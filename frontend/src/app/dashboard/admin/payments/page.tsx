@@ -63,9 +63,9 @@ export default function AdminPaymentsPage() {
       {/* ── Stats Cards ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Gross Revenue',    value: `$${totalRevenue.toLocaleString()}`, sub: 'All time',          color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-200 dark:border-emerald-900/50', icon: FiDollarSign },
+          { label: 'Gross Revenue',    value: `৳${totalRevenue.toLocaleString()}`, sub: 'All time',          color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-200 dark:border-emerald-900/50', icon: FiDollarSign },
           { label: 'Transactions',     value: payments.length,                     sub: 'Completed',        color: 'text-blue-600 dark:text-blue-400',       bg: 'bg-blue-500/10',    border: 'border-blue-200 dark:border-blue-900/50',       icon: FiCreditCard },
-          { label: 'Avg. Transaction', value: `$${avgTx}`,                         sub: 'Per consultation', color: 'text-rose-600 dark:text-rose-400',        bg: 'bg-rose-500/10',    border: 'border-rose-200 dark:border-rose-900/50',       icon: FiTrendingUp },
+          { label: 'Avg. Transaction', value: `৳${avgTx}`,                         sub: 'Per consultation', color: 'text-rose-600 dark:text-rose-400',        bg: 'bg-rose-500/10',    border: 'border-rose-200 dark:border-rose-900/50',       icon: FiTrendingUp },
           { label: 'Success Rate',     value: '100%',                              sub: 'No failed payments',color: 'text-violet-600 dark:text-violet-400',   bg: 'bg-violet-500/10',  border: 'border-violet-200 dark:border-violet-900/50',   icon: BsCheckCircleFill },
         ].map(stat => {
           const Icon = stat.icon;
@@ -108,7 +108,7 @@ export default function AdminPaymentsPage() {
               <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
               <Tooltip
                 contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: '12px', fontSize: '11px', color: '#f1f5f9' }}
-                formatter={(v: any) => [`$${v}`, 'Revenue']}
+                formatter={(v: any) => [`৳${v}`, 'Revenue']}
               />
               <Area type="monotone" dataKey="revenue" stroke="#e11d48" strokeWidth={2} fill="url(#revenueGrad)" dot={{ fill: '#e11d48', r: 4 }} />
             </AreaChart>
@@ -135,7 +135,7 @@ export default function AdminPaymentsPage() {
               <YAxis tick={{ fontSize: 9, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
               <Tooltip
                 contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: '12px', fontSize: '11px', color: '#f1f5f9' }}
-                formatter={(v: any) => [`$${v}`, 'Revenue']}
+                formatter={(v: any) => [`৳${v}`, 'Revenue']}
               />
               <Bar dataKey="revenue" fill="#e11d48" radius={[6, 6, 0, 0]} />
             </BarChart>
@@ -174,8 +174,8 @@ export default function AdminPaymentsPage() {
                     <td className="px-5 py-4 text-xs font-semibold text-slate-800 dark:text-zinc-100 whitespace-nowrap">{p.patientName}</td>
                     <td className="px-5 py-4 text-xs font-semibold text-slate-800 dark:text-zinc-100 whitespace-nowrap">{p.doctorName}</td>
                     <td className="px-5 py-4">
-                      <div className="flex items-center gap-0.5 text-sm font-extrabold text-emerald-600 dark:text-emerald-400">
-                        <FiDollarSign className="h-3.5 w-3.5" />{p.amount}.00
+                      <div className="flex items-center gap-0.5 text-sm font-extrabold text-emerald-600 dark:text-emerald-400 font-outfit">
+                        <i className="fa-solid fa-bangladeshi-taka-sign text-xs mr-0.5"></i>{p.amount}.00
                       </div>
                     </td>
                     <td className="px-5 py-4 text-xs text-slate-500 dark:text-zinc-400 whitespace-nowrap">
