@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '../../../context/AuthContext';
 import { useTheme } from 'next-themes';
-import { HeartPulse, LayoutDashboard, CalendarDays, CalendarCheck, FileText, UserCog, ShieldAlert, LogOut, Sun, Moon } from 'lucide-react';
+import { HeartPulse, LayoutDashboard, CalendarDays, CalendarCheck, FileText, UserCog, ShieldAlert, LogOut, Sun, Moon, Menu, X } from 'lucide-react';
 import { toast } from 'react-toastify';
+import LoadingScreen from '../../../components/LoadingScreen';
 
 export default function DoctorDashboardLayout({
   children,
@@ -17,9 +18,14 @@ export default function DoctorDashboardLayout({
   const { theme, setTheme, resolvedTheme } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
-  const [mounted, setMounted] = React.useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
     setMounted(true);
   }, []);
 
@@ -36,16 +42,7 @@ export default function DoctorDashboardLayout({
   };
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-zinc-950">
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-1 w-48 bg-slate-200 dark:bg-zinc-800 rounded-full overflow-hidden">
-            <div className="h-full w-1/2 bg-emerald-500 rounded-full animate-pulse" />
-          </div>
-          <span className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest">Authenticating workspace…</span>
-        </div>
-      </div>
-    );
+    return <LoadingScreen message="Authenticating specialist workspace..." />;
   }
 
   if (!user || user.role !== 'doctor') {
@@ -90,20 +87,37 @@ export default function DoctorDashboardLayout({
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 flex flex-col md:flex-row transition-colors duration-300">
       
+      {/* Mobile Drawer Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 z-30 bg-black/40 backdrop-blur-xs md:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-full md:w-64 border-r border-slate-200 dark:border-zinc-900 bg-white dark:bg-zinc-900 shrink-0 flex flex-col min-h-screen">
+      <aside className={`fixed inset-y-0 left-0 z-40 w-64 border-r border-slate-200 dark:border-zinc-900 bg-white dark:bg-zinc-900 shrink-0 flex flex-col min-h-screen transition-transform duration-300 transform ${
+        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+      } md:translate-x-0 md:static`}>
         
         {/* Brand */}
-        <div className="p-5 border-b border-slate-100 dark:border-zinc-800">
+        <div className="p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <div className="bg-emerald-500/10 p-1.5 rounded-md">
               <HeartPulse className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
             </div>
             <div>
               <h2 className="text-sm font-extrabold text-slate-800 dark:text-zinc-100 leading-tight">Medi-Doc Hospital</h2>
-              <p className="text-[10px] text-slate-400 dark:text-zinc-500 font-bold uppercase tracking-wider">Doctor Portal</p>
+              <p className="text-[10px] text-slate-455 dark:text-zinc-500 font-bold uppercase tracking-wider">Doctor Portal</p>
             </div>
           </Link>
+          <button
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="md:hidden p-1.5 text-slate-400 hover:text-emerald-550 dark:hover:text-zinc-100 hover:bg-slate-50 dark:hover:bg-zinc-800 rounded-lg cursor-pointer bg-transparent border-none"
+            aria-label="Close menu"
+          >
+            <X className="h-4 w-4" />
+          </button>
         </div>
 
         {/* Doctor Info Card */}
@@ -178,11 +192,39 @@ export default function DoctorDashboardLayout({
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 p-6 md:p-8 min-w-0 overflow-y-auto">
-        <div className="max-w-5xl mx-auto space-y-6">
-          {children}
-        </div>
-      </main>
+      <div className="flex-1 flex flex-col min-w-0">
+        
+        {/* Mobile Header Bar */}
+        <header className="h-14 md:hidden border-b border-slate-200 dark:border-zinc-900 bg-white dark:bg-zinc-900 flex items-center justify-between px-6 shrink-0 z-20">
+          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-zinc-400 min-w-0">
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="p-2 mr-2 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-500 dark:text-zinc-400 rounded-lg cursor-pointer bg-transparent border-none shrink-0"
+              aria-label="Open menu"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            <HeartPulse className="h-4 w-4 text-emerald-650 shrink-0" />
+            <span className="font-bold text-slate-700 dark:text-zinc-200 truncate">{user.name}</span>
+          </div>
+          <div className="flex items-center gap-3">
+            {user.photo ? (
+              <img src={user.photo} alt={user.name} className="h-7 w-7 rounded-md object-cover border border-emerald-500/30" />
+            ) : (
+              <div className="h-7 w-7 rounded-md bg-emerald-650 text-white text-[10px] font-extrabold flex items-center justify-center">
+                {initials}
+              </div>
+            )}
+          </div>
+        </header>
+
+        <main className="flex-1 p-6 md:p-8 min-w-0 overflow-y-auto">
+          <div className="max-w-5xl mx-auto space-y-6">
+            {children}
+          </div>
+        </main>
+      </div>
+
     </div>
   );
 }
