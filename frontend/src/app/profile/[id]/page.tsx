@@ -190,10 +190,10 @@ export default function UserPublicProfilePage() {
                     </div>
 
                     <div className="flex items-start gap-3 bg-slate-50 dark:bg-zinc-800/30 p-3.5 rounded-xl border border-slate-100 dark:border-zinc-800/30">
-                      <DollarSign className="h-5 w-5 text-rose-600 shrink-0 mt-0.5" />
+                      <i className="fa-solid fa-bangladeshi-taka-sign text-[15px] text-rose-650 shrink-0 mt-1"></i>
                       <div>
                         <div className="text-xs font-bold text-slate-400 dark:text-zinc-555 uppercase tracking-widest">Consultation Fee</div>
-                        <div className="text-base font-extrabold text-slate-800 dark:text-white mt-1">${profileDoctor.consultationFee}</div>
+                        <div className="text-base font-extrabold text-slate-800 dark:text-white mt-1">৳{profileDoctor.consultationFee}</div>
                       </div>
                     </div>
                   </div>
