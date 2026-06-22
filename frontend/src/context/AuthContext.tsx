@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { db, User, Doctor } from "../lib/mockDb";
 import { useSession, signOut } from "../lib/auth-client";
+import { getBackendUrl } from "../utils/backendUrl";
 
 interface AuthContextType {
   user: User | null;
@@ -58,7 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (isPending) return;
 
       try {
-        const backendUrl = localStorage.getItem('mc_backend_url') || process.env.NEXT_PUBLIC_SERVER_URL || 'https://backend-nu-rosy-20.vercel.app';
+        const backendUrl = getBackendUrl();
         const res = await fetch(`${backendUrl}/api/db-dump`);
         if (res.ok) {
           const data = await res.json();
@@ -224,7 +225,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const login = async (email: string, password?: string): Promise<User> => {
     setIsLoading(true);
     try {
-      const backendUrl = localStorage.getItem('mc_backend_url') || process.env.NEXT_PUBLIC_SERVER_URL || 'https://backend-nu-rosy-20.vercel.app';
+      const backendUrl = getBackendUrl();
       const res = await fetch(`${backendUrl}/api/auth/login`, {
         method: 'POST',
         headers: {

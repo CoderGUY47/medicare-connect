@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as zod from 'zod';
 import { signIn } from '../../lib/auth-client';
+import { getBackendUrl } from '../../utils/backendUrl';
 import { 
   HeartPulse, 
   Lock, 
@@ -66,10 +67,7 @@ export default function LoginForm() {
 
   // ── Effect 1: Fetch demo credentials once on mount ──
   useEffect(() => {
-    const backendUrl =
-      (typeof window !== 'undefined' && localStorage.getItem('mc_backend_url')) ||
-      process.env.NEXT_PUBLIC_SERVER_URL ||
-      'https://backend-nu-rosy-20.vercel.app';
+    const backendUrl = getBackendUrl();
 
     fetch(`${backendUrl}/api/auth/demo-credentials`)
       .then(res => (res.ok ? res.json() : Promise.reject(res.status)))

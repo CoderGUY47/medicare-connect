@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getBackendUrl } from '../utils/backendUrl';
 import { ChevronRight, MapPin, Heart, Star, ArrowRight } from 'lucide-react';
 import { db } from '../lib/mockDb';
 import ScrollAnimate from './ScrollAnimate';
@@ -26,10 +27,7 @@ export default function FeaturedDoctorsSection() {
   const [featuredDocs, setFeaturedDocs] = useState<MongoDoctor[]>([]);
 
   useEffect(() => {
-    const backendUrl =
-      (typeof window !== 'undefined' && localStorage.getItem('mc_backend_url')) ||
-      process.env.NEXT_PUBLIC_SERVER_URL ||
-      'https://backend-nu-rosy-20.vercel.app';
+    const backendUrl = getBackendUrl();
 
     fetch(`${backendUrl}/doctors`, { signal: AbortSignal.timeout(6000) })
       .then(res => res.ok ? res.json() : Promise.reject(res.status))

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { resetDb } from '../lib/mockDb';
+import { getBackendUrl } from '../utils/backendUrl';
 import {
   Settings,
   Shield,
@@ -61,10 +62,7 @@ export default function RoleSwitcher() {
   useEffect(() => {
     const fetchCreds = async () => {
       try {
-        const backendUrl =
-          localStorage.getItem('mc_backend_url') ||
-          process.env.NEXT_PUBLIC_SERVER_URL ||
-          'https://backend-nu-rosy-20.vercel.app';
+        const backendUrl = getBackendUrl();
         const res = await fetch(`${backendUrl}/api/auth/demo-credentials`);
         if (res.ok) {
           const data = await res.json();

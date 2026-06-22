@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import { getBackendUrl } from '../../utils/backendUrl';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { db } from '../../lib/mockDb';
 import ScrollAnimate from '../../components/ScrollAnimate';
@@ -39,10 +40,7 @@ interface MongoDoctor {
   verificationStatus: string;
 }
 
-const BACKEND_URL =
-  typeof window !== 'undefined'
-    ? (localStorage.getItem('mc_backend_url') || process.env.NEXT_PUBLIC_SERVER_URL || 'https://backend-nu-rosy-20.vercel.app')
-    : (process.env.NEXT_PUBLIC_SERVER_URL || 'https://backend-nu-rosy-20.vercel.app');
+const BACKEND_URL = getBackendUrl();
 
 // Skeleton card for loading state
 function DoctorCardSkeleton() {
@@ -86,11 +84,8 @@ export default function FindDoctorsPage() {
   const [isServerDown, setIsServerDown] = useState(false);
 
   // Get backend URL safely (client-side only for localStorage)
-  const getBackendUrl = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('mc_backend_url') || process.env.NEXT_PUBLIC_SERVER_URL || 'https://backend-nu-rosy-20.vercel.app';
-    }
-    return process.env.NEXT_PUBLIC_SERVER_URL || 'https://backend-nu-rosy-20.vercel.app';
+  const getBackendUrlLocal = useCallback(() => {
+    return getBackendUrl();
   }, []);
 
   // Fetch all doctors from MongoDB via backend API
@@ -100,7 +95,7 @@ export default function FindDoctorsPage() {
     setIsServerDown(false);
 
     try {
-      const backendUrl = getBackendUrl();
+      const backendUrl = getBackendUrlLocal();
 
       // Get JWT token from cookie for authenticated request
       const token = document.cookie

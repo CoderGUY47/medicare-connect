@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { getBackendUrl } from '../../../../utils/backendUrl';
 
 import {
   ShieldCheck,
@@ -47,10 +48,7 @@ export default function AdminDoctorsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState<string | null>(null);
 
-  const getBackendUrl = () =>
-    (typeof window !== 'undefined' && localStorage.getItem('mc_backend_url')) ||
-    process.env.NEXT_PUBLIC_SERVER_URL ||
-    'https://backend-nu-rosy-20.vercel.app';
+  // Using the shared dynamic getBackendUrl function
 
   const loadDoctors = useCallback(async () => {
     setIsLoading(true);

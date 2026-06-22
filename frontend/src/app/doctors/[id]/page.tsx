@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { getBackendUrl } from '../../../utils/backendUrl';
 import { useAuth } from '../../../context/AuthContext';
 import { db, Doctor, Review } from '../../../lib/mockDb';
 import {
@@ -24,10 +25,7 @@ export default function DoctorDetailPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const backendUrl =
-      (typeof window !== 'undefined' && localStorage.getItem('mc_backend_url')) ||
-      process.env.NEXT_PUBLIC_SERVER_URL ||
-      'https://backend-nu-rosy-20.vercel.app';
+    const backendUrl = getBackendUrl();
 
     // Try backend first
     fetch(`${backendUrl}/doctors/${id}`, { signal: AbortSignal.timeout(7000) })

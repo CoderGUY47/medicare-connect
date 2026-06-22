@@ -1,3 +1,5 @@
+import { getBackendUrl } from '../utils/backendUrl';
+
 export interface User {
   id: string;
   name: string;
@@ -1095,7 +1097,7 @@ const isServer = typeof window === 'undefined';
 async function syncWithBackend(collection: string, data: any[]) {
   if (isServer) return;
   try {
-    const backendUrl = localStorage.getItem('mc_backend_url') || process.env.NEXT_PUBLIC_SERVER_URL || 'https://backend-nu-rosy-20.vercel.app';
+    const backendUrl = getBackendUrl();
     await fetch(`${backendUrl}/api/db-sync`, {
       method: 'POST',
       headers: {

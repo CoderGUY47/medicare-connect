@@ -305,31 +305,6 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Medi-Doc server is running");
 });
 
-// PUBLIC: Get all verified doctors from MongoDB
-app.get("/doctors", async (req: Request, res: Response) => {
-  try {
-    await client.connect();
-    const doctors = await doctorsCollection.find({ verificationStatus: 'verified' }).toArray();
-    res.json(doctors);
-  } catch (error: any) {
-    res.status(500).json({ error: "Failed to fetch doctors", details: error.message });
-  }
-});
-
-// PUBLIC: Get single doctor by id
-app.get("/doctors/:id", async (req: Request, res: Response) => {
-  try {
-    await client.connect();
-    const doctor = await doctorsCollection.findOne({ id: req.params.id });
-    if (!doctor) {
-      return res.status(404).json({ error: "Doctor not found" });
-    }
-    res.json(doctor);
-  } catch (error: any) {
-    res.status(500).json({ error: "Failed to fetch doctor", details: error.message });
-  }
-});
-
 
 
 // Database Sync Endpoint (frontend pushes updates here)
@@ -516,6 +491,7 @@ app.post("/api/auth/login", async (request: Request, response: Response) => {
       } 
     });
   } catch (loginBhul) {
+    console.error("Login error details:", loginBhul);
     response.status(500).json({ error: "Authentication failed" });
   }
 });
@@ -541,7 +517,7 @@ app.get("/featured", async (req: Request, res: Response) => {
 });
 
 // 2. All Doctors Directory with search & filters
-app.get("/doctors", verifyToken, async (req: Request, res: Response) => {
+app.get("/doctors", async (req: Request, res: Response) => {
   try {
     const { search, specialization, sort } = req.query as {
       search?: string;
@@ -578,7 +554,7 @@ app.get("/doctors", verifyToken, async (req: Request, res: Response) => {
 });
 
 // 3. Single Doctor Profile
-app.get("/doctors/:id", verifyToken, async (req: Request, res: Response) => {
+app.get("/doctors/:id", async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
     let doctor: any = null;
