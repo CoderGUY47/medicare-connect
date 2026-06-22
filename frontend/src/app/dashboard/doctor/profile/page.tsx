@@ -16,7 +16,7 @@ const docProfileSchema = zod.object({
   specialization: zod.string().min(2, 'Specialization must be at least 2 characters'),
   qualifications: zod.string().min(5, 'Credentials must be at least 5 characters'),
   experience: zod.number().min(1, 'Experience must be at least 1 year'),
-  consultationFee: zod.number().min(10, 'Fee must be at least $10'),
+  consultationFee: zod.number().min(10, 'Fee must be at least ৳10').max(1000, 'Fee must not be greater than ৳1000'),
   hospitalName: zod.string().min(2, 'Hospital name must be at least 2 characters')
 });
 
@@ -128,7 +128,7 @@ export default function DoctorProfilePage() {
           <div className="border-t border-slate-100 dark:border-zinc-800 pt-4 space-y-3.5 text-left">
             {[
               { label: 'Clinical Experience', name: 'experience' as const, icon: <Award className="h-4 w-4 text-slate-450" />, suffix: ' Years' },
-              { label: 'Consultation Fee', name: 'consultationFee' as const, icon: <DollarSign className="h-4 w-4 text-slate-450" />, prefix: '$' },
+              { label: 'Consultation Fee', name: 'consultationFee' as const, icon: <i className="fa-solid fa-bangladeshi-taka-sign text-slate-450 mr-1.5 shrink-0 text-sm"></i>, prefix: '৳' },
             ].map(f => (
               <div key={f.name} className="space-y-1.5">
                 <label className="block text-[10px] font-extrabold uppercase tracking-widest text-slate-400 dark:text-zinc-500">{f.label}</label>
