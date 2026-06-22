@@ -78,8 +78,8 @@ export interface Prescription {
 const SEED_USERS: User[] = [
   {
     id: 'admin-1',
-    name: 'Sarah Connor (Admin)',
-    email: 'admin@medi-doc.com',
+    name: 'Admin',
+    email: 'admin@gmail.com',
     role: 'admin',
     photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200',
     phone: '+880 1555-019283',
@@ -91,7 +91,7 @@ const SEED_USERS: User[] = [
   {
     id: 'doc-1',
     name: 'Dr. Sarah Jahan',
-    email: 'jenkins@medi-doc.com',
+    email: 'doctor@gmail.com',
     role: 'doctor',
     photo: '/assets/doctors/dr_sarah_jenkins.png',
     phone: '+880 1711-014998',
@@ -139,7 +139,7 @@ const SEED_USERS: User[] = [
   {
     id: 'pat-1',
     name: 'Jannatul Ferdous',
-    email: 'patient@medi-doc.com',
+    email: 'patient@gmail.com',
     role: 'patient',
     photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200',
     phone: '+880 1711-012345',
@@ -163,7 +163,7 @@ const SEED_USERS: User[] = [
   {
     id: 'nurse-1',
     name: 'Mary Begum',
-    email: 'nurse@medi-doc.com',
+    email: 'nurse@gmail.com',
     role: 'nurse',
     photo: 'https://images.unsplash.com/photo-1579684389782-64d84b5e901a?auto=format&fit=crop&q=80&w=200',
     phone: '+880 1711-018927',
@@ -175,7 +175,7 @@ const SEED_USERS: User[] = [
   {
     id: 'lab-1',
     name: 'Dr. Jonathan Islam',
-    email: 'lab@medi-doc.com',
+    email: 'lab@gmail.com',
     role: 'lab',
     photo: 'https://images.unsplash.com/photo-1607990283143-e81e7a2c93ab?auto=format&fit=crop&q=80&w=200',
     phone: '+880 1711-011884',
@@ -187,7 +187,7 @@ const SEED_USERS: User[] = [
   {
     id: 'pharm-1',
     name: 'Dr. Robert Biswas',
-    email: 'pharmacist@medi-doc.com',
+    email: 'pharmacist@gmail.com',
     role: 'pharmacist',
     photo: 'https://images.unsplash.com/photo-1563211124-73a811d7c368?auto=format&fit=crop&q=80&w=200',
     phone: '+880 1711-019332',
@@ -1092,6 +1092,22 @@ const SEED_PRESCRIPTIONS: Prescription[] = [
 // Helper functions for localStorage DB
 const isServer = typeof window === 'undefined';
 
+async function syncWithBackend(collection: string, data: any[]) {
+  if (isServer) return;
+  try {
+    const backendUrl = localStorage.getItem('mc_backend_url') || process.env.NEXT_PUBLIC_SERVER_URL || 'https://backend-nu-rosy-20.vercel.app';
+    await fetch(`${backendUrl}/api/db-sync`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ collection, data })
+    });
+  } catch (err) {
+    console.error(`Failed to sync collection ${collection} with backend:`, err);
+  }
+}
+
 function getStorageItem<T>(key: string, seed: T): T {
   if (isServer) return seed;
   const item = localStorage.getItem(key);
@@ -1123,7 +1139,10 @@ export const db = {
     }
     return list;
   },
-  setUsers: (users: User[]) => setStorageItem('mc_users', users),
+  setUsers: (users: User[]) => {
+    setStorageItem('mc_users', users);
+    syncWithBackend('users', users);
+  },
 
   getDoctors: () => {
     const list = getStorageItem<Doctor[]>('mc_doctors', SEED_DOCTORS);
@@ -1133,7 +1152,10 @@ export const db = {
     }
     return list;
   },
-  setDoctors: (doctors: Doctor[]) => setStorageItem('mc_doctors', doctors),
+  setDoctors: (doctors: Doctor[]) => {
+    setStorageItem('mc_doctors', doctors);
+    syncWithBackend('doctors', doctors);
+  },
 
   getAppointments: () => {
     const list = getStorageItem<Appointment[]>('mc_appointments', SEED_APPOINTMENTS);
@@ -1146,13 +1168,22 @@ export const db = {
     }
     return list;
   },
-  setAppointments: (appointments: Appointment[]) => setStorageItem('mc_appointments', appointments),
+  setAppointments: (appointments: Appointment[]) => {
+    setStorageItem('mc_appointments', appointments);
+    syncWithBackend('appointments', appointments);
+  },
 
   getReviews: () => getStorageItem<Review[]>('mc_reviews', SEED_REVIEWS),
-  setReviews: (reviews: Review[]) => setStorageItem('mc_reviews', reviews),
+  setReviews: (reviews: Review[]) => {
+    setStorageItem('mc_reviews', reviews);
+    syncWithBackend('reviews', reviews);
+  },
 
   getPayments: () => getStorageItem<Payment[]>('mc_payments', SEED_PAYMENTS),
-  setPayments: (payments: Payment[]) => setStorageItem('mc_payments', payments),
+  setPayments: (payments: Payment[]) => {
+    setStorageItem('mc_payments', payments);
+    syncWithBackend('payments', payments);
+  },
 
   getPrescriptions: () => {
     const list = getStorageItem<Prescription[]>('mc_prescriptions', SEED_PRESCRIPTIONS);
@@ -1165,7 +1196,10 @@ export const db = {
     }
     return list;
   },
-  setPrescriptions: (prescriptions: Prescription[]) => setStorageItem('mc_prescriptions', prescriptions),
+  setPrescriptions: (prescriptions: Prescription[]) => {
+    setStorageItem('mc_prescriptions', prescriptions);
+    syncWithBackend('prescriptions', prescriptions);
+  },
 };
 
 // Seeding resets
