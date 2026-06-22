@@ -161,9 +161,8 @@ export default function NotificationBell() {
       const firstUnread = notes.find(n => !ids.includes(n.id));
       if (firstUnread) {
         setTimeout(() => {
-          toast.info(firstUnread.title, {
+          toast.info(`🔔 ${firstUnread.title}`, {
             autoClose: 4000,
-            icon: '🔔',
           });
         }, 1500);
       }
