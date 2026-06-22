@@ -116,3 +116,52 @@ To satisfy production-grade security and session persistence:
 3. Access and Refresh tokens are stored directly in the client's **cookies** (`mc_jwt_token` and `mc_user_email`) rather than volatile `localStorage` or `sessionStorage` scripts.
 4. On browser reload, the cookies are sent and verified. This prevents session loss on page refresh.
 5. Suspending a user immediately flags their profile state; any subsequent reload or operation detects the status and terminates active JWT cookies.
+
+---
+
+## Security: JWT Token Verification & Role-Based Authorization
+
+MediCare Connect employs a multi-tiered security model to guarantee data integrity and protect sensitive clinical information. This spans serverless edge routing guards in Next.js frontend middleware and robust validation checkpoints in the Express backend framework.
+
+### 1. Edge-Compatible Session & Routing Guards (Frontend)
+
+To prevent unauthenticated users from flashing dashboard views before browser scripts run, an edge-native middleware is implemented:
+- **Location:** [middleware.ts](file:///c:/Users/Hridoy/Desktop/medicare-connect/frontend/src/middleware.ts)
+- **Runtime:** Edge Runtime (Vercel compatible)
+- **Behavior:**
+  - Automatically intercepts all requests matching `/dashboard/:path*` and `/api/checkout_sessions/:path*`.
+  - Inspects the browser cookie collection for the presence of `mc_jwt_token`.
+  - Extracts and decodes the JWT payload at the edge.
+  - Validates the role segment of the user (e.g. `patient` -> `pat`, `doctor` -> `doc`, `admin` -> `admin`).
+  - Automatically reroutes unauthenticated traffic to `/login`.
+  - Restricts cross-role dashboard traversal (e.g., preventing a user logged in as a `patient` from accessing `/dashboard/admin`).
+
+### 2. Express Backend API Protection Patterns
+
+All private API routes in the backend are guarded by token validation and role-based permissions:
+- **Location:** [backend/index.ts](file:///c:/Users/Hridoy/Desktop/medicare-connect/backend/index.ts)
+- **Middlewares:**
+  - `verifyToken`: Extracts the token from either the HTTP `Authorization` header (`Bearer <token>`) or the request `Cookie` header (`token` cookie).
+    - It attempts validation locally against `JWT_SECRET`.
+    - If the token is signed by an external identity provider, it falls back to signature checks via a remote JWKS (JSON Web Key Set) directory endpoint, resolving dynamic keys dynamically.
+    - Binds the validated token payload (`id`, `email`, `role`) directly to `request.user`.
+  - `verifyRole(roles: string[])`: Higher-order middleware function that checks if `request.user.role` is present in the permitted list. If not, it issues a `403 Forbidden` response.
+
+### 3. Route Guard Directory
+
+| API Route | Supported Methods | Middleware Guard | Required Roles | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `/users` | `GET` | `verifyToken`, `verifyRole` | `["admin"]` | Retrieves all registered user accounts. |
+| `/users/:userId` | `DELETE` | `verifyToken`, `verifyRole` | `["admin"]` | Deletes a user profile permanently. |
+| `/users/:userId/role` | `PUT` | `verifyToken`, `verifyRole` | `["admin"]` | Updates user classification/role access. |
+| `/stats` | `GET` | `verifyToken`, `verifyRole` | `["admin", "doctor"]` | Returns platform metrics for dashboards. |
+| `/doctors` | `GET`, `POST` | `verifyToken` | Any Authenticated | Access/register registry specialists. |
+| `/doctors/:id` | `GET`, `PATCH` | `verifyToken` | Any Authenticated | Retrieve or modify specific specialist profiles. |
+| `/appointments` | `POST` | `verifyToken` | Any Authenticated | Books new clinical consultations. |
+| `/appointments/:userId`| `GET` | `verifyToken` | Any Authenticated | Fetches appointments linked to the user. |
+| `/appointments/:id` | `DELETE` | `verifyToken` | Any Authenticated | Cancels a scheduled appointment slot. |
+| `/prescriptions` | `POST` | `verifyToken` | `["doctor"]` / Auth | Saves clinical diagnosis & medications logs. |
+| `/prescriptions/:userId`| `GET` | `verifyToken` | Any Authenticated | Retrieves clinical prescriptions. |
+| `/payments/:userId` | `GET` | `verifyToken` | Any Authenticated | Displays billing checkout logs. |
+| `/payments` | `POST` | `verifyToken` | Any Authenticated | Logs a successfully processed Stripe session. |
+
