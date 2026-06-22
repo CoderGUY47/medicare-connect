@@ -95,6 +95,115 @@ const verifyRole = (roles: string[]) => {
   };
 };
 
+// Seeding function for demo role accounts
+const seedStaticUsers = async () => {
+  try {
+    const staticUsers = [
+      {
+        id: 'admin-1',
+        name: 'Admin',
+        email: 'admin@gmail.com',
+        role: 'admin',
+        photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200',
+        phone: '+880 1555-019283',
+        gender: 'female',
+        status: 'active',
+        createdAt: '2026-01-01T00:00:00.000Z',
+        password: 'admin123'
+      },
+      {
+        id: 'doc-1',
+        name: 'Dr. Sarah Jahan',
+        email: 'doctor@gmail.com',
+        role: 'doctor',
+        photo: '/assets/doctors/dr_sarah_jenkins.png',
+        phone: '+880 1711-014998',
+        gender: 'female',
+        status: 'active',
+        createdAt: '2026-01-10T00:00:00.000Z',
+        password: 'doctor123'
+      },
+      {
+        id: 'pat-1',
+        name: 'Jannatul Ferdous',
+        email: 'patient@gmail.com',
+        role: 'patient',
+        photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200',
+        phone: '+880 1711-012345',
+        gender: 'female',
+        status: 'active',
+        createdAt: '2026-05-01T00:00:00.000Z',
+        password: 'patient123'
+      },
+      {
+        id: 'nurse-1',
+        name: 'Mary Begum',
+        email: 'nurse@gmail.com',
+        role: 'nurse',
+        photo: 'https://images.unsplash.com/photo-1579684389782-64d84b5e901a?auto=format&fit=crop&q=80&w=200',
+        phone: '+880 1711-018927',
+        gender: 'female',
+        status: 'active',
+        createdAt: '2026-06-01T00:00:00.000Z',
+        password: 'nurse123'
+      },
+      {
+        id: 'lab-1',
+        name: 'Dr. Jonathan Islam',
+        email: 'lab@gmail.com',
+        role: 'lab',
+        photo: 'https://images.unsplash.com/photo-1607990283143-e81e7a2c93ab?auto=format&fit=crop&q=80&w=200',
+        phone: '+880 1711-011884',
+        gender: 'male',
+        status: 'active',
+        createdAt: '2026-06-02T00:00:00.000Z',
+        password: 'lab123'
+      },
+      {
+        id: 'pharm-1',
+        name: 'Dr. Robert Biswas',
+        email: 'pharmacist@gmail.com',
+        role: 'pharmacist',
+        photo: 'https://images.unsplash.com/photo-1563211124-73a811d7c368?auto=format&fit=crop&q=80&w=200',
+        phone: '+880 1711-019332',
+        gender: 'male',
+        status: 'active',
+        createdAt: '2026-06-03T00:00:00.000Z',
+        password: 'pharmacist123'
+      }
+    ];
+
+    for (const u of staticUsers) {
+      const exists = await usersCollection.findOne({ email: u.email });
+      if (!exists) {
+        await usersCollection.insertOne(u);
+      } else {
+        await usersCollection.updateOne({ email: u.email }, { $set: { password: u.password, name: u.name, role: u.role } });
+      }
+    }
+
+    const docExists = await doctorsCollection.findOne({ id: 'doc-1' });
+    if (!docExists) {
+      await doctorsCollection.insertOne({
+        id: 'doc-1',
+        userId: 'doc-1',
+        doctorName: 'Dr. Sarah Jahan',
+        specialization: 'Cardiology',
+        qualifications: 'MD, FACC - Harvard Medical School',
+        experience: 14,
+        consultationFee: 750,
+        hospitalName: 'Boston General Hospital',
+        profileImage: '/assets/doctors/dr_sarah_jenkins.png',
+        availableDays: ['Monday', 'Wednesday', 'Friday'],
+        availableSlots: ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM', '03:00 PM'],
+        verificationStatus: 'verified'
+      });
+    }
+  } catch (err) {
+    console.error("Error seeding static users:", err);
+  }
+};
+
 // asynchronous connection starter
 async function run(): Promise<void> {
   try {
@@ -105,6 +214,9 @@ async function run(): Promise<void> {
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!",
     );
+
+    // Seed database static accounts
+    await seedStaticUsers();
   } catch (error) {
     console.error("Database connection failed on startup:", error);
   }
@@ -118,6 +230,119 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Medi-Doc server is running");
 });
 
+// Database Sync Endpoint (frontend pushes updates here)
+app.post("/api/db-sync", async (req: Request, res: Response) => {
+  try {
+    const { collection, data } = req.body;
+    if (!collection || !Array.isArray(data)) {
+      return res.status(400).json({ error: "Invalid collection or data" });
+    }
+
+    let col;
+    if (collection === "users") col = usersCollection;
+    else if (collection === "doctors") col = doctorsCollection;
+    else if (collection === "appointments") col = appointmentsCollection;
+    else if (collection === "reviews") col = reviewsCollection;
+    else if (collection === "payments") col = paymentsCollection;
+    else if (collection === "prescriptions") col = prescriptionsCollection;
+
+    if (!col) {
+      return res.status(400).json({ error: "Unknown collection" });
+    }
+
+    // Clear old data and insert synced records
+    await col.deleteMany({});
+    if (data.length > 0) {
+      const docs = data.map((item: any) => {
+        const doc = { ...item };
+        if (doc._id) {
+          try {
+            if (ObjectId.isValid(doc._id)) {
+              doc._id = new ObjectId(doc._id);
+            } else {
+              delete doc._id;
+            }
+          } catch (_) {
+            delete doc._id;
+          }
+        }
+        return doc;
+      });
+      await col.insertMany(docs);
+    }
+    res.json({ success: true });
+  } catch (error: any) {
+    res.status(500).json({ error: "Failed to sync collection", details: error.message });
+  }
+});
+
+// Database Dump Endpoint (frontend pulls database on reload)
+app.get("/api/db-dump", async (req: Request, res: Response) => {
+  try {
+    const staticEmails = [
+      "admin@gmail.com",
+      "patient@gmail.com",
+      "doctor@gmail.com",
+      "nurse@gmail.com",
+      "lab@gmail.com",
+      "pharmacist@gmail.com"
+    ];
+    const expiryDate = new Date("2026-06-29T12:35:24+06:00");
+    const isExpired = new Date() > expiryDate;
+
+    let users = await usersCollection.find({}).toArray();
+    if (isExpired) {
+      users = users.map(u => {
+        if (staticEmails.includes(u.email.toLowerCase())) {
+          return { ...u, status: "suspended" };
+        }
+        return u;
+      });
+    }
+
+    const doctors = await doctorsCollection.find({}).toArray();
+    const appointments = await appointmentsCollection.find({}).toArray();
+    const reviews = await reviewsCollection.find({}).toArray();
+    const payments = await paymentsCollection.find({}).toArray();
+    const prescriptions = await prescriptionsCollection.find({}).toArray();
+
+    res.json({ users, doctors, appointments, reviews, payments, prescriptions });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to dump database" });
+  }
+});
+
+// Dynamic pre-filled credentials for roles
+app.get("/api/auth/demo-credentials", async (req: Request, res: Response) => {
+  try {
+    const staticEmails = [
+      "admin@gmail.com",
+      "patient@gmail.com",
+      "doctor@gmail.com",
+      "nurse@gmail.com",
+      "lab@gmail.com",
+      "pharmacist@gmail.com"
+    ];
+    
+    const expiryDate = new Date("2026-06-29T12:35:24+06:00");
+    const isExpired = new Date() > expiryDate;
+    
+    if (isExpired) {
+      return res.json([]);
+    }
+
+    const dbUsers = await usersCollection.find({ email: { $in: staticEmails } }).toArray();
+    const result = dbUsers.map(u => ({
+      role: u.role,
+      email: u.email,
+      pw: u.password || "password123"
+    }));
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch credentials" });
+  }
+});
+
 // login endpoint - generates JWT token and stores in HTTPOnly cookie
 app.post("/api/auth/login", async (request: Request, response: Response) => {
   try {
@@ -126,10 +351,38 @@ app.post("/api/auth/login", async (request: Request, response: Response) => {
       return response.status(400).json({ error: "Email and password are required" });
     }
 
+    const staticEmails = [
+      "admin@gmail.com",
+      "patient@gmail.com",
+      "doctor@gmail.com",
+      "nurse@gmail.com",
+      "lab@gmail.com",
+      "pharmacist@gmail.com"
+    ];
+
+    if (staticEmails.includes(email.toLowerCase())) {
+      const expiryDate = new Date("2026-06-29T12:35:24+06:00");
+      if (new Date() > expiryDate) {
+        return response.status(403).json({ error: "Demo credentials expired. Static role accounts are no longer active." });
+      }
+    }
+
     // Find authenticated user record in database
-    const milDeyaUser = await usersCollection.findOne({ email });
+    const milDeyaUser = await usersCollection.findOne({ email: { $regex: new RegExp(`^${email}$`, 'i') } });
     if (!milDeyaUser) {
       return response.status(401).json({ error: "Invalid credentials" });
+    }
+
+    if (milDeyaUser.password && milDeyaUser.password !== password) {
+      return response.status(401).json({ error: "Invalid credentials" });
+    }
+
+    const userStatus = staticEmails.includes(email.toLowerCase()) && (new Date() > new Date("2026-06-29T12:35:24+06:00"))
+      ? "suspended"
+      : (milDeyaUser.status || "active");
+
+    if (userStatus === "suspended") {
+      return response.status(403).json({ error: "Your account has been suspended or expired." });
     }
 
     // Generate signed JWT token
@@ -154,7 +407,7 @@ app.post("/api/auth/login", async (request: Request, response: Response) => {
     response.json({ 
       message: "Login successful", 
       user: { 
-        id: milDeyaUser._id, 
+        id: milDeyaUser.id || milDeyaUser._id, 
         email: milDeyaUser.email, 
         name: milDeyaUser.name, 
         role: milDeyaUser.role 
@@ -408,7 +661,26 @@ app.post("/api/payment-confirm", paymentConfirmHandler);
 // 15. All Users (Admin overview)
 app.get("/users", verifyToken, verifyRole(["admin"]), async (req: Request, res: Response) => {
   try {
-    const users = await usersCollection.find({}).toArray();
+    const staticEmails = [
+      "admin@gmail.com",
+      "patient@gmail.com",
+      "doctor@gmail.com",
+      "nurse@gmail.com",
+      "lab@gmail.com",
+      "pharmacist@gmail.com"
+    ];
+    const expiryDate = new Date("2026-06-29T12:35:24+06:00");
+    const isExpired = new Date() > expiryDate;
+
+    let users = await usersCollection.find({}).toArray();
+    if (isExpired) {
+      users = users.map(u => {
+        if (staticEmails.includes(u.email.toLowerCase())) {
+          return { ...u, status: "suspended" };
+        }
+        return u;
+      });
+    }
     res.json(users);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch users" });
