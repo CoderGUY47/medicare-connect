@@ -124,7 +124,7 @@ export default function DoctorDetailPage() {
             <div className="border-t border-slate-100 dark:border-zinc-800 grid grid-cols-3 divide-x divide-slate-100 dark:divide-zinc-800 bg-slate-50/30 dark:bg-zinc-900/10">
               {[
                 { label: 'Clinical Experience', value: `${doctor.experience} Years` },
-                { label: 'Consultation Fee', value: `$${doctor.consultationFee}` },
+                { label: 'Consultation Fee', value: `৳${doctor.consultationFee}` },
                 { label: 'Patient Reviews', value: reviews.length },
               ].map(s => (
                 <div key={s.label} className="px-4 py-4 text-center">
@@ -143,7 +143,7 @@ export default function DoctorDetailPage() {
             </div>
             <div className="p-6">
               <p className="text-xs md:text-sm text-slate-500 dark:text-zinc-400 leading-relaxed">
-                Dr. {doctor.doctorName.split(' ').slice(1).join(' ')} is a highly committed specialist with {doctor.experience} years of clinical excellence practicing at {doctor.hospitalName}. Experienced in addressing complex cases, prescribing personalized pathways, and guiding patients toward sustained recovery.
+                {doctor.doctorName} is a highly committed specialist with {doctor.experience} years of clinical excellence practicing at {doctor.hospitalName}. Experienced in addressing complex cases, prescribing personalized pathways, and guiding patients toward sustained recovery.
               </p>
             </div>
           </div>
@@ -197,10 +197,10 @@ export default function DoctorDetailPage() {
           <form onSubmit={handleBookingSubmit} className="p-5 space-y-5">
             {/* Fee */}
             <div className="flex items-center justify-between border border-slate-100 dark:border-zinc-800 bg-slate-50/50 dark:bg-zinc-950/20 px-4 py-3 rounded-xl">
-              <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-550">
-                <DollarSign className="h-4 w-4 text-rose-500" /> Consultation Fee
+              <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-555">
+                <i className="fa-solid fa-bangladeshi-taka-sign text-xs text-rose-500 mr-0.5"></i> Consultation Fee
               </span>
-              <span className="text-lg font-extrabold text-rose-600 dark:text-rose-400">${doctor.consultationFee}.00</span>
+              <span className="text-lg font-extrabold text-rose-600 dark:text-rose-400">৳{doctor.consultationFee}.00</span>
             </div>
 
             {/* Day picker */}
