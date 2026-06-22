@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { db, Doctor } from '../../../../lib/mockDb';
+import React, { useState, useEffect, useCallback } from 'react';
+
 import {
   ShieldCheck,
   ShieldAlert,
@@ -19,16 +19,58 @@ import {
   MoreVertical,
   Eye,
   ChevronDown,
+  Loader2,
+  WifiOff,
 } from 'lucide-react';
 
+interface MongoDoctor {
+  _id?: string;
+  id: string;
+  doctorName: string;
+  specialization: string;
+  qualifications: string;
+  experience: number;
+  consultationFee: number;
+  hospitalName: string;
+  profileImage: string;
+  verificationStatus: string;
+  availableDays: string[];
+  availableSlots: string[];
+}
+
 export default function AdminDoctorsPage() {
-  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [doctors, setDoctors] = useState<MongoDoctor[]>([]);
   const [successMsg, setSuccessMsg] = useState('');
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'verified' | 'pending' | 'rejected'>('all');
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
-  useEffect(() => { loadDoctors(); }, []);
+  const getBackendUrl = () =>
+    (typeof window !== 'undefined' && localStorage.getItem('mc_backend_url')) ||
+    process.env.NEXT_PUBLIC_SERVER_URL ||
+    'https://backend-nu-rosy-20.vercel.app';
+
+  const loadDoctors = useCallback(async () => {
+    setIsLoading(true);
+    setFetchError(null);
+    try {
+      const res = await fetch(`${getBackendUrl()}/doctors`, {
+        signal: AbortSignal.timeout(8000),
+      });
+      if (!res.ok) throw new Error(`Server error ${res.status}`);
+      const data: MongoDoctor[] = await res.json();
+      setDoctors(data);
+    } catch (err: any) {
+      setFetchError('Could not reach the server. Retrying…');
+      console.error('Failed to load doctors:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { loadDoctors(); }, [loadDoctors]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -37,14 +79,13 @@ export default function AdminDoctorsPage() {
     return () => window.removeEventListener('click', handler);
   }, []);
 
-  const loadDoctors = () => setDoctors(db.getDoctors());
-
-  const handleUpdateStatus = (docId: string, status: 'verified' | 'rejected' | 'pending') => {
-    db.setDoctors(db.getDoctors().map(d => d.id === docId ? { ...d, verificationStatus: status } : d));
+  const handleUpdateStatus = async (docId: string, status: 'verified' | 'rejected' | 'pending') => {
+    // Optimistic update in local state
+    setDoctors(prev => prev.map(d => d.id === docId ? { ...d, verificationStatus: status } : d));
     setSuccessMsg(`Doctor status updated to ${status.toUpperCase()}`);
-    loadDoctors();
     setDropdownOpen(null);
     setTimeout(() => setSuccessMsg(''), 3500);
+    // TODO: persist status change to backend via PATCH /doctors/:id when that endpoint is ready
   };
 
   const counts = {
@@ -127,10 +168,14 @@ export default function AdminDoctorsPage() {
           </p>
         </div>
 
-        {/* Action: Add Doctor placeholder button */}
-        <button className="flex items-center gap-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-5 py-2.5 rounded-md transition-all shadow-lg shadow-rose-500/20 cursor-pointer shrink-0">
-          <UserCheck className="h-4 w-4" />
-          Onboard Doctor
+        {/* Action: Refresh button */}
+        <button
+          onClick={loadDoctors}
+          disabled={isLoading}
+          className="flex items-center gap-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-5 py-2.5 rounded-md transition-all shadow-lg shadow-rose-500/20 cursor-pointer shrink-0 disabled:opacity-60"
+        >
+          {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+          {isLoading ? 'Loading…' : 'Refresh'}
         </button>
       </div>
 
@@ -188,6 +233,21 @@ export default function AdminDoctorsPage() {
           ))}
         </div>
       </div>
+
+      {/* ── Loading / Error states ── */}
+      {isLoading && (
+        <div className="flex items-center justify-center py-16 gap-3 text-slate-400 dark:text-zinc-500">
+          <Loader2 className="h-6 w-6 animate-spin" />
+          <span className="text-sm font-semibold">Loading doctors from MongoDB…</span>
+        </div>
+      )}
+      {!isLoading && fetchError && (
+        <div className="flex items-center gap-3 bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 rounded-xl px-4 py-3">
+          <WifiOff className="h-4 w-4 shrink-0" />
+          <span className="text-xs font-semibold">{fetchError}</span>
+          <button onClick={loadDoctors} className="ml-auto text-xs font-bold underline cursor-pointer">Retry</button>
+        </div>
+      )}
 
       {/* ── Success Toast ── */}
       {successMsg && (

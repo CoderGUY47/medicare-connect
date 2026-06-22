@@ -6,7 +6,7 @@ import { useAuth } from '../../../context/AuthContext';
 import { db, Doctor, Review } from '../../../lib/mockDb';
 import {
   Star, MapPin, Award, ShieldCheck, Clock, DollarSign, Stethoscope,
-  AlertCircle, ArrowLeft, Calendar, FileText, CheckCircle2
+  AlertCircle, ArrowLeft, Calendar, FileText, CheckCircle2, Loader2
 } from 'lucide-react';
 
 export default function DoctorDetailPage() {
@@ -21,21 +21,53 @@ export default function DoctorDetailPage() {
   const [symptoms, setSymptoms] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [bookedSlots, setBookedSlots] = useState<{ [date: string]: string[] }>({});
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const docData = db.getDoctors().find(d => d.id === id);
-    if (docData) {
-      setDoctor(docData);
-      if (docData.availableDays.length > 0) setSelectedDay(docData.availableDays[0]);
-      setReviews(db.getReviews().filter(r => r.doctorId === id));
-    }
+    const backendUrl =
+      (typeof window !== 'undefined' && localStorage.getItem('mc_backend_url')) ||
+      process.env.NEXT_PUBLIC_SERVER_URL ||
+      'https://backend-nu-rosy-20.vercel.app';
+
+    // Try backend first
+    fetch(`${backendUrl}/doctors/${id}`, { signal: AbortSignal.timeout(7000) })
+      .then(res => res.ok ? res.json() : Promise.reject(res.status))
+      .then((docData: Doctor) => {
+        setDoctor(docData);
+        if (docData.availableDays?.length > 0) setSelectedDay(docData.availableDays[0]);
+      })
+      .catch(() => {
+        // Fallback to local mockDb
+        const docData = db.getDoctors().find(d => d.id === id);
+        if (docData) {
+          setDoctor(docData);
+          if (docData.availableDays.length > 0) setSelectedDay(docData.availableDays[0]);
+        }
+      })
+      .finally(() => setIsLoading(false));
+
+    // Reviews still come from local data
+    setReviews(db.getReviews().filter(r => r.doctorId === id));
+
+    // Booked slots from local appointments
     const bookings: { [date: string]: string[] } = {};
-    db.getAppointments().filter(a => a.doctorId === id && ['confirmed', 'pending'].includes(a.appointmentStatus)).forEach(a => {
-      if (!bookings[a.appointmentDate]) bookings[a.appointmentDate] = [];
-      bookings[a.appointmentDate].push(a.appointmentTime);
-    });
+    db.getAppointments()
+      .filter(a => a.doctorId === id && ['confirmed', 'pending'].includes(a.appointmentStatus))
+      .forEach(a => {
+        if (!bookings[a.appointmentDate]) bookings[a.appointmentDate] = [];
+        bookings[a.appointmentDate].push(a.appointmentTime);
+      });
     setBookedSlots(bookings);
   }, [id]);
+
+  if (isLoading) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-16 flex flex-col items-center gap-4 text-slate-400 dark:text-zinc-500">
+        <Loader2 className="h-8 w-8 animate-spin text-rose-500" />
+        <span className="text-sm font-semibold">Loading doctor profile from database…</span>
+      </div>
+    );
+  }
 
   if (!doctor) {
     return (
