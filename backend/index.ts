@@ -95,7 +95,7 @@ const verifyRole = (roles: string[]) => {
   };
 };
 
-// Seeding function for demo role accounts
+// Seeding function for all demo role accounts and all 30 doctors
 const seedStaticUsers = async () => {
   try {
     const staticUsers = [
@@ -170,7 +170,39 @@ const seedStaticUsers = async () => {
         status: 'active',
         createdAt: '2026-06-03T00:00:00.000Z',
         password: 'pharmacist123'
-      }
+      },
+      // Additional doctor users (doc-2 to doc-30)
+      { id: 'doc-2', name: 'Dr. Arjun Talukdar', email: 'patel@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_arjun_patel.png', phone: '+880 1711-016772', gender: 'male', status: 'active', createdAt: '2026-02-12T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-3', name: 'Dr. Elena Rostova', email: 'rostova@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_elena_rostova.png', phone: '+880 1711-018334', gender: 'female', status: 'active', createdAt: '2026-03-01T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-4', name: 'Dr. Michael Chowdhury', email: 'chen@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_michael_chen.png', phone: '+880 1711-011445', gender: 'male', status: 'active', createdAt: '2026-04-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-5', name: 'Dr. Sophia Martinez', email: 'martinez@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_sophia_martinez.png', phone: '+880 1711-012990', gender: 'female', status: 'active', createdAt: '2026-04-20T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-6', name: 'Dr. David Shikdar', email: 'kim@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_david_kim.png', phone: '+880 1711-013881', gender: 'male', status: 'active', createdAt: '2026-05-01T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-7', name: 'Dr. Aisha Siddika', email: 'diallo@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_aisha_diallo.png', phone: '+880 1711-014772', gender: 'female', status: 'active', createdAt: '2026-05-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-8', name: 'Dr. James Halder', email: 'wilson@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_james_wilson.png', phone: '+880 1711-015663', gender: 'male', status: 'active', createdAt: '2026-05-20T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-9', name: 'Dr. Emily Mojumder', email: 'taylor@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_emily_taylor.png', phone: '+880 1711-016554', gender: 'female', status: 'active', createdAt: '2026-06-01T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-10', name: 'Dr. Marcus Vance', email: 'vance@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_marcus_vance.png', phone: '+880 1711-017445', gender: 'male', status: 'active', createdAt: '2026-06-10T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-11', name: 'Dr. Tanvir Hasan', email: 'tanvir@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_sarah_jenkins.png', phone: '+880 1711-000011', gender: 'male', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-12', name: 'Dr. Tasnim Jahan', email: 'tasnim@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_elena_rostova.png', phone: '+880 1711-000012', gender: 'female', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-13', name: 'Dr. Mehzabin Chowdhury', email: 'mehzabin@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_aisha_diallo.png', phone: '+880 1711-000013', gender: 'female', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-14', name: 'Dr. Sajjadul Islam', email: 'sajjad@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_michael_chen.png', phone: '+880 1711-000014', gender: 'male', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-15', name: 'Dr. Fariha Sultana', email: 'fariha@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_sophia_martinez.png', phone: '+880 1711-000015', gender: 'female', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-16', name: 'Dr. Rashedul Bari', email: 'rashed@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_arjun_patel.png', phone: '+880 1711-000016', gender: 'male', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-17', name: 'Dr. Nusrat Sharmin', email: 'nusrat@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_emily_taylor.png', phone: '+880 1711-000017', gender: 'female', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-18', name: 'Dr. Mahmudul Hasan', email: 'mahmud@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_david_kim.png', phone: '+880 1711-000018', gender: 'male', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-19', name: 'Dr. Nishat Anjum', email: 'nishat@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_sarah_jenkins.png', phone: '+880 1711-000019', gender: 'female', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-20', name: 'Dr. Arifur Rahman', email: 'arif@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_marcus_vance.png', phone: '+880 1711-000020', gender: 'male', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-21', name: 'Dr. Zahidul Islam', email: 'zahid@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_james_wilson.png', phone: '+880 1711-000021', gender: 'male', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-22', name: 'Dr. Sadia Afrin', email: 'sadia@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_elena_rostova.png', phone: '+880 1711-000022', gender: 'female', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-23', name: 'Dr. Kamrul Hasan', email: 'kamrul@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_arjun_patel.png', phone: '+880 1711-000023', gender: 'male', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-24', name: 'Dr. Tanzila Rahman', email: 'tanzila@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_sophia_martinez.png', phone: '+880 1711-000024', gender: 'female', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-25', name: 'Dr. Ashraful Alam', email: 'ashraful@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_michael_chen.png', phone: '+880 1711-000025', gender: 'male', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-26', name: 'Dr. Rehana Parveen', email: 'rehana@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_aisha_diallo.png', phone: '+880 1711-000026', gender: 'female', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-27', name: 'Dr. Fatema Zohra', email: 'fatema@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_emily_taylor.png', phone: '+880 1711-000027', gender: 'female', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-28', name: 'Dr. Mustafizur Rahman', email: 'mustafiz@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_david_kim.png', phone: '+880 1711-000028', gender: 'male', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-29', name: 'Dr. Sabrina Sultana', email: 'sabrina@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_sarah_jenkins.png', phone: '+880 1711-000029', gender: 'female', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      { id: 'doc-30', name: 'Dr. Hasibul Islam', email: 'hasibul@medi-doc.com', role: 'doctor', photo: '/assets/doctors/dr_marcus_vance.png', phone: '+880 1711-000030', gender: 'male', status: 'active', createdAt: '2026-06-15T00:00:00.000Z', password: 'doctor123' },
+      // Additional patient users
+      { id: 'pat-2', name: 'Imtiaz Ahmed', email: 'smith@medi-doc.com', role: 'patient', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200', phone: '+880 1711-015678', gender: 'male', status: 'active', createdAt: '2026-05-10T00:00:00.000Z', password: 'patient123' }
     ];
 
     for (const u of staticUsers) {
@@ -182,23 +214,52 @@ const seedStaticUsers = async () => {
       }
     }
 
-    const docExists = await doctorsCollection.findOne({ id: 'doc-1' });
-    if (!docExists) {
-      await doctorsCollection.insertOne({
-        id: 'doc-1',
-        userId: 'doc-1',
-        doctorName: 'Dr. Sarah Jahan',
-        specialization: 'Cardiology',
-        qualifications: 'MD, FACC - Harvard Medical School',
-        experience: 14,
-        consultationFee: 750,
-        hospitalName: 'Boston General Hospital',
-        profileImage: '/assets/doctors/dr_sarah_jenkins.png',
-        availableDays: ['Monday', 'Wednesday', 'Friday'],
-        availableSlots: ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM', '03:00 PM'],
-        verificationStatus: 'verified'
-      });
+    // Seed all 30 doctors into the doctors collection
+    const allDoctors = [
+      { id: 'doc-1', userId: 'doc-1', doctorName: 'Dr. Sarah Jahan', specialization: 'Cardiology', qualifications: 'MD, FACC - Harvard Medical School', experience: 14, consultationFee: 750, hospitalName: 'Dhaka Medical College Hospital', profileImage: '/assets/doctors/dr_sarah_jenkins.png', availableDays: ['Monday', 'Wednesday', 'Friday'], availableSlots: ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM', '03:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-2', userId: 'doc-2', doctorName: 'Dr. Arjun Talukdar', specialization: 'Pediatrics', qualifications: 'MD, DCH - Johns Hopkins University', experience: 10, consultationFee: 500, hospitalName: 'Dhaka Shishu Hospital', profileImage: '/assets/doctors/dr_arjun_patel.png', availableDays: ['Tuesday', 'Thursday'], availableSlots: ['09:30 AM', '10:30 AM', '01:30 PM', '02:30 PM', '04:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-3', userId: 'doc-3', doctorName: 'Dr. Elena Rostova', specialization: 'Dermatology', qualifications: 'MD, PhD - Stanford University', experience: 12, consultationFee: 600, hospitalName: 'Square Hospital', profileImage: '/assets/doctors/dr_elena_rostova.png', availableDays: ['Monday', 'Tuesday', 'Thursday'], availableSlots: ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM', '03:00 PM', '04:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-4', userId: 'doc-4', doctorName: 'Dr. Michael Chowdhury', specialization: 'Neurology', qualifications: 'MD - UCSF School of Medicine', experience: 8, consultationFee: 950, hospitalName: 'National Institute of Neurosciences', profileImage: '/assets/doctors/dr_michael_chen.png', availableDays: ['Wednesday', 'Friday'], availableSlots: ['10:00 AM', '11:00 AM', '01:00 PM', '03:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-5', userId: 'doc-5', doctorName: 'Dr. Sophia Martinez', specialization: 'Orthopedics', qualifications: 'MD - Harvard Medical School', experience: 11, consultationFee: 700, hospitalName: 'NITOR (Pangu Hospital)', profileImage: '/assets/doctors/dr_sophia_martinez.png', availableDays: ['Tuesday', 'Thursday', 'Friday'], availableSlots: ['09:00 AM', '11:00 AM', '02:00 PM', '04:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-6', userId: 'doc-6', doctorName: 'Dr. David Shikdar', specialization: 'General Medicine', qualifications: 'MD - Yale School of Medicine', experience: 7, consultationFee: 450, hospitalName: 'Dhaka Medical College Hospital', profileImage: '/assets/doctors/dr_david_kim.png', availableDays: ['Monday', 'Wednesday', 'Friday'], availableSlots: ['08:30 AM', '10:30 AM', '01:30 PM', '03:30 PM'], verificationStatus: 'verified' },
+      { id: 'doc-7', userId: 'doc-7', doctorName: 'Dr. Aisha Siddika', specialization: 'Gynecology', qualifications: 'MD, FACOG - Johns Hopkins University', experience: 15, consultationFee: 800, hospitalName: 'Dhaka Medical College Hospital', profileImage: '/assets/doctors/dr_aisha_diallo.png', availableDays: ['Monday', 'Tuesday', 'Thursday'], availableSlots: ['09:00 AM', '10:00 AM', '01:00 PM', '03:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-8', userId: 'doc-8', doctorName: 'Dr. James Halder', specialization: 'Oncology', qualifications: 'MD, PhD - Columbia University', experience: 16, consultationFee: 1000, hospitalName: 'Ahsania Mission Cancer Hospital', profileImage: '/assets/doctors/dr_james_wilson.png', availableDays: ['Wednesday', 'Thursday', 'Friday'], availableSlots: ['10:00 AM', '11:00 AM', '02:00 PM', '03:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-9', userId: 'doc-9', doctorName: 'Dr. Emily Mojumder', specialization: 'Psychiatry', qualifications: 'MD - UPenn Perelman School of Medicine', experience: 9, consultationFee: 650, hospitalName: 'NIMH', profileImage: '/assets/doctors/dr_emily_taylor.png', availableDays: ['Monday', 'Tuesday', 'Wednesday'], availableSlots: ['09:00 AM', '10:30 AM', '01:30 PM', '03:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-10', userId: 'doc-10', doctorName: 'Dr. Marcus Vance', specialization: 'Gastroenterology', qualifications: 'MD - Mayo Clinic College of Medicine', experience: 13, consultationFee: 750, hospitalName: 'BIRDEM General Hospital', profileImage: '/assets/doctors/dr_marcus_vance.png', availableDays: ['Tuesday', 'Thursday'], availableSlots: ['09:30 AM', '11:00 AM', '02:30 PM', '04:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-11', userId: 'doc-11', doctorName: 'Dr. Tanvir Hasan', specialization: 'Cardiology', qualifications: 'MBBS, FCPS - Cardiology specialist', experience: 12, consultationFee: 800, hospitalName: 'NICVD', profileImage: '/assets/doctors/dr_sarah_jenkins.png', availableDays: ['Monday', 'Wednesday', 'Friday'], availableSlots: ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-12', userId: 'doc-12', doctorName: 'Dr. Tasnim Jahan', specialization: 'Pediatrics', qualifications: 'MBBS, MD (Pediatrics) - Child health specialist', experience: 8, consultationFee: 500, hospitalName: 'BSMMU', profileImage: '/assets/doctors/dr_elena_rostova.png', availableDays: ['Tuesday', 'Thursday'], availableSlots: ['09:30 AM', '10:30 AM', '01:30 PM', '02:30 PM'], verificationStatus: 'verified' },
+      { id: 'doc-13', userId: 'doc-13', doctorName: 'Dr. Mehzabin Chowdhury', specialization: 'Dermatology', qualifications: 'MBBS, DDV - Skin specialist', experience: 9, consultationFee: 600, hospitalName: 'Ibn Sina Hospital', profileImage: '/assets/doctors/dr_aisha_diallo.png', availableDays: ['Monday', 'Tuesday', 'Thursday'], availableSlots: ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-14', userId: 'doc-14', doctorName: 'Dr. Sajjadul Islam', specialization: 'Neurology', qualifications: 'MBBS, MD (Neurology) - Brain specialist', experience: 11, consultationFee: 950, hospitalName: 'National Institute of Neurosciences', profileImage: '/assets/doctors/dr_michael_chen.png', availableDays: ['Wednesday', 'Friday'], availableSlots: ['10:00 AM', '11:00 AM', '01:00 PM', '03:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-15', userId: 'doc-15', doctorName: 'Dr. Fariha Sultana', specialization: 'Orthopedics', qualifications: 'MBBS, MS (Ortho) - Bone & joint specialist', experience: 10, consultationFee: 700, hospitalName: 'NITOR (Pangu Hospital)', profileImage: '/assets/doctors/dr_sophia_martinez.png', availableDays: ['Tuesday', 'Thursday', 'Friday'], availableSlots: ['09:00 AM', '11:00 AM', '02:00 PM', '04:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-16', userId: 'doc-16', doctorName: 'Dr. Rashedul Bari', specialization: 'General Medicine', qualifications: 'MBBS, FCPS - General medicine practitioner', experience: 6, consultationFee: 400, hospitalName: 'Dhaka Medical College Hospital', profileImage: '/assets/doctors/dr_arjun_patel.png', availableDays: ['Monday', 'Wednesday', 'Friday'], availableSlots: ['08:30 AM', '10:30 AM', '01:30 PM', '03:30 PM'], verificationStatus: 'verified' },
+      { id: 'doc-17', userId: 'doc-17', doctorName: 'Dr. Nusrat Sharmin', specialization: 'Gynecology', qualifications: 'MBBS, MS (Gynae) - Gynecologist & surgeon', experience: 13, consultationFee: 850, hospitalName: 'Dhaka Medical College Hospital', profileImage: '/assets/doctors/dr_emily_taylor.png', availableDays: ['Monday', 'Tuesday', 'Thursday'], availableSlots: ['09:00 AM', '10:00 AM', '01:00 PM', '03:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-18', userId: 'doc-18', doctorName: 'Dr. Mahmudul Hasan', specialization: 'Oncology', qualifications: 'MBBS, MD (Oncology) - Cancer specialist', experience: 14, consultationFee: 1000, hospitalName: 'National Cancer Research Institute', profileImage: '/assets/doctors/dr_david_kim.png', availableDays: ['Wednesday', 'Thursday', 'Friday'], availableSlots: ['10:00 AM', '11:00 AM', '02:00 PM', '03:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-19', userId: 'doc-19', doctorName: 'Dr. Nishat Anjum', specialization: 'Psychiatry', qualifications: 'MBBS, FCPS (Psychiatry) - Mental health consultant', experience: 7, consultationFee: 750, hospitalName: 'NIMH', profileImage: '/assets/doctors/dr_sarah_jenkins.png', availableDays: ['Monday', 'Tuesday', 'Wednesday'], availableSlots: ['09:00 AM', '10:30 AM', '01:30 PM', '03:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-20', userId: 'doc-20', doctorName: 'Dr. Arifur Rahman', specialization: 'Gastroenterology', qualifications: 'MBBS, MD (Gastro) - Stomach & liver specialist', experience: 12, consultationFee: 900, hospitalName: 'BIRDEM General Hospital', profileImage: '/assets/doctors/dr_marcus_vance.png', availableDays: ['Tuesday', 'Thursday'], availableSlots: ['09:30 AM', '11:00 AM', '02:30 PM', '04:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-21', userId: 'doc-21', doctorName: 'Dr. Zahidul Islam', specialization: 'Cardiology', qualifications: 'MBBS, MD - Cardiology specialist', experience: 13, consultationFee: 850, hospitalName: 'NICVD', profileImage: '/assets/doctors/dr_james_wilson.png', availableDays: ['Monday', 'Wednesday', 'Friday'], availableSlots: ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-22', userId: 'doc-22', doctorName: 'Dr. Sadia Afrin', specialization: 'Pediatrics', qualifications: 'MBBS, DCH - Pediatrician', experience: 9, consultationFee: 550, hospitalName: 'Dhaka Shishu Hospital', profileImage: '/assets/doctors/dr_elena_rostova.png', availableDays: ['Tuesday', 'Thursday'], availableSlots: ['09:30 AM', '10:30 AM', '01:30 PM', '02:30 PM'], verificationStatus: 'verified' },
+      { id: 'doc-23', userId: 'doc-23', doctorName: 'Dr. Kamrul Hasan', specialization: 'Dermatology', qualifications: 'MBBS, FCPS - Skin & allergy consultant', experience: 10, consultationFee: 700, hospitalName: 'Square Hospital', profileImage: '/assets/doctors/dr_arjun_patel.png', availableDays: ['Monday', 'Tuesday', 'Thursday'], availableSlots: ['09:00 AM', '10:00 AM', '11:00 AM', '02:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-24', userId: 'doc-24', doctorName: 'Dr. Tanzila Rahman', specialization: 'Neurology', qualifications: 'MBBS, FCPS (Neuro) - Brain surgeon & specialist', experience: 12, consultationFee: 900, hospitalName: 'National Institute of Neurosciences', profileImage: '/assets/doctors/dr_sophia_martinez.png', availableDays: ['Wednesday', 'Friday'], availableSlots: ['10:00 AM', '11:00 AM', '01:00 PM', '03:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-25', userId: 'doc-25', doctorName: 'Dr. Ashraful Alam', specialization: 'Orthopedics', qualifications: 'MBBS, D-Ortho - Orthopedic specialist', experience: 9, consultationFee: 650, hospitalName: 'NITOR (Pangu Hospital)', profileImage: '/assets/doctors/dr_michael_chen.png', availableDays: ['Tuesday', 'Thursday', 'Friday'], availableSlots: ['09:00 AM', '11:00 AM', '02:00 PM', '04:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-26', userId: 'doc-26', doctorName: 'Dr. Rehana Parveen', specialization: 'General Medicine', qualifications: 'MBBS, BCS - Medicine specialist', experience: 8, consultationFee: 450, hospitalName: 'Sir Salimullah Medical College', profileImage: '/assets/doctors/dr_aisha_diallo.png', availableDays: ['Monday', 'Wednesday', 'Friday'], availableSlots: ['08:30 AM', '10:30 AM', '01:30 PM', '03:30 PM'], verificationStatus: 'verified' },
+      { id: 'doc-27', userId: 'doc-27', doctorName: 'Dr. Fatema Zohra', specialization: 'Gynecology', qualifications: 'MBBS, DGO - Gynecology & obstetrics specialist', experience: 11, consultationFee: 750, hospitalName: 'Dhaka Medical College Hospital', profileImage: '/assets/doctors/dr_emily_taylor.png', availableDays: ['Monday', 'Tuesday', 'Thursday'], availableSlots: ['09:00 AM', '10:00 AM', '01:00 PM', '03:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-28', userId: 'doc-28', doctorName: 'Dr. Mustafizur Rahman', specialization: 'Oncology', qualifications: 'MBBS, FCPS (Onco) - Cancer physician', experience: 15, consultationFee: 950, hospitalName: 'Ahsania Mission Cancer Hospital', profileImage: '/assets/doctors/dr_david_kim.png', availableDays: ['Wednesday', 'Thursday', 'Friday'], availableSlots: ['10:00 AM', '11:00 AM', '02:00 PM', '03:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-29', userId: 'doc-29', doctorName: 'Dr. Sabrina Sultana', specialization: 'Psychiatry', qualifications: 'MBBS, MD - Psychiatry consultant', experience: 8, consultationFee: 800, hospitalName: 'NIMH', profileImage: '/assets/doctors/dr_sarah_jenkins.png', availableDays: ['Monday', 'Tuesday', 'Wednesday'], availableSlots: ['09:00 AM', '10:30 AM', '01:30 PM', '03:00 PM'], verificationStatus: 'verified' },
+      { id: 'doc-30', userId: 'doc-30', doctorName: 'Dr. Hasibul Islam', specialization: 'Gastroenterology', qualifications: 'MBBS, FCPS - Gastromedicine consultant', experience: 10, consultationFee: 850, hospitalName: 'BIRDEM General Hospital', profileImage: '/assets/doctors/dr_marcus_vance.png', availableDays: ['Tuesday', 'Thursday'], availableSlots: ['09:30 AM', '11:00 AM', '02:30 PM', '04:00 PM'], verificationStatus: 'verified' }
+    ];
+
+    for (const doc of allDoctors) {
+      const exists = await doctorsCollection.findOne({ id: doc.id });
+      if (!exists) {
+        await doctorsCollection.insertOne(doc);
+      } else {
+        await doctorsCollection.updateOne(
+          { id: doc.id },
+          { $set: { doctorName: doc.doctorName, specialization: doc.specialization, consultationFee: doc.consultationFee, hospitalName: doc.hospitalName, verificationStatus: doc.verificationStatus } }
+        );
+      }
     }
+    console.log(`Seeded/verified ${allDoctors.length} doctors in MongoDB.`);
   } catch (err) {
     console.error("Error seeding static users:", err);
   }
