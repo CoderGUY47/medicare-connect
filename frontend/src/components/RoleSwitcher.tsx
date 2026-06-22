@@ -84,7 +84,7 @@ export default function RoleSwitcher() {
         setSwitchingRole(roleName);
         await login(matched.email, matched.pw);
         setIsOpen(false);
-        window.location.reload();
+        window.location.href = '/';
       }
     } catch (err) {
       console.error('Failed to switch role:', err);

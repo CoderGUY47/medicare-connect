@@ -129,7 +129,19 @@ export default function LoginForm() {
     setLoading(true);
     try {
       const loggedInUser = await login(values.email, values.password);
-      router.push(redirect || `/dashboard/${loggedInUser.role}`);
+      const staticEmails = [
+        "admin@gmail.com",
+        "patient@gmail.com",
+        "doctor@gmail.com",
+        "nurse@gmail.com",
+        "lab@gmail.com",
+        "pharmacist@gmail.com"
+      ];
+      if (staticEmails.includes(values.email.toLowerCase())) {
+        router.push('/');
+      } else {
+        router.push(redirect || `/dashboard/${loggedInUser.role}`);
+      }
     } catch (err: any) {
       setErrorMsg(err.message || 'Authentication failed. Please try again.');
     } finally {
