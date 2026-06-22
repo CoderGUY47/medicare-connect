@@ -200,7 +200,7 @@ export default function PatientAppointmentsPage() {
                   </div>
                   <div className="bg-slate-50 dark:bg-zinc-800/50 rounded-xl p-3">
                     <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Fee</div>
-                    <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400">${doc.consultationFee}</div>
+                    <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400">৳{doc.consultationFee}</div>
                   </div>
                   <div className="bg-slate-50 dark:bg-zinc-800/50 rounded-xl p-3 col-span-2 md:col-span-1">
                     <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Symptoms</div>
