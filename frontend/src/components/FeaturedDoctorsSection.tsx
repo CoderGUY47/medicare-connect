@@ -86,8 +86,8 @@ export default function FeaturedDoctorsSection() {
                       <div className="text-[9px] text-slate-400 dark:text-white/40 lowercase font-medium">
                         consultation fee
                       </div>
-                      <div className="font-extrabold text-slate-800 dark:text-white text-sm mt-0.5">
-                        ${doc.consultationFee}
+                      <div className="font-extrabold text-slate-800 dark:text-white text-sm mt-0.5 flex items-center">
+                        <i className="fa-solid fa-bangladeshi-taka-sign text-xs mr-0.5"></i>{doc.consultationFee}
                       </div>
                     </div>
                     <div>
