@@ -62,8 +62,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         const res = await fetch(`${backendUrl}/api/db-dump`);
         if (res.ok) {
           const data = await res.json();
-          // Check if MongoDB is empty or incomplete. If so, seed MongoDB from local SEEDs!
-          if (!data.doctors || data.doctors.length < 25) {
+          // Detect native Bengali Unicode script in browser cache or server
+          const localDocsStr = typeof window !== 'undefined' ? localStorage.getItem('mc_doctors') : '';
+          const hasBengaliLocal = /[\u0985-\u09B9\u09C0-\u09E3]/.test(localDocsStr || '');
+          const hasBengaliServer = data.doctors && data.doctors.some((d: any) => /[\u0985-\u09B9\u09C0-\u09E3]/.test(d.doctorName || ''));
+
+          if (hasBengaliLocal || hasBengaliServer || !data.doctors || data.doctors.length < 25) {
+            console.log("Wiping local and server databases to force clean English-transliterated seeding...");
+            if (typeof window !== 'undefined') {
+              localStorage.removeItem('mc_users');
+              localStorage.removeItem('mc_doctors');
+              localStorage.removeItem('mc_appointments');
+              localStorage.removeItem('mc_reviews');
+              localStorage.removeItem('mc_payments');
+              localStorage.removeItem('mc_prescriptions');
+            }
             const users = db.getUsers();
             const doctors = db.getDoctors();
             const appointments = db.getAppointments();
