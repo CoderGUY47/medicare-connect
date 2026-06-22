@@ -134,7 +134,7 @@ export default function PatientOverviewPage() {
         {[
           { label: 'Upcoming',   value: stats.upcoming,      sub: 'appointments', color: 'text-rose-600 dark:text-rose-400',        bg: 'bg-rose-500/10',    border: 'border-rose-200 dark:border-rose-900/50',       icon: FiCalendar },
           { label: 'Completed',  value: stats.completed,     sub: 'visits',       color: 'text-emerald-600 dark:text-emerald-400',   bg: 'bg-emerald-500/10', border: 'border-emerald-200 dark:border-emerald-900/50',  icon: BsCalendarCheck },
-          { label: 'Total Spent',value: `$${stats.totalPaid}`,sub: 'consultations',color: 'text-blue-600 dark:text-blue-400',        bg: 'bg-blue-500/10',    border: 'border-blue-200 dark:border-blue-900/50',        icon: MdOutlinePayments },
+          { label: 'Total Spent',value: `৳${stats.totalPaid}`,sub: 'consultations',color: 'text-blue-600 dark:text-blue-400',        bg: 'bg-blue-500/10',    border: 'border-blue-200 dark:border-blue-900/50',        icon: MdOutlinePayments },
           { label: 'Reviews',    value: stats.reviewsCount,  sub: 'submitted',    color: 'text-amber-600 dark:text-amber-400',       bg: 'bg-amber-500/10',   border: 'border-amber-200 dark:border-amber-900/50',      icon: FiStar },
         ].map(stat => {
           const Icon = stat.icon;
@@ -207,7 +207,7 @@ export default function PatientOverviewPage() {
                 <div className="flex items-center justify-between pt-1">
                   <div>
                     <div className="text-[10px] text-slate-400 uppercase tracking-wider">Consultation Fee</div>
-                    <div className="text-sm font-extrabold text-slate-800 dark:text-zinc-100">${nearestDoc.consultationFee}</div>
+                    <div className="text-sm font-extrabold text-slate-800 dark:text-zinc-100">৳{nearestDoc.consultationFee}</div>
                   </div>
                   {(() => {
                     const sc = STATUS_CFG[nearestApt.appointmentStatus as AptStatus] || STATUS_CFG.pending;
@@ -263,7 +263,7 @@ export default function PatientOverviewPage() {
           <div className="p-5">
             <div className="flex items-center gap-6 mb-5">
               <div>
-                <div className="text-2xl font-extrabold text-slate-800 dark:text-zinc-100">${stats.totalPaid}</div>
+                <div className="text-2xl font-extrabold text-slate-800 dark:text-zinc-100">৳{stats.totalPaid}</div>
                 <div className="text-xs text-slate-400">Total spent</div>
               </div>
               <div className="h-8 w-px bg-slate-100 dark:bg-zinc-800" />
@@ -285,7 +285,7 @@ export default function PatientOverviewPage() {
                 <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
                 <Tooltip
                   contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: '12px', fontSize: '11px', color: '#f1f5f9' }}
-                  formatter={(v: any) => [`$${v}`, 'Spent']}
+                  formatter={(v: any) => [`৳${v}`, 'Spent']}
                 />
                 <Area type="monotone" dataKey="spent" stroke="#e11d48" strokeWidth={2} fill="url(#spendGrad)" dot={{ fill: '#e11d48', r: 4 }} activeDot={{ r: 6 }} />
               </AreaChart>
