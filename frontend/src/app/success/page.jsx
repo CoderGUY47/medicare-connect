@@ -7,6 +7,7 @@ import { db } from '../../lib/mockDb'
 import { CheckCircle, Calendar, Clock, DollarSign, CreditCard, ArrowRight, Home, HeartPulse, User } from 'lucide-react'
 import confetti from 'canvas-confetti'
 import { motion } from 'framer-motion'
+import { getBackendUrl } from '../../utils/backendUrl'
 
 function SuccessContent() {
   const router = useRouter()
@@ -115,7 +116,7 @@ function SuccessContent() {
 
           // Update backend MongoDB collections (Express server)
           try {
-            const backendUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'https://backend-nu-rosy-20.vercel.app'
+            const backendUrl = getBackendUrl()
             await fetch(`${backendUrl}/api/payment-confirm`, {
               method: 'POST',
               headers: {

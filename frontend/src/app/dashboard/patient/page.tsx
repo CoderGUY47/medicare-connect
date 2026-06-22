@@ -43,6 +43,7 @@ function buildSpendingData(patientId: string) {
 
 export default function PatientOverviewPage() {
   const { user } = useAuth();
+  const [mounted, setMounted] = useState(false);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [doctorsMap, setDoctorsMap] = useState<{ [id: string]: Doctor }>({});
   const [stats, setStats] = useState({
@@ -51,6 +52,8 @@ export default function PatientOverviewPage() {
     totalPaid: 0,
     reviewsCount: 0,
   });
+
+  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
     if (!user) return;
@@ -272,7 +275,9 @@ export default function PatientOverviewPage() {
                 <div className="text-xs text-slate-400">Consultations</div>
               </div>
             </div>
-            <ResponsiveContainer width="100%" height={180}>
+            {mounted && (
+            <div style={{ width: '100%', height: 180 }}>
+            <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={chartData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="spendGrad" x1="0" y1="0" x2="0" y2="1">
@@ -290,6 +295,8 @@ export default function PatientOverviewPage() {
                 <Area type="monotone" dataKey="spent" stroke="#e11d48" strokeWidth={2} fill="url(#spendGrad)" dot={{ fill: '#e11d48', r: 4 }} activeDot={{ r: 6 }} />
               </AreaChart>
             </ResponsiveContainer>
+            </div>
+            )}
           </div>
         </div>
       </div>

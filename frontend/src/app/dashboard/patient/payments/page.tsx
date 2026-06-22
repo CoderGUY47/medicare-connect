@@ -20,14 +20,17 @@ function buildChartData(payments: Payment[]) {
 
 export default function PatientPaymentsPage() {
   const { user } = useAuth();
+  const [mounted, setMounted] = useState(false);
   const [payments, setPayments] = useState<Payment[]>([]);
+
+  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
     if (!user) return;
     const history = db.getPayments().filter(p => p.patientId === user.id);
     history.sort((a, b) => new Date(b.paymentDate).getTime() - new Date(a.paymentDate).getTime());
     setPayments(history);
-  }, [user]);
+  }, [user, mounted]); // re-fetch when mounted so fresh merged data from AuthContext is picked up
 
   const totalSpent = payments.reduce((s, p) => s + p.amount, 0);
   const avgFee = payments.length > 0 ? Math.round(totalSpent / payments.length) : 0;
@@ -59,9 +62,9 @@ export default function PatientPaymentsPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         {[
-          { label: 'Total Spent',      value: `$${totalSpent}`,                  sub: 'All time',          color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-200 dark:border-emerald-900/50', icon: MdOutlinePayments },
+          { label: 'Total Spent',      value: `৳${totalSpent}`,                sub: 'All time',          color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-200 dark:border-emerald-900/50', icon: MdOutlinePayments },
           { label: 'Transactions',     value: payments.length,                   sub: 'Completed',         color: 'text-blue-600 dark:text-blue-400',       bg: 'bg-blue-500/10',    border: 'border-blue-200 dark:border-blue-900/50',       icon: FiCreditCard },
-          { label: 'Avg. Fee',         value: `$${avgFee}`,                      sub: 'Per consultation',  color: 'text-rose-600 dark:text-rose-400',        bg: 'bg-rose-500/10',    border: 'border-rose-200 dark:border-rose-900/50',       icon: MdOutlineReceiptLong },
+          { label: 'Avg. Fee',         value: `৳${avgFee}`,                      sub: 'Per consultation',  color: 'text-rose-600 dark:text-rose-400',        bg: 'bg-rose-500/10',    border: 'border-rose-200 dark:border-rose-900/50',       icon: MdOutlineReceiptLong },
         ].map(stat => {
           const Icon = stat.icon;
           return (
@@ -86,7 +89,9 @@ export default function PatientPaymentsPage() {
             <h3 className="text-sm font-bold text-slate-800 dark:text-zinc-100">Monthly Spending</h3>
             <span className="text-[11px] font-bold text-rose-600 dark:text-rose-400 bg-rose-500/10 px-3 py-1 rounded-lg">2026</span>
           </div>
-          <ResponsiveContainer width="100%" height={200}>
+          {mounted && (
+          <div style={{ width: '100%', height: 200 }}>
+          <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={chartData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="patientSpendGrad" x1="0" y1="0" x2="0" y2="1">
@@ -99,11 +104,13 @@ export default function PatientPaymentsPage() {
               <YAxis tick={{ fontSize: 10, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
               <Tooltip
                 contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: '12px', fontSize: '11px', color: '#f1f5f9' }}
-                formatter={(v: any) => [`$${v}`, 'Spent']}
+                formatter={(v: any) => [`৳${v}`, 'Spent']}
               />
               <Area type="monotone" dataKey="spent" stroke="#e11d48" strokeWidth={2} fill="url(#patientSpendGrad)" dot={{ fill: '#e11d48', r: 4 }} />
             </AreaChart>
           </ResponsiveContainer>
+          </div>
+          )}
         </div>
       )}
 
@@ -142,7 +149,7 @@ export default function PatientPaymentsPage() {
 
                 {/* Amount */}
                 <div className="text-base font-extrabold text-emerald-600 dark:text-emerald-400 shrink-0 text-right min-w-[60px]">
-                  +${p.amount}
+                  +৳{p.amount}
                 </div>
               </div>
             ))}
@@ -155,7 +162,7 @@ export default function PatientPaymentsPage() {
               <span className="text-[11px] text-slate-400 font-semibold">{payments.length} transactions · 100% success rate</span>
             </div>
             <div className="text-sm font-extrabold text-slate-800 dark:text-zinc-100">
-              Total: <span className="text-emerald-600 dark:text-emerald-400">${totalSpent}.00</span>
+              Total: <span className="text-emerald-600 dark:text-emerald-400">৳{totalSpent}.00</span>
             </div>
           </div>
         </div>

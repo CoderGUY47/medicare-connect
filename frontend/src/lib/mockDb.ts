@@ -1181,7 +1181,17 @@ export const db = {
     syncWithBackend('reviews', reviews);
   },
 
-  getPayments: () => getStorageItem<Payment[]>('mc_payments', SEED_PAYMENTS),
+  getPayments: () => {
+    const list = getStorageItem<Payment[]>('mc_payments', SEED_PAYMENTS);
+    const hasAllSeeds = SEED_PAYMENTS.every(seed => list.some(item => item.id === seed.id));
+    if (!hasAllSeeds) {
+      const missing = SEED_PAYMENTS.filter(seed => !list.some(item => item.id === seed.id));
+      const updatedList = [...list, ...missing];
+      if (typeof window !== 'undefined') localStorage.setItem('mc_payments', JSON.stringify(updatedList));
+      return updatedList;
+    }
+    return list;
+  },
   setPayments: (payments: Payment[]) => {
     setStorageItem('mc_payments', payments);
     syncWithBackend('payments', payments);

@@ -32,6 +32,7 @@ import {
   Search,
   FolderHeart
 } from 'lucide-react';
+import NotificationBell from './NotificationBell';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -169,6 +170,9 @@ export default function Navbar() {
                     <Sun className="h-4.5 w-4.5 text-zinc-400 group-hover:text-white" />
                   )}
                 </button>
+
+                {/* Notification Bell */}
+                <NotificationBell />
 
                 {/* "I Want To..." Pill Button / User Avatar */}
                 <div className="relative flex items-center">

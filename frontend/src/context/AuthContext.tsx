@@ -118,12 +118,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
               })
             ]);
           } else {
-            // Write MongoDB data to localStorage
+            // Write MongoDB data to localStorage, but MERGE payments to avoid losing locally saved ones
             localStorage.setItem('mc_users', JSON.stringify(data.users));
             localStorage.setItem('mc_doctors', JSON.stringify(data.doctors));
             localStorage.setItem('mc_appointments', JSON.stringify(data.appointments));
             localStorage.setItem('mc_reviews', JSON.stringify(data.reviews));
-            localStorage.setItem('mc_payments', JSON.stringify(data.payments));
+
+            // Merge payments: backend + any locally stored ones not in backend (e.g. checkout just completed)
+            const localPaymentsRaw = localStorage.getItem('mc_payments');
+            const localPayments: any[] = localPaymentsRaw ? JSON.parse(localPaymentsRaw) : [];
+            const backendPayments: any[] = data.payments || [];
+            const mergedPayments = [...backendPayments];
+            localPayments.forEach((lp: any) => {
+              if (!mergedPayments.some((bp: any) => bp.id === lp.id)) {
+                mergedPayments.push(lp);
+              }
+            });
+            localStorage.setItem('mc_payments', JSON.stringify(mergedPayments));
+
             localStorage.setItem('mc_prescriptions', JSON.stringify(data.prescriptions));
           }
         }
