@@ -283,7 +283,7 @@ export default function AdminDoctorsPage() {
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-zinc-800">
                 {filtered.map((d, idx) => {
-                  const sc = statusConfig[d.verificationStatus] || statusConfig.pending;
+                  const sc = statusConfig[d.verificationStatus as keyof typeof statusConfig] || statusConfig.pending;
                   const StatusIcon = sc.icon;
                   const gradient = avatarGradients[idx % avatarGradients.length];
                   const isOpen = dropdownOpen === d.id;
