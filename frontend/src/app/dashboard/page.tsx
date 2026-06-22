@@ -3,21 +3,23 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from '@/lib/auth-client';
+import { useAuth } from '../../context/AuthContext';
 
 export default function DashboardRedirectPage() {
   const { data: session, isPending } = useSession();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isPending) {
-      if (session?.user) {
-        const role = (session.user as any).role || 'patient';
-        router.replace(`/dashboard/${role}`);
+    if (!isPending && !isLoading) {
+      const activeUser = user || (session?.user ? { role: (session.user as any).role || 'patient' } : null);
+      if (activeUser) {
+        router.replace(`/dashboard/${activeUser.role}`);
       } else {
         router.replace('/login');
       }
     }
-  }, [session, isPending, router]);
+  }, [session, isPending, user, isLoading, router]);
 
   return (
     <div className="flex min-h-[80vh] items-center justify-center bg-slate-50 dark:bg-zinc-950/40">

@@ -10,18 +10,7 @@ export async function proxy(request: NextRequest) {
     const token = request.cookies.get('mc_jwt_token')?.value;
     const email = request.cookies.get('mc_user_email')?.value;
 
-    const staticEmails = [
-      "admin@gmail.com",
-      "patient@gmail.com",
-      "doctor@gmail.com",
-      "nurse@gmail.com",
-      "lab@gmail.com",
-      "pharmacist@gmail.com"
-    ];
 
-    if (email && staticEmails.includes(email.toLowerCase())) {
-      return NextResponse.redirect(new URL('/', request.url));
-    }
     
     // If not authenticated, redirect immediately to login
     if (!token || !email) {
