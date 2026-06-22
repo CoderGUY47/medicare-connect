@@ -38,6 +38,16 @@ const ROLE_META = [
   { id: 'admin', label: 'Administrator', icon: Shield }
 ];
 
+// Static fallback — always shows something while API loads
+const FALLBACK_CREDS: Record<string, { email: string; pw: string }> = {
+  admin:      { email: 'admin@gmail.com',       pw: 'admin123' },
+  doctor:     { email: 'doctor@gmail.com',      pw: 'doctor123' },
+  patient:    { email: 'patient@gmail.com',     pw: 'patient123' },
+  nurse:      { email: 'nurse@gmail.com',       pw: 'nurse123' },
+  lab:        { email: 'lab@gmail.com',         pw: 'lab123' },
+  pharmacist: { email: 'pharmacist@gmail.com',  pw: 'pharmacist123' },
+};
+
 export default function LoginForm() {
   const { login } = useAuth();
   const router = useRouter();
@@ -47,6 +57,7 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [selectedRole, setSelectedRole] = useState<string>('admin');
   const [credentials, setCredentials] = useState<any[]>([]);
+  const [copied, setCopied] = useState<'email' | 'pw' | null>(null);
 
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -80,6 +91,20 @@ export default function LoginForm() {
       setValue('password', '', { shouldValidate: false });
     }
   }, [credentials, selectedRole, setValue]);
+
+  // ── Get the active credential (live from API or fallback) ──
+  const getActiveCred = () => {
+    const live = credentials.find((c: any) => c.role === selectedRole);
+    if (live) return { email: live.email, pw: live.pw };
+    return FALLBACK_CREDS[selectedRole] || null;
+  };
+
+  const copyToClipboard = (text: string, type: 'email' | 'pw') => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(type);
+      setTimeout(() => setCopied(null), 1500);
+    });
+  };
 
   const handleGoogleSignIn = async () => {
     setErrorMsg('');
@@ -244,61 +269,91 @@ export default function LoginForm() {
             </div>
 
             {/* Login form */}
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              
-              {/* Derive current role credential for hints */}
-              {(() => {
-                const activeCred = credentials.find((c: any) => c.role === selectedRole);
-                return (
-                  <>
-                    {/* Username Input */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-semibold text-slate-700 dark:text-zinc-300">
-                        Username
-                      </label>
-                      <div className="flex items-center border border-slate-200 dark:border-zinc-800 rounded-md bg-slate-50/50 dark:bg-zinc-900/20 focus-within:border-rose-500 focus-within:ring-1 focus-within:ring-rose-500 focus-within:bg-white dark:focus-within:bg-zinc-900 transition-all">
-                        <User className="h-4 w-4 text-slate-400 dark:text-zinc-500 ml-3 shrink-0" />
-                        <input
-                          type="email"
-                          placeholder="Enter your username"
-                          {...register('email')}
-                          className="w-full bg-transparent outline-none text-xs text-slate-900 dark:text-zinc-100 placeholder:text-slate-400 dark:placeholder:text-zinc-500 px-3 py-2.5"
-                        />
-                      </div>
-                      {errors.email ? (
-                        <p className="text-[10px] text-red-500 dark:text-red-400 font-medium px-1">{errors.email.message}</p>
-                      ) : activeCred ? (
-                        <p className="text-[10px] text-slate-400 dark:text-zinc-500 px-1 flex items-center gap-1">
-                          <span className="font-medium text-slate-500 dark:text-zinc-400">Demo:</span>
-                          <span className="font-mono text-emerald-600 dark:text-emerald-400 font-semibold">{activeCred.email}</span>
-                        </p>
-                      ) : null}
-                    </div>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
 
-                    {/* Password Input */}
-                    <div className="space-y-1.5">
-                      <label className="block text-xs font-semibold text-slate-700 dark:text-zinc-300">
-                        Password
-                      </label>
-                      <div className="flex items-center border border-slate-200 dark:border-zinc-800 rounded-md bg-slate-50/50 dark:bg-zinc-900/20 focus-within:border-rose-500 focus-within:ring-1 focus-within:ring-rose-500 focus-within:bg-white dark:focus-within:bg-zinc-900 transition-all">
-                        <Lock className="h-4 w-4 text-slate-400 dark:text-zinc-500 ml-3 shrink-0" />
-                        <input
-                          type="password"
-                          placeholder="Enter your password"
-                          {...register('password')}
-                          className="w-full bg-transparent outline-none text-xs text-slate-900 dark:text-zinc-100 placeholder:text-slate-400 dark:placeholder:text-zinc-500 px-3 py-2.5"
-                        />
-                      </div>
-                      {errors.password ? (
-                        <p className="text-[10px] text-red-500 dark:text-red-400 font-medium px-1">{errors.password.message}</p>
-                      ) : activeCred ? (
-                        <p className="text-[10px] text-slate-400 dark:text-zinc-500 px-1 flex items-center gap-1">
-                          <span className="font-medium text-slate-500 dark:text-zinc-400">Demo:</span>
-                          <span className="font-mono text-emerald-600 dark:text-emerald-400 font-semibold">{activeCred.pw}</span>
-                        </p>
-                      ) : null}
+              {/* Username Input */}
+              <div className="space-y-1">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-zinc-300">
+                  Username
+                </label>
+                <div className="flex items-center border border-slate-200 dark:border-zinc-800 rounded-md bg-slate-50/50 dark:bg-zinc-900/20 focus-within:border-rose-500 focus-within:ring-1 focus-within:ring-rose-500 focus-within:bg-white dark:focus-within:bg-zinc-900 transition-all">
+                  <User className="h-4 w-4 text-slate-400 dark:text-zinc-500 ml-3 shrink-0" />
+                  <input
+                    type="email"
+                    placeholder="Enter your username"
+                    {...register('email')}
+                    className="w-full bg-transparent outline-none text-xs text-slate-900 dark:text-zinc-100 placeholder:text-slate-400 dark:placeholder:text-zinc-500 px-3 py-2.5"
+                  />
+                </div>
+                {errors.email && (
+                  <p className="text-[10px] text-red-500 dark:text-red-400 font-medium px-1">{errors.email.message}</p>
+                )}
+              </div>
+
+              {/* Password Input */}
+              <div className="space-y-1">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-zinc-300">
+                  Password
+                </label>
+                <div className="flex items-center border border-slate-200 dark:border-zinc-800 rounded-md bg-slate-50/50 dark:bg-zinc-900/20 focus-within:border-rose-500 focus-within:ring-1 focus-within:ring-rose-500 focus-within:bg-white dark:focus-within:bg-zinc-900 transition-all">
+                  <Lock className="h-4 w-4 text-slate-400 dark:text-zinc-500 ml-3 shrink-0" />
+                  <input
+                    type="password"
+                    placeholder="Enter your password"
+                    {...register('password')}
+                    className="w-full bg-transparent outline-none text-xs text-slate-900 dark:text-zinc-100 placeholder:text-slate-400 dark:placeholder:text-zinc-500 px-3 py-2.5"
+                  />
+                </div>
+                {errors.password && (
+                  <p className="text-[10px] text-red-500 dark:text-red-400 font-medium px-1">{errors.password.message}</p>
+                )}
+              </div>
+
+              {/* ── Credential Display Card ── */}
+              {(() => {
+                const cred = getActiveCred();
+                const roleLabel = ROLE_META.find(r => r.id === selectedRole)?.label || selectedRole;
+                if (!cred) return null;
+                return (
+                  <div className="rounded-lg border border-emerald-500/25 bg-emerald-500/5 dark:bg-emerald-500/8 p-3 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
+                        {roleLabel} Demo Credentials
+                      </span>
+                      <span className="text-[9px] text-slate-400 dark:text-zinc-600 italic">
+                        {credentials.length > 0 ? 'Live · from MongoDB' : 'Fallback data'}
+                      </span>
                     </div>
-                  </>
+                    {/* Email row */}
+                    <div className="flex items-center justify-between gap-2 bg-white/60 dark:bg-zinc-900/50 rounded-md px-3 py-2 border border-slate-100 dark:border-zinc-800">
+                      <div className="min-w-0">
+                        <div className="text-[9px] font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-600">Email</div>
+                        <div className="font-mono text-xs font-semibold text-slate-800 dark:text-zinc-100 truncate">{cred.email}</div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => copyToClipboard(cred.email, 'email')}
+                        className="shrink-0 text-[10px] font-bold px-2 py-1 rounded border border-slate-200 dark:border-zinc-700 text-slate-500 dark:text-zinc-400 hover:border-emerald-500/50 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer bg-transparent"
+                      >
+                        {copied === 'email' ? '✓ Copied' : 'Copy'}
+                      </button>
+                    </div>
+                    {/* Password row */}
+                    <div className="flex items-center justify-between gap-2 bg-white/60 dark:bg-zinc-900/50 rounded-md px-3 py-2 border border-slate-100 dark:border-zinc-800">
+                      <div className="min-w-0">
+                        <div className="text-[9px] font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-600">Password</div>
+                        <div className="font-mono text-xs font-semibold text-slate-800 dark:text-zinc-100">{cred.pw}</div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => copyToClipboard(cred.pw, 'pw')}
+                        className="shrink-0 text-[10px] font-bold px-2 py-1 rounded border border-slate-200 dark:border-zinc-700 text-slate-500 dark:text-zinc-400 hover:border-emerald-500/50 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer bg-transparent"
+                      >
+                        {copied === 'pw' ? '✓ Copied' : 'Copy'}
+                      </button>
+                    </div>
+                  </div>
                 );
               })()}
 
