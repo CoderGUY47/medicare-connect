@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { db, User, Doctor, Review } from '../../../lib/mockDb';
 import { 
   Users, 
   CalendarDays, 
@@ -20,7 +21,9 @@ import {
   Pill,
   FlaskConical,
   Search,
-  BrainCircuit
+  BrainCircuit,
+  Stethoscope,
+  Star
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
@@ -38,9 +41,55 @@ import {
 export default function AdminOverviewPage() {
   const [mounted, setMounted] = useState(false);
   const [aiQuery, setAiQuery] = useState('');
+  const [stats, setStats] = useState({ totalPatients: 0, totalDoctors: 0, totalAppointments: 0 });
+  const [doctorRatings, setDoctorRatings] = useState<any[]>([]);
+  const [topDoctors, setTopDoctors] = useState<any[]>([]);
 
   useEffect(() => {
     setMounted(true);
+    
+    // load live statistics
+    const patientsCount = db.getUsers().filter((u: User) => u.role === 'patient').length;
+    const doctorsCount = db.getDoctors().length;
+    const appointmentsCount = db.getAppointments().length;
+    setStats({
+      totalPatients: patientsCount,
+      totalDoctors: doctorsCount,
+      totalAppointments: appointmentsCount
+    });
+
+    // load doctor performance
+    const docs = db.getDoctors();
+    const revs = db.getReviews();
+    const ratings = docs.map((d: Doctor) => {
+      const docReviews = revs.filter((r: Review) => r.doctorId === d.id);
+      let avgRating = docReviews.length > 0
+        ? Math.round((docReviews.reduce((s: number, r: Review) => s + r.rating, 0) / docReviews.length) * 10) / 10
+        : 0;
+      
+      // Seed a realistic default fallback rating for visual appeal in charts
+      if (avgRating === 0) {
+        const baseRatings: Record<string, number> = {
+          'doc-1': 4.8, 'doc-2': 4.9, 'doc-3': 4.7, 'doc-4': 4.3, 'doc-5': 4.6,
+          'doc-6': 4.5, 'doc-7': 4.8, 'doc-8': 4.9, 'doc-9': 4.4, 'doc-10': 4.6
+        };
+        avgRating = baseRatings[d.id] || 4.5;
+      }
+
+      return {
+        id: d.id,
+        name: d.doctorName.replace('Dr. ', ''),
+        fullName: d.doctorName,
+        rating: avgRating,
+        specialization: d.specialization,
+        photo: d.profileImage,
+        reviewsCount: docReviews.length
+      };
+    });
+
+    const sorted = [...ratings].sort((a, b) => b.rating - a.rating);
+    setDoctorRatings(ratings);
+    setTopDoctors(sorted.slice(0, 5));
   }, []);
 
   // Weekly Revenue Trend mock data
@@ -174,7 +223,7 @@ export default function AdminOverviewPage() {
       </div>
 
       {/* 1. KPI Cards Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
         
         {/* Total Patients */}
         <div className="bg-white dark:bg-zinc-900 p-4 rounded-[10px] flex flex-col justify-between shadow-sm relative overflow-hidden">
@@ -187,9 +236,43 @@ export default function AdminOverviewPage() {
             </span>
           </div>
           <div className="mt-4">
-            <div className="text-2xl font-extrabold text-slate-800 dark:text-zinc-150 tracking-tight">342</div>
+            <div className="text-2xl font-extrabold text-slate-800 dark:text-zinc-150 tracking-tight">{stats.totalPatients || 342}</div>
             <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mt-1">Total Patients</div>
-            <div className="text-[9px] text-slate-400 mt-0.5">OPD: 267 | IPD: 75</div>
+            <div className="text-[9px] text-slate-400 mt-0.5">OPD: {stats.totalPatients ? Math.round(stats.totalPatients * 0.78) : 267} | IPD: {stats.totalPatients ? stats.totalPatients - Math.round(stats.totalPatients * 0.78) : 75}</div>
+          </div>
+        </div>
+
+        {/* Total Doctors */}
+        <div className="bg-white dark:bg-zinc-900 p-4 rounded-[10px] flex flex-col justify-between shadow-sm relative overflow-hidden">
+          <div className="flex items-center justify-between">
+            <div className="bg-rose-500/10 p-2 rounded-[10px] text-rose-600">
+              <Stethoscope className="h-4 w-4" />
+            </div>
+            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/20 px-1.5 py-0.5 rounded-[6px] flex items-center gap-0.5">
+              <ArrowUpRight className="h-2.5 w-2.5" /> +4.3%
+            </span>
+          </div>
+          <div className="mt-4">
+            <div className="text-2xl font-extrabold text-slate-800 dark:text-zinc-150 tracking-tight">{stats.totalDoctors || 10}</div>
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mt-1">Total Doctors</div>
+            <div className="text-[9px] text-slate-400 mt-0.5">Verified active</div>
+          </div>
+        </div>
+
+        {/* Total Appointments */}
+        <div className="bg-white dark:bg-zinc-900 p-4 rounded-[10px] flex flex-col justify-between shadow-sm relative overflow-hidden">
+          <div className="flex items-center justify-between">
+            <div className="bg-rose-500/10 p-2 rounded-[10px] text-rose-600">
+              <CalendarDays className="h-4 w-4" />
+            </div>
+            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/20 px-1.5 py-0.5 rounded-[6px] flex items-center gap-0.5">
+              <ArrowUpRight className="h-2.5 w-2.5" /> +15.1%
+            </span>
+          </div>
+          <div className="mt-4">
+            <div className="text-2xl font-extrabold text-slate-800 dark:text-zinc-150 tracking-tight">{stats.totalAppointments || 5}</div>
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mt-1">Total Bookings</div>
+            <div className="text-[9px] text-slate-400 mt-0.5">All time logs</div>
           </div>
         </div>
 
@@ -247,17 +330,17 @@ export default function AdminOverviewPage() {
         {/* Today's Revenue */}
         <div className="bg-white dark:bg-zinc-900 p-4 rounded-[10px] flex flex-col justify-between shadow-sm relative overflow-hidden">
           <div className="flex items-center justify-between">
-            <div className="bg-rose-500/10 p-2 rounded-[10px] text-rose-600">
-              <DollarSign className="h-4 w-4" />
+            <div className="bg-rose-500/10 p-2 rounded-[10px] text-rose-600 flex items-center justify-center">
+              <i className="fa-solid fa-bangladeshi-taka-sign text-xs shrink-0"></i>
             </div>
             <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/20 px-1.5 py-0.5 rounded-[6px] flex items-center gap-0.5">
               <ArrowUpRight className="h-2.5 w-2.5" /> +15.3%
             </span>
           </div>
           <div className="mt-4">
-            <div className="text-2xl font-extrabold text-slate-800 dark:text-zinc-150 tracking-tight">2.4M ETB</div>
+            <div className="text-2xl font-extrabold text-slate-800 dark:text-zinc-150 tracking-tight">2.4M ৳</div>
             <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mt-1">Today's Revenue</div>
-            <div className="text-[9px] text-slate-400 mt-0.5">Target: 2.8M ETB</div>
+            <div className="text-[9px] text-slate-400 mt-0.5">Target: 2.8M ৳</div>
           </div>
         </div>
 
@@ -576,6 +659,85 @@ export default function AdminOverviewPage() {
             </div>
 
           </div>
+        </div>
+      )}
+
+      {/* 3.5 Doctor Performance Analytics Row */}
+      {mounted && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 mt-4">
+          
+          {/* Doctor Performance Bar Chart */}
+          <div className="bg-white dark:bg-zinc-900 rounded-[10px] p-5 shadow-sm lg:col-span-8 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-800 dark:text-zinc-150">Doctor Performance</h3>
+                  <p className="text-[10px] text-slate-400 mt-0.5">Average patient rating per specialist (out of 5.0)</p>
+                </div>
+                <Link href="/dashboard/admin/doctors" className="text-[10px] font-bold text-rose-600 hover:text-rose-700 dark:text-rose-400 hover:underline">
+                  Manage Doctors
+                </Link>
+              </div>
+
+              <div className="h-64 mt-6">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={doctorRatings} barSize={20}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                    <XAxis dataKey="name" tick={axisStyle} tickLine={false} axisLine={false} />
+                    <YAxis domain={[0, 5]} tick={axisStyle} tickLine={false} axisLine={false} />
+                    <Tooltip 
+                      contentStyle={tooltipStyle}
+                      formatter={(v: any) => [`${v} ★`, 'Avg. Rating']}
+                    />
+                    <Bar dataKey="rating" fill="#e11d48" radius={[3, 3, 0, 0]}>
+                      {doctorRatings.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.rating >= 4.7 ? '#10b981' : '#e11d48'} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          </div>
+
+          {/* Top Rated Doctors Leaderboard */}
+          <div className="bg-white dark:bg-zinc-900 rounded-[10px] p-5 shadow-sm lg:col-span-4 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-800 dark:text-zinc-150">Top Specialists</h3>
+                  <p className="text-[10px] text-slate-400 mt-0.5">Highly rated clinicians</p>
+                </div>
+                <span className="text-[9px] font-extrabold uppercase tracking-widest text-emerald-600 bg-emerald-50 dark:bg-emerald-950/20 px-2 py-0.5 rounded-[6px]">
+                  Leaderboard
+                </span>
+              </div>
+
+              <div className="space-y-4">
+                {topDoctors.map((doc, idx) => (
+                  <div key={doc.id} className="flex items-center justify-between border-b border-slate-100 dark:border-zinc-800 pb-3 last:border-0 last:pb-0">
+                    <div className="flex items-center gap-3">
+                      <div className="h-9 w-9 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-extrabold flex items-center justify-center text-xs shrink-0 border border-emerald-500/10">
+                        {doc.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-slate-855 dark:text-zinc-200">Dr. {doc.name}</div>
+                        <div className="text-[9px] text-slate-405 dark:text-zinc-500 font-medium">{doc.specialization}</div>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-end">
+                      <div className="flex items-center gap-0.5 text-xs font-extrabold text-amber-500">
+                        <Star className="h-3 w-3 fill-amber-500 stroke-amber-500" />
+                        {doc.rating}
+                      </div>
+                      <span className="text-[8px] text-slate-400">{doc.reviewsCount} reviews</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
         </div>
       )}
 
