@@ -216,6 +216,17 @@ async function run(): Promise<void> {
     );
 
     // Seed database static accounts
+    const hasBengaliNames = await usersCollection.findOne({ name: /[\u0985-\u09B9\u09C0-\u09E3]/ });
+    if (hasBengaliNames) {
+      console.log("Detected native Bengali letters in user names in MongoDB. Wiping database collections to force clean English-transliterated seeding...");
+      await usersCollection.deleteMany({});
+      await doctorsCollection.deleteMany({});
+      await appointmentsCollection.deleteMany({});
+      await reviewsCollection.deleteMany({});
+      await paymentsCollection.deleteMany({});
+      await prescriptionsCollection.deleteMany({});
+    }
+
     await seedStaticUsers();
   } catch (error) {
     console.error("Database connection failed on startup:", error);
