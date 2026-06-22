@@ -34,11 +34,11 @@
   <tr>
     <td align="center" width="70%">
       <strong>Desktop</strong><br/><br/>
-      <img src="frontend/public/assets/Homepage.png" alt="Homepage Desktop" style="border-radius:12px; border: 1px solid #1e293b;" />
+      <img src="https://raw.githubusercontent.com/CoderGUY47/medicare-connect/main/frontend/public/assets/Homepage.png" alt="Homepage Desktop" style="border-radius:12px; border: 1px solid #1e293b;" />
     </td>
     <td align="center" width="30%">
       <strong>Mobile</strong><br/><br/>
-      <img src="frontend/public/assets/mobile-homepage.png" alt="Homepage Mobile" style="border-radius:12px; border: 1px solid #1e293b;" />
+      <img src="https://raw.githubusercontent.com/CoderGUY47/medicare-connect/main/frontend/public/assets/mobile-homepage.png" alt="Homepage Mobile" style="border-radius:12px; border: 1px solid #1e293b;" />
     </td>
   </tr>
 </table>
@@ -49,11 +49,11 @@
   <tr>
     <td align="center" width="70%">
       <strong>Desktop</strong><br/><br/>
-      <img src="frontend/public/assets/Dashboard.png" alt="Dashboard Desktop" style="border-radius:12px; border: 1px solid #1e293b;" />
+      <img src="https://raw.githubusercontent.com/CoderGUY47/medicare-connect/main/frontend/public/assets/Dashboard.png" alt="Dashboard Desktop" style="border-radius:12px; border: 1px solid #1e293b;" />
     </td>
     <td align="center" width="30%">
       <strong>Mobile</strong><br/><br/>
-      <img src="frontend/public/assets/mobile-dashboard.png" alt="Dashboard Mobile" style="border-radius:12px; border: 1px solid #1e293b;" />
+      <img src="https://raw.githubusercontent.com/CoderGUY47/medicare-connect/main/frontend/public/assets/mobile-dashboard.png" alt="Dashboard Mobile" style="border-radius:12px; border: 1px solid #1e293b;" />
     </td>
   </tr>
 </table>
