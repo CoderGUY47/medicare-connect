@@ -24,8 +24,11 @@ import {
   Bell,
   LogOut,
   Sun,
-  Moon
+  Moon,
+  Menu,
+  X
 } from 'lucide-react';
+import LoadingScreen from '../../../components/LoadingScreen';
 
 export default function AdminDashboardLayout({
   children,
@@ -38,6 +41,11 @@ export default function AdminDashboardLayout({
   const pathname = usePathname();
   const [currentTime, setCurrentTime] = useState('');
   const [mounted, setMounted] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     setMounted(true);
@@ -50,7 +58,6 @@ export default function AdminDashboardLayout({
   }, [user, isLoading, router]);
 
   useEffect(() => {
-    // Format date like: "Friday, December 19, 2025 (9:45 AM)"
     const updateTime = () => {
       const now = new Date();
       const options: Intl.DateTimeFormatOptions = {
@@ -69,16 +76,7 @@ export default function AdminDashboardLayout({
   }, []);
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-[70vh] items-center justify-center bg-slate-50 dark:bg-zinc-950">
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-1.5 w-48 bg-slate-200 dark:bg-zinc-800 rounded-full overflow-hidden">
-            <div className="h-full w-1/2 bg-rose-600 rounded-full animate-infinite-scroll" />
-          </div>
-          <span className="text-xs font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-widest animate-pulse">Authenticating…</span>
-        </div>
-      </div>
-    );
+    return <LoadingScreen message="Authenticating administrator workspace..." />;
   }
 
   if (!user || user.role !== 'admin') {
@@ -116,24 +114,41 @@ export default function AdminDashboardLayout({
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 flex flex-col md:flex-row transition-colors duration-300">
       
+      {/* Mobile Drawer Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 z-30 bg-black/40 backdrop-blur-xs md:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Sidebar Navigation */}
-      <aside className="w-full md:w-64 border-r border-slate-100 dark:border-zinc-900 bg-white dark:bg-zinc-900 shrink-0 flex flex-col min-h-screen">
+      <aside className={`fixed inset-y-0 left-0 z-40 w-64 border-r border-slate-100 dark:border-zinc-900 bg-white dark:bg-zinc-900 shrink-0 flex flex-col min-h-screen transition-transform duration-300 transform ${
+        isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+      } md:translate-x-0 md:static`}>
         
         {/* Sidebar Header Brand Logo */}
-        <div className="p-5 border-b border-slate-100 dark:border-zinc-800">
+        <div className="p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <div className="bg-rose-500/10 p-1.5 rounded-xl">
               <HeartPulse className="h-5 w-5 text-rose-600 dark:text-rose-400" />
             </div>
             <div>
               <h2 className="text-sm font-extrabold text-slate-800 dark:text-zinc-100 leading-tight">Medi-Doc Hospital</h2>
-              <p className="text-[10px] text-slate-400 dark:text-zinc-500 font-bold uppercase tracking-wider">Tertiary Hospital</p>
+              <p className="text-[10px] text-slate-450 dark:text-zinc-500 font-bold uppercase tracking-wider">Tertiary Hospital</p>
             </div>
           </Link>
+          <button
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="md:hidden p-1.5 text-slate-400 hover:text-rose-550 dark:hover:text-zinc-150 hover:bg-slate-50 dark:hover:bg-zinc-800 rounded-lg cursor-pointer bg-transparent border-none"
+            aria-label="Close menu"
+          >
+            <X className="h-4 w-4" />
+          </button>
         </div>
 
         {/* Sidebar Menu Items */}
-        <nav className="flex-1 py-4 px-3 space-y-1">
+        <nav className="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
           {sidebarLinks.map((link) => {
             const Icon = link.icon;
             const active = isActive(link.href);
@@ -192,14 +207,24 @@ export default function AdminDashboardLayout({
         {/* Top Header Bar */}
         <header className="h-16 border-b border-slate-100 dark:border-zinc-900 bg-white dark:bg-zinc-900 flex items-center justify-between px-6 md:px-8 shrink-0 transition-colors">
           
-          {/* Search bar mockup */}
-          <div className="flex items-center border border-slate-100 dark:border-zinc-800 rounded-xl bg-slate-50/50 dark:bg-zinc-950/20 px-3 py-1.5 w-64 md:w-80 focus-within:bg-white dark:focus-within:bg-zinc-900 focus-within:border-rose-500 focus-within:ring-1 focus-within:ring-rose-500 transition-all">
-            <Search className="h-3.5 w-3.5 text-slate-400 dark:text-zinc-500 mr-2" />
-            <input 
-              type="text" 
-              placeholder="Search patients, appointments, records..." 
-              className="bg-transparent text-xs text-slate-900 dark:text-zinc-150 outline-none border-none w-full placeholder:text-slate-400"
-            />
+          <div className="flex items-center gap-2 min-w-0">
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="p-2 mr-2 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-500 dark:text-zinc-400 rounded-lg md:hidden cursor-pointer bg-transparent border-none shrink-0"
+              aria-label="Open menu"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            
+            {/* Search bar mockup */}
+            <div className="hidden sm:flex items-center border border-slate-100 dark:border-zinc-800 rounded-xl bg-slate-50/50 dark:bg-zinc-950/20 px-3 py-1.5 w-64 md:w-80 focus-within:bg-white dark:focus-within:bg-zinc-900 focus-within:border-rose-500 focus-within:ring-1 focus-within:ring-rose-500 transition-all">
+              <Search className="h-3.5 w-3.5 text-slate-400 dark:text-zinc-500 mr-2" />
+              <input 
+                type="text" 
+                placeholder="Search patients, appointments, records..." 
+                className="bg-transparent text-xs text-slate-900 dark:text-zinc-150 outline-none border-none w-full placeholder:text-slate-400"
+              />
+            </div>
           </div>
 
           {/* Right Header Details */}
@@ -265,4 +290,3 @@ export default function AdminDashboardLayout({
     </div>
   );
 }
-
