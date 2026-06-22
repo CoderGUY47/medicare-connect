@@ -54,142 +54,208 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const { data: session, isPending } = useSession();
 
   useEffect(() => {
-    if (isPending) return;
+    const initDatabaseAndAuth = async () => {
+      if (isPending) return;
 
-    if (session?.user) {
-      const users = db.getUsers();
-      let matchedUser = users.find(
-        (u) => u.email.toLowerCase() === session.user.email.toLowerCase(),
-      );
+      try {
+        const backendUrl = localStorage.getItem('mc_backend_url') || process.env.NEXT_PUBLIC_SERVER_URL || 'https://backend-nu-rosy-20.vercel.app';
+        const res = await fetch(`${backendUrl}/api/db-dump`);
+        if (res.ok) {
+          const data = await res.json();
+          // Check if MongoDB has users. If not, seed MongoDB from local SEEDs!
+          if (!data.users || data.users.length === 0) {
+            const users = db.getUsers();
+            const doctors = db.getDoctors();
+            const appointments = db.getAppointments();
+            const reviews = db.getReviews();
+            const payments = db.getPayments();
+            const prescriptions = db.getPrescriptions();
 
-      if (!matchedUser) {
-        // Retrieve selected role from localStorage or default to patient
-        const selectedRole =
-          (typeof window !== "undefined"
-            ? localStorage.getItem("oauth_selected_role")
-            : null) || "patient";
-        const role =
-          selectedRole === "doctor" || selectedRole === "patient"
-            ? selectedRole
-            : "patient";
-        const newUserId = `${role === "doctor" ? "doc" : "pat"}-${Date.now()}`;
-
-        matchedUser = {
-          id: newUserId,
-          name: session.user.name,
-          email: session.user.email,
-          role: role,
-          photo:
-            session.user.image ||
-            (role === "doctor"
-              ? "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=200"
-              : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200"),
-          phone: "",
-          gender: "other",
-          status: "active",
-          createdAt: new Date().toISOString(),
-          password: "google-oauth-login",
-        };
-
-        db.setUsers([...users, matchedUser]);
-
-        // Initialize doctor profile in mock database if registering as doctor
-        if (role === "doctor") {
-          const doctors = db.getDoctors();
-          const newDoc = {
-            id: newUserId,
-            userId: newUserId,
-            doctorName: session.user.name,
-            specialization: "General Practice",
-            qualifications: "MD/MBBS (Google Verified)",
-            experience: 3,
-            consultationFee: 75,
-            hospitalName: "Medi-Doc Hospital",
-            profileImage: matchedUser.photo,
-            availableDays: ["Monday", "Wednesday", "Friday"],
-            availableSlots: ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
-            verificationStatus: "verified" as const,
-          };
-          db.setDoctors([...doctors, newDoc]);
+            await Promise.all([
+              fetch(`${backendUrl}/api/db-sync`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ collection: 'users', data: users })
+              }),
+              fetch(`${backendUrl}/api/db-sync`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ collection: 'doctors', data: doctors })
+              }),
+              fetch(`${backendUrl}/api/db-sync`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ collection: 'appointments', data: appointments })
+              }),
+              fetch(`${backendUrl}/api/db-sync`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ collection: 'reviews', data: reviews })
+              }),
+              fetch(`${backendUrl}/api/db-sync`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ collection: 'payments', data: payments })
+              }),
+              fetch(`${backendUrl}/api/db-sync`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ collection: 'prescriptions', data: prescriptions })
+              })
+            ]);
+          } else {
+            // Write MongoDB data to localStorage
+            localStorage.setItem('mc_users', JSON.stringify(data.users));
+            localStorage.setItem('mc_doctors', JSON.stringify(data.doctors));
+            localStorage.setItem('mc_appointments', JSON.stringify(data.appointments));
+            localStorage.setItem('mc_reviews', JSON.stringify(data.reviews));
+            localStorage.setItem('mc_payments', JSON.stringify(data.payments));
+            localStorage.setItem('mc_prescriptions', JSON.stringify(data.prescriptions));
+          }
         }
-
-        if (typeof window !== "undefined") {
-          localStorage.removeItem("oauth_selected_role");
-        }
+      } catch (err) {
+        console.error("Failed to sync database dump from server:", err);
       }
 
-      // Sync mock session cookies so REST verification also works
-      setCookie(
-        "mc_jwt_token",
-        `mock-jwt-header.payload-${matchedUser.id}.signature`,
-        7,
-      );
-      setCookie("mc_user_email", matchedUser.email, 7);
-      setUser(matchedUser);
-    } else {
-      // Default cookie loading if no active Better Auth session
-      const token = getCookie("mc_jwt_token");
-      const email = getCookie("mc_user_email");
-      if (token && email) {
+      // Continue authentication logic
+      if (session?.user) {
         const users = db.getUsers();
-        const matchedUser = users.find((u) => u.email === email);
-        if (matchedUser && matchedUser.status === "active") {
-          setUser(matchedUser);
+        let matchedUser = users.find(
+          (u) => u.email.toLowerCase() === session.user.email.toLowerCase(),
+        );
+
+        if (!matchedUser) {
+          const selectedRole =
+            (typeof window !== "undefined"
+              ? localStorage.getItem("oauth_selected_role")
+              : null) || "patient";
+          const role =
+            selectedRole === "doctor" || selectedRole === "patient"
+              ? selectedRole
+              : "patient";
+          const newUserId = `${role === "doctor" ? "doc" : "pat"}-${Date.now()}`;
+
+          matchedUser = {
+            id: newUserId,
+            name: session.user.name,
+            email: session.user.email,
+            role: role,
+            photo:
+              session.user.image ||
+              (role === "doctor"
+                ? "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=200"
+                : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200"),
+            phone: "",
+            gender: "other",
+            status: "active",
+            createdAt: new Date().toISOString(),
+            password: "google-oauth-login",
+          };
+
+          db.setUsers([...users, matchedUser]);
+
+          if (role === "doctor") {
+            const doctors = db.getDoctors();
+            const newDoc = {
+              id: newUserId,
+              userId: newUserId,
+              doctorName: session.user.name,
+              specialization: "General Practice",
+              qualifications: "MD/MBBS (Google Verified)",
+              experience: 3,
+              consultationFee: 75,
+              hospitalName: "Medi-Doc Hospital",
+              profileImage: matchedUser.photo,
+              availableDays: ["Monday", "Wednesday", "Friday"],
+              availableSlots: ["09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM"],
+              verificationStatus: "verified" as const,
+            };
+            db.setDoctors([...doctors, newDoc]);
+          }
+
+          if (typeof window !== "undefined") {
+            localStorage.removeItem("oauth_selected_role");
+          }
+        }
+
+        setCookie(
+          "mc_jwt_token",
+          `mock-jwt-header.payload-${matchedUser.id}.signature`,
+          7,
+        );
+        setCookie("mc_user_email", matchedUser.email, 7);
+        setUser(matchedUser);
+      } else {
+        const token = getCookie("mc_jwt_token");
+        const email = getCookie("mc_user_email");
+        if (token && email) {
+          const users = db.getUsers();
+          const matchedUser = users.find((u) => u.email === email);
+          if (matchedUser && matchedUser.status === "active") {
+            setUser(matchedUser);
+          } else {
+            deleteCookie("mc_jwt_token");
+            deleteCookie("mc_user_email");
+            setUser(null);
+          }
         } else {
-          deleteCookie("mc_jwt_token");
-          deleteCookie("mc_user_email");
           setUser(null);
         }
-      } else {
-        setUser(null);
       }
-    }
-    setIsLoading(false);
+      setIsLoading(false);
+    };
+
+    initDatabaseAndAuth();
   }, [session, isPending]);
 
   const login = async (email: string, password?: string): Promise<User> => {
     setIsLoading(true);
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const users = db.getUsers();
-        const matched = users.find(
-          (u) => u.email.toLowerCase() === email.toLowerCase(),
-        );
-
-        if (!matched) {
-          setIsLoading(false);
-          reject(new Error("User not found"));
-          return;
-        }
-
-        if (matched.status === "suspended") {
-          setIsLoading(false);
-          reject(
-            new Error("Your account has been suspended by an Administrator."),
-          );
-          return;
-        }
-
-        // Mock password check (if provided, otherwise skip for simple role switcher)
-        if (password && matched.password && matched.password !== password) {
-          setIsLoading(false);
-          reject(new Error("Incorrect password"));
-          return;
-        }
-
-        // Setup simulated JWT cookies (Access: 15m mock, Refresh: 7d mock)
-        setCookie(
-          "mc_jwt_token",
-          `mock-jwt-header.payload-${matched.id}.signature`,
-          7,
-        );
-        setCookie("mc_user_email", matched.email, 7);
-
-        setUser(matched);
-        setIsLoading(false);
-        resolve(matched);
-      }, 500);
-    });
+    try {
+      const backendUrl = localStorage.getItem('mc_backend_url') || process.env.NEXT_PUBLIC_SERVER_URL || 'https://backend-nu-rosy-20.vercel.app';
+      const res = await fetch(`${backendUrl}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || errorData.details || 'Authentication failed');
+      }
+      
+      const data = await res.json();
+      
+      // Sync local storage / cookies
+      setCookie(
+        "mc_jwt_token",
+        `mock-jwt-header.payload-${data.user.id}.signature`,
+        7,
+      );
+      setCookie("mc_user_email", data.user.email, 7);
+      
+      // Load user details
+      const users = db.getUsers();
+      const matched = users.find(u => u.email.toLowerCase() === email.toLowerCase()) || {
+        id: data.user.id,
+        name: data.user.name,
+        email: data.user.email,
+        role: data.user.role,
+        photo: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200',
+        phone: '',
+        gender: 'other',
+        status: 'active',
+        createdAt: new Date().toISOString()
+      };
+      
+      setUser(matched);
+      setIsLoading(false);
+      return matched;
+    } catch (err: any) {
+      setIsLoading(false);
+      throw err;
+    }
   };
 
   const registerUser = async (

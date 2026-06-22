@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { resetDb } from '../lib/mockDb';
 import { Settings, Shield, User as UserIcon, Activity, RefreshCw } from 'lucide-react';
@@ -8,12 +8,34 @@ import { Settings, Shield, User as UserIcon, Activity, RefreshCw } from 'lucide-
 export default function RoleSwitcher() {
   const { login, logout, user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [credentials, setCredentials] = useState<any[]>([]);
 
-  const handleRoleSwitch = async (email: string) => {
+  useEffect(() => {
+    const fetchCreds = async () => {
+      try {
+        const backendUrl = localStorage.getItem('mc_backend_url') || process.env.NEXT_PUBLIC_SERVER_URL || 'https://backend-nu-rosy-20.vercel.app';
+        const res = await fetch(`${backendUrl}/api/auth/demo-credentials`);
+        if (res.ok) {
+          const data = await res.json();
+          setCredentials(data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch demo credentials:", err);
+      }
+    };
+    if (isOpen) {
+      fetchCreds();
+    }
+  }, [isOpen]);
+
+  const handleRoleSwitch = async (roleName: string) => {
     try {
-      await login(email);
-      setIsOpen(false);
-      window.location.reload(); // Reload to sync state on all pages
+      const matched = credentials.find(c => c.role === roleName);
+      if (matched) {
+        await login(matched.email, matched.pw);
+        setIsOpen(false);
+        window.location.reload(); // Reload to sync state on all pages
+      }
     } catch (err) {
       console.error('Failed to switch role:', err);
     }
@@ -54,29 +76,37 @@ export default function RoleSwitcher() {
           )}
 
           <div className="space-y-2">
-            <button
-              onClick={() => handleRoleSwitch('patient@medi-doc.com')}
-              className="flex w-full items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-left text-xs font-medium text-foreground hover:bg-secondary transition-all"
-            >
-              <UserIcon className="h-3.5 w-3.5 text-blue-500" />
-              Switch to Patient (Jane Doe)
-            </button>
+            {credentials.length === 0 ? (
+              <div className="text-center text-[10px] text-red-500 py-3 font-semibold border border-red-500/10 rounded-lg bg-red-500/5 animate-pulse">
+                Demo credentials expired or loading...
+              </div>
+            ) : (
+              <>
+                <button
+                  onClick={() => handleRoleSwitch('patient')}
+                  className="flex w-full items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-left text-xs font-medium text-foreground hover:bg-secondary transition-all"
+                >
+                  <UserIcon className="h-3.5 w-3.5 text-blue-500" />
+                  Switch to Patient (Jannatul Ferdous)
+                </button>
 
-            <button
-              onClick={() => handleRoleSwitch('jenkins@medi-doc.com')}
-              className="flex w-full items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-left text-xs font-medium text-foreground hover:bg-secondary transition-all"
-            >
-              <Shield className="h-3.5 w-3.5 text-green-500" />
-              Switch to Doctor (Dr. Jenkins)
-            </button>
+                <button
+                  onClick={() => handleRoleSwitch('doctor')}
+                  className="flex w-full items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-left text-xs font-medium text-foreground hover:bg-secondary transition-all"
+                >
+                  <Shield className="h-3.5 w-3.5 text-green-500" />
+                  Switch to Doctor (Dr. Sarah Jahan)
+                </button>
 
-            <button
-              onClick={() => handleRoleSwitch('admin@medi-doc.com')}
-              className="flex w-full items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-left text-xs font-medium text-foreground hover:bg-secondary transition-all"
-            >
-              <Shield className="h-3.5 w-3.5 text-purple-500" />
-              Switch to Admin (Sarah)
-            </button>
+                <button
+                  onClick={() => handleRoleSwitch('admin')}
+                  className="flex w-full items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-left text-xs font-medium text-foreground hover:bg-secondary transition-all"
+                >
+                  <Shield className="h-3.5 w-3.5 text-purple-500" />
+                  Switch to Admin (Admin)
+                </button>
+              </>
+            )}
 
             {user ? (
               <button
@@ -85,7 +115,7 @@ export default function RoleSwitcher() {
                   setIsOpen(false);
                   window.location.reload();
                 }}
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-destructive/15 text-destructive hover:bg-destructive/25 px-3 py-1.5 text-xs font-semibold transition-all"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-destructive/15 text-destructive hover:bg-destructive/25 px-3 py-1.5 text-xs font-semibold transition-all mt-2"
               >
                 Log Out Current
               </button>

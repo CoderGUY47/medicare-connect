@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
@@ -29,13 +29,13 @@ const loginSchema = zod.object({
 
 type LoginFormValues = zod.infer<typeof loginSchema>;
 
-const ROLES = [
-  { id: 'patient', label: 'Patient', icon: User, email: 'patient@medi-doc.com', pw: 'patient123' },
-  { id: 'doctor', label: 'Doctor', icon: Stethoscope, email: 'jenkins@medi-doc.com', pw: 'doctor123' },
-  { id: 'nurse', label: 'Nurse', icon: Users, email: 'nurse@medi-doc.com', pw: 'nurse123' },
-  { id: 'lab', label: 'Lab Staff', icon: FlaskConical, email: 'lab@medi-doc.com', pw: 'lab123' },
-  { id: 'pharmacist', label: 'Pharmacist', icon: Pill, email: 'pharmacist@medi-doc.com', pw: 'pharmacist123' },
-  { id: 'admin', label: 'Administrator', icon: Shield, email: 'admin@medi-doc.com', pw: 'admin123' }
+const ROLE_META = [
+  { id: 'patient', label: 'Patient', icon: User },
+  { id: 'doctor', label: 'Doctor', icon: Stethoscope },
+  { id: 'nurse', label: 'Nurse', icon: Users },
+  { id: 'lab', label: 'Lab Staff', icon: FlaskConical },
+  { id: 'pharmacist', label: 'Pharmacist', icon: Pill },
+  { id: 'admin', label: 'Administrator', icon: Shield }
 ];
 
 export default function LoginForm() {
@@ -46,6 +46,35 @@ export default function LoginForm() {
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [selectedRole, setSelectedRole] = useState<string>('admin');
+  const [credentials, setCredentials] = useState<any[]>([]);
+
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: '', password: '' }
+  });
+
+  useEffect(() => {
+    const fetchCreds = async () => {
+      try {
+        const backendUrl = localStorage.getItem('mc_backend_url') || process.env.NEXT_PUBLIC_SERVER_URL || 'https://backend-nu-rosy-20.vercel.app';
+        const res = await fetch(`${backendUrl}/api/auth/demo-credentials`);
+        if (res.ok) {
+          const data = await res.json();
+          setCredentials(data);
+
+          // Prefill default email and password with admin details if available
+          const adminCred = data.find((c: any) => c.role === 'admin');
+          if (adminCred) {
+            setValue('email', adminCred.email);
+            setValue('password', adminCred.pw);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch demo credentials from server:", err);
+      }
+    };
+    fetchCreds();
+  }, [setValue]);
 
   const handleGoogleSignIn = async () => {
     setErrorMsg('');
@@ -62,17 +91,15 @@ export default function LoginForm() {
     }
   };
 
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: 'admin@medi-doc.com', password: 'admin123' } // Default administrator
-  });
-
   const handleRoleSelect = (roleId: string) => {
     setSelectedRole(roleId);
-    const matchedRole = ROLES.find(r => r.id === roleId);
+    const matchedRole = credentials.find(r => r.role === roleId);
     if (matchedRole) {
       setValue('email', matchedRole.email);
       setValue('password', matchedRole.pw);
+    } else {
+      setValue('email', '');
+      setValue('password', '');
     }
   };
 
@@ -88,8 +115,6 @@ export default function LoginForm() {
       setLoading(false);
     }
   };
-
-  const activeRoleDetails = ROLES.find(r => r.id === selectedRole);
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-[1100px] w-full min-h-[90vh] flex items-center justify-center">
@@ -184,7 +209,7 @@ export default function LoginForm() {
                 Select Your Role
               </div>
               <div className="grid grid-cols-2 gap-3">
-                {ROLES.map((role) => {
+                {ROLE_META.map((role) => {
                   const Icon = role.icon;
                   const isSelected = selectedRole === role.id;
                   return (
