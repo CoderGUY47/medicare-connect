@@ -53,28 +53,33 @@ export default function LoginForm() {
     defaultValues: { email: '', password: '' }
   });
 
+  // ── Effect 1: Fetch demo credentials once on mount ──
   useEffect(() => {
-    const fetchCreds = async () => {
-      try {
-        const backendUrl = localStorage.getItem('mc_backend_url') || process.env.NEXT_PUBLIC_SERVER_URL || 'https://backend-nu-rosy-20.vercel.app';
-        const res = await fetch(`${backendUrl}/api/auth/demo-credentials`);
-        if (res.ok) {
-          const data = await res.json();
-          setCredentials(data);
+    const backendUrl =
+      (typeof window !== 'undefined' && localStorage.getItem('mc_backend_url')) ||
+      process.env.NEXT_PUBLIC_SERVER_URL ||
+      'https://backend-nu-rosy-20.vercel.app';
 
-          // Prefill default email and password with admin details if available
-          const adminCred = data.find((c: any) => c.role === 'admin');
-          if (adminCred) {
-            setValue('email', adminCred.email);
-            setValue('password', adminCred.pw);
-          }
-        }
-      } catch (err) {
-        console.error("Failed to fetch demo credentials from server:", err);
-      }
-    };
-    fetchCreds();
-  }, [setValue]);
+    fetch(`${backendUrl}/api/auth/demo-credentials`)
+      .then(res => (res.ok ? res.json() : Promise.reject(res.status)))
+      .then((data: any[]) => setCredentials(data))
+      .catch(() => console.error('Failed to fetch demo credentials'));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ── Effect 2: Auto-fill form whenever credentials load OR selected role changes ──
+  useEffect(() => {
+    if (credentials.length === 0) return;
+    const match = credentials.find((c: any) => c.role === selectedRole);
+    if (match) {
+      setValue('email', match.email, { shouldValidate: true });
+      setValue('password', match.pw, { shouldValidate: true });
+      setErrorMsg('');
+    } else {
+      setValue('email', '', { shouldValidate: false });
+      setValue('password', '', { shouldValidate: false });
+    }
+  }, [credentials, selectedRole, setValue]);
 
   const handleGoogleSignIn = async () => {
     setErrorMsg('');
@@ -91,16 +96,9 @@ export default function LoginForm() {
     }
   };
 
+  // Just update the selected role — Effect 2 handles the form fill
   const handleRoleSelect = (roleId: string) => {
     setSelectedRole(roleId);
-    const matchedRole = credentials.find(r => r.role === roleId);
-    if (matchedRole) {
-      setValue('email', matchedRole.email);
-      setValue('password', matchedRole.pw);
-    } else {
-      setValue('email', '');
-      setValue('password', '');
-    }
   };
 
   const onSubmit = async (values: LoginFormValues) => {
@@ -205,18 +203,26 @@ export default function LoginForm() {
 
             {/* Role selection */}
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-2.5">
-                Select Your Role
+              <div className="flex items-center justify-between mb-2.5">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-500">
+                  Select Your Role
+                </div>
+                <div className="text-[10px] text-slate-400 dark:text-zinc-600 flex items-center gap-1">
+                  <Info className="h-3 w-3" />
+                  <span>Click to auto-fill credentials</span>
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 {ROLE_META.map((role) => {
                   const Icon = role.icon;
                   const isSelected = selectedRole === role.id;
+                  const roleCred = credentials.find((c: any) => c.role === role.id);
                   return (
                     <button
                       key={role.id}
                       type="button"
                       onClick={() => handleRoleSelect(role.id)}
+                      title={roleCred ? `${roleCred.email}  ·  ${roleCred.pw}` : role.label}
                       className={`flex flex-col items-center justify-center p-3 h-20 rounded-md border transition-all select-none text-center ${
                         isSelected
                           ? 'border-rose-600 bg-rose-500/5 dark:border-rose-500 dark:bg-rose-950/15 shadow-sm shadow-rose-500/5'
@@ -341,7 +347,7 @@ export default function LoginForm() {
             </form>
 
             <div className="text-center text-xs pt-1 border-t border-slate-100 dark:border-zinc-800">
-              <span className="text-slate-400 dark:text-zinc-500">Don't have an account? </span>
+              <span className="text-slate-400 dark:text-zinc-500">Don&apos;t have an account? </span>
               <Link 
                 href="/register" 
                 className="text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 font-bold transition-colors"
@@ -354,10 +360,10 @@ export default function LoginForm() {
             <div className="text-center text-[10px] text-slate-400 dark:text-zinc-500">
               <span>Need help? Contact IT Support: </span>
               <a 
-                href="tel:+251911000000" 
+                href="tel:+8801711000000" 
                 className="text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 font-bold transition-colors"
               >
-                +251-911-000000
+                +880 1711-000000
               </a>
             </div>
 
