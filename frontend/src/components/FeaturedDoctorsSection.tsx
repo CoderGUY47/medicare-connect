@@ -3,18 +3,50 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronRight, MapPin, Heart, Star, ArrowRight } from 'lucide-react';
-import { db, Doctor } from '../lib/mockDb';
+import { db } from '../lib/mockDb';
 import ScrollAnimate from './ScrollAnimate';
 
+interface MongoDoctor {
+  _id?: string;
+  id: string;
+  userId: string;
+  doctorName: string;
+  specialization: string;
+  qualifications: string;
+  experience: number;
+  consultationFee: number;
+  hospitalName: string;
+  profileImage: string;
+  availableDays: string[];
+  availableSlots: string[];
+  verificationStatus: string;
+}
+
 export default function FeaturedDoctorsSection() {
-  const [featuredDocs, setFeaturedDocs] = useState<Doctor[]>([]);
+  const [featuredDocs, setFeaturedDocs] = useState<MongoDoctor[]>([]);
 
   useEffect(() => {
-    const docs = db
-      .getDoctors()
-      .filter((d) => d.verificationStatus === 'verified')
-      .slice(0, 3);
-    setFeaturedDocs(docs);
+    const backendUrl =
+      (typeof window !== 'undefined' && localStorage.getItem('mc_backend_url')) ||
+      process.env.NEXT_PUBLIC_SERVER_URL ||
+      'https://backend-nu-rosy-20.vercel.app';
+
+    fetch(`${backendUrl}/doctors`, { signal: AbortSignal.timeout(6000) })
+      .then(res => res.ok ? res.json() : Promise.reject(res.status))
+      .then((data: MongoDoctor[]) => {
+        const verified = data
+          .filter(d => d.verificationStatus === 'verified')
+          .slice(0, 3);
+        setFeaturedDocs(verified);
+      })
+      .catch(() => {
+        // Fallback to local data
+        const local = db
+          .getDoctors()
+          .filter(d => d.verificationStatus === 'verified')
+          .slice(0, 3);
+        setFeaturedDocs(local as any);
+      });
   }, []);
 
   return (
