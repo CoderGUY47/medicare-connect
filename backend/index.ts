@@ -84,6 +84,17 @@ const verifyToken = async (request: Request, response: Response, next: NextFunct
   }
 };
 
+// Helper middleware to check for authorized roles
+const verifyRole = (roles: string[]) => {
+  return (request: Request, response: Response, next: NextFunction) => {
+    const user = (request as any).user;
+    if (!user || !roles.includes(user.role)) {
+      return response.status(403).json({ error: "Forbidden: Access denied for this role" });
+    }
+    return next();
+  };
+};
+
 // asynchronous connection starter
 async function run(): Promise<void> {
   try {
@@ -357,8 +368,45 @@ app.post("/payments", verifyToken, async (req: Request, res: Response) => {
   }
 });
 
+// 14b. Stripe Payment Confirmation and Database Sync Endpoint
+const paymentConfirmHandler = async (req: Request, res: Response) => {
+  try {
+    const { appointment, payment } = req.body;
+    if (!appointment || !payment) {
+      return res.status(400).json({ error: "Missing appointment or payment data" });
+    }
+    
+    // Check if appointment already exists in DB to prevent duplicates
+    const existingApt = await appointmentsCollection.findOne({ id: appointment.id });
+    if (!existingApt) {
+      await appointmentsCollection.insertOne(appointment);
+    } else {
+      await appointmentsCollection.updateOne({ id: appointment.id }, { $set: appointment });
+    }
+
+    // Check if payment already exists in DB to prevent duplicates
+    const existingPayment = await paymentsCollection.findOne({ id: payment.id });
+    if (!existingPayment) {
+      await paymentsCollection.insertOne(payment);
+    } else {
+      await paymentsCollection.updateOne({ id: payment.id }, { $set: payment });
+    }
+
+    res.status(200).json({ 
+      success: true, 
+      message: "Payment and appointment confirmed in MongoDB database successfully." 
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: "Failed to confirm payment", details: error.message });
+  }
+};
+
+app.post("/payment-confirm", paymentConfirmHandler);
+app.post("/api/payment-confirm", paymentConfirmHandler);
+
+
 // 15. All Users (Admin overview)
-app.get("/users", async (req: Request, res: Response) => {
+app.get("/users", verifyToken, verifyRole(["admin"]), async (req: Request, res: Response) => {
   try {
     const users = await usersCollection.find({}).toArray();
     res.json(users);
@@ -368,7 +416,7 @@ app.get("/users", async (req: Request, res: Response) => {
 });
 
 // 16. Delete User by ID
-app.delete("/users/:userId", async (req: Request, res: Response) => {
+app.delete("/users/:userId", verifyToken, verifyRole(["admin"]), async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
     const query = ObjectId.isValid(userId) ? { _id: new ObjectId(userId) } : { id: userId };
@@ -380,7 +428,7 @@ app.delete("/users/:userId", async (req: Request, res: Response) => {
 });
 
 // 17. Update User Role
-app.put("/users/:userId/role", async (req: Request, res: Response) => {
+app.put("/users/:userId/role", verifyToken, verifyRole(["admin"]), async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
     const { role } = req.body;
@@ -396,7 +444,7 @@ app.put("/users/:userId/role", async (req: Request, res: Response) => {
 });
 
 // 18. Platform Statistics Endpoint
-app.get("/stats", async (req: Request, res: Response) => {
+app.get("/stats", verifyToken, verifyRole(["admin", "doctor"]), async (req: Request, res: Response) => {
   try {
     const totalDoctors = await doctorsCollection.countDocuments({});
     const totalPatients = await usersCollection.countDocuments({ role: { $in: ["patient", "user"] } });
