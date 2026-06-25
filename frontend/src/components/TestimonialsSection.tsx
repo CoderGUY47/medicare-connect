@@ -42,7 +42,7 @@ export default function TestimonialsSection() {
   return (
     <ScrollAnimate>
       <section className="w-full bg-zinc-950 text-white select-none border-b border-zinc-900 rounded-none py-16 md:py-24">
-        
+
         {/* Swiper focus/height transitions via CSS */}
         <style>{`
           .testimonial-swiper .swiper-wrapper {
@@ -82,7 +82,7 @@ export default function TestimonialsSection() {
           }
         `}</style>
 
-        <div className="container mx-auto px-6 max-w-7xl space-y-10 rounded-none">
+        <div className="container mx-auto px-0 max-w-7xl space-y-10 rounded-none">
           {/* Header Block: Title/Description on Left, Navigation on Right */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-3">
@@ -90,7 +90,7 @@ export default function TestimonialsSection() {
                 <span className="text-sm font-black">+</span>
                 <span>Care in Action</span>
               </div>
-              <h2 className="text-2xl md:text-3.5xl font-black text-white font-outfit tracking-tight">
+              <h2 className="text-2xl md:text-4xl font-bold text-white font-outfit tracking-tight">
                 Why patients choose our expert care
               </h2>
               <div className="text-base text-zinc-400 leading-relaxed font-semibold max-w-3xl">
@@ -152,7 +152,7 @@ export default function TestimonialsSection() {
                           {rev.reviewText}
                         </div>
                       </div>
-                      
+
                       <div className="space-y-0.5 pt-3 border-t border-zinc-800">
                         <div className="text-xs font-bold text-white">
                           Verified patient

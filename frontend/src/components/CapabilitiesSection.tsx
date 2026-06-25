@@ -87,19 +87,16 @@ export default function CapabilitiesSection() {
   };
 
   return (
-    <section className="w-full bg-zinc-950 text-white select-none border-b border-zinc-900 rounded-none">
-      <div className="grid grid-cols-1 lg:grid-cols-2 items-stretch min-h-[550px] rounded-none">
-        
+    <section className="w-full bg-zinc-950 text-white select-none border-0 rounded-none">
+      <div className="grid grid-cols-1 lg:grid-cols-2 items-stretch min-h-[500px] rounded-none">
+
         {/* Left half: Context and Info data (centered wrapper) */}
         <div className="w-full flex justify-start lg:justify-end bg-zinc-950 py-16 md:py-24 rounded-none">
-          <div className="w-full lg:max-w-[650px] px-6 md:px-12 lg:px-16 flex flex-col justify-between space-y-10 z-25 relative rounded-none">
+          <div className="w-full lg:max-w-[650px] px-0 md:px-0 lg:px-0 flex flex-col justify-between space-y-10 z-25 relative rounded-none">
             <div className="space-y-6">
               {/* Header Chip */}
               <div className="space-y-2">
-                <span className="text-[10px] font-extrabold tracking-[0.25em] text-rose-500 uppercase bg-rose-950/20 px-3 py-1 border border-rose-950/40 rounded-none inline-block">
-                  Platform Workflow
-                </span>
-                <h2 className="text-2xl md:text-3.5xl font-black tracking-tight font-outfit text-white">
+                <h2 className="text-2xl md:text-4xl font-bold tracking-tight font-outfit text-white">
                   System Capabilities
                 </h2>
               </div>
@@ -107,10 +104,10 @@ export default function CapabilitiesSection() {
               {/* Dynamic Content Block with fade transitions */}
               <div className="space-y-5 transition-all duration-500 min-h-[220px]">
                 <div className="space-y-2">
-                  <span className="text-xs font-mono font-extrabold text-rose-500 uppercase tracking-widest block">
+                  <span className="text-md font-extrabold text-rose-500 uppercase tracking-widest block">
                     {CAPABILITIES_DATA[activeIndex].num} / {CAPABILITIES_DATA[activeIndex].label}
                   </span>
-                  <h3 className="text-lg md:text-xl font-bold tracking-tight text-white leading-snug">
+                  <h3 className="text-lg md:text-2xl font-bold tracking-tight text-white leading-snug">
                     {CAPABILITIES_DATA[activeIndex].title}
                   </h3>
                 </div>
@@ -140,8 +137,8 @@ export default function CapabilitiesSection() {
                       key={idx}
                       onClick={() => handleTabClick(idx)}
                       className={`pb-1 transition-all border-b-2 cursor-pointer ${
-                        idx === activeIndex 
-                          ? 'border-rose-600 text-white font-black scale-105' 
+                        idx === activeIndex
+                          ? 'border-rose-600 text-white font-black scale-105'
                           : 'border-transparent hover:text-zinc-350'
                       } rounded-none`}
                     >
@@ -176,7 +173,7 @@ export default function CapabilitiesSection() {
         <div className="relative h-[380px] lg:h-auto min-h-[380px] z-10 rounded-none overflow-hidden select-none">
           {/* Subtle gradient overlay on right side to blend with left black side */}
           <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/20 to-transparent z-10 pointer-events-none rounded-none" />
-          
+
           <Swiper
             modules={[Autoplay, EffectFade]}
             effect="fade"

@@ -14,7 +14,20 @@ const PORT = process.env.PORT || 5000;
 // setup global cors and json body parsing middleware
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        process.env.CLIENT_URL,
+        "https://medicare-connect-ten.vercel.app",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000"
+      ].filter(Boolean);
+      
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   }),
 );
@@ -265,6 +278,100 @@ const seedStaticUsers = async () => {
   }
 };
 
+const seedReviews = async () => {
+  try {
+    const existingReviewsCount = await reviewsCollection.countDocuments({});
+    if (existingReviewsCount > 0) {
+      console.log(`Reviews collection already has ${existingReviewsCount} records. Skipping seed.`);
+      return;
+    }
+
+    let seededReviews = [];
+
+    // Attempt to generate using OpenAI (OpenRouter) if the key is available
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (apiKey) {
+      console.log("Attempting to generate reviews using OpenAI (OpenRouter)...");
+      try {
+        const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model: 'openai/gpt-4o-mini',
+            messages: [
+              {
+                role: 'user',
+                content: 'Generate a JSON array of 5 detailed patient success stories for Medicare Connect. Return ONLY a valid JSON array, no extra text, markdown wrappers, or explanations. Each object in the array should have fields:\n- id: a unique string like "rev-1", "rev-2", etc.\n- patientName: a full name\n- patientPhoto: a placeholder Unsplash avatar image URL (e.g. from https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100)\n- rating: 5\n- reviewText: a detailed paragraph describing how the patient booked an appointment, got great care, and recovered.'
+              }
+            ],
+            max_tokens: 1000
+          })
+        });
+
+        if (res.ok) {
+          const data: any = await res.json();
+          const content = data.choices?.[0]?.message?.content;
+          if (content) {
+            // strip potential markdown code block format (e.g. ```json ... ```)
+            const cleanContent = content.replace(/```json|```/g, '').trim();
+            const parsed = JSON.parse(cleanContent);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              seededReviews = parsed;
+              console.log("Successfully generated reviews via OpenAI.");
+            }
+          }
+        } else {
+          console.warn(`OpenRouter request failed with status: ${res.status}`);
+        }
+      } catch (err) {
+        console.error("Failed to generate reviews via OpenAI API, falling back to static reviews:", err);
+      }
+    }
+
+    // Fallback static reviews if generation failed or key not available
+    if (seededReviews.length === 0) {
+      console.log("Using default fallback reviews for seeding...");
+      seededReviews = [
+        {
+          id: 'rev-1',
+          patientId: 'pat-1',
+          patientName: 'Jannatul Ferdous',
+          patientPhoto: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100',
+          rating: 5,
+          reviewText: 'Dr. Jahan was extremely thorough and attentive during my cardiology consult. She explained everything clearly and made me feel at ease.',
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: 'rev-2',
+          patientId: 'pat-2',
+          patientName: 'Imtiaz Ahmed',
+          patientPhoto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100',
+          rating: 4,
+          reviewText: 'Great doctor, highly professional. Appointment was slightly delayed, but the consultation itself was top-notch.',
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: 'rev-3',
+          patientId: 'pat-1',
+          patientName: 'Jannatul Ferdous',
+          patientPhoto: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100',
+          rating: 5,
+          reviewText: 'Wonderful experience with Dr. Talukdar! He was so patient and friendly with my child. Strongly recommend for pediatric visits.',
+          createdAt: new Date().toISOString()
+        }
+      ];
+    }
+
+    await reviewsCollection.insertMany(seededReviews);
+    console.log(`Successfully seeded ${seededReviews.length} reviews in MongoDB reviews collection.`);
+  } catch (err) {
+    console.error("Error in review seeding logic:", err);
+  }
+};
+
 // asynchronous connection starter
 async function run(): Promise<void> {
   try {
@@ -292,10 +399,12 @@ async function run(): Promise<void> {
     }
 
     await seedStaticUsers();
+    await seedReviews();
   } catch (error) {
     console.error("Database connection failed on startup:", error);
   }
 }
+
 
 // start database connection asynchronously
 run().catch(console.dir);

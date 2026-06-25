@@ -77,7 +77,7 @@ export default function ContactForm() {
         </div>
 
         {/* ── Container: holds BOTH columns content ── */}
-        <div className="relative z-10 container mx-auto px-6 max-w-7xl">
+        <div className="relative z-10 container mx-auto px-0 max-w-7xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
 
             {/* ── Left Column: Info Content ── */}
@@ -92,7 +92,7 @@ export default function ContactForm() {
                   <HeartPulse className="h-3.5 w-3.5" />
                   <span>Contact Our Team</span>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-black text-white font-outfit tracking-tight leading-tight">
+                <h2 className="text-3xl md:text-4xl font-bold text-white font-outfit tracking-tight leading-tight">
                   Reach out to our care coordinators
                 </h2>
                 <p className="text-sm text-zinc-400 leading-relaxed font-medium max-w-sm">
@@ -134,10 +134,10 @@ export default function ContactForm() {
               {/* Form header */}
               <div className="space-y-1">
                 <div className="flex items-center gap-1.5 text-rose-500 font-bold text-xs uppercase tracking-widest">
-                  <span className="text-sm font-black">+</span>
+                  <span className="text-sm font-bold">+</span>
                   <span>Send Secure Inquiry</span>
                 </div>
-                <h3 className="text-xl md:text-2xl font-black text-white font-outfit tracking-tight">
+                <h3 className="text-xl md:text-2xl font-bold text-white font-outfit tracking-tight">
                   We'll respond within 24 hours
                 </h3>
               </div>

@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { getBackendUrl } from '../utils/backendUrl';
-import { ChevronRight, MapPin, Heart, Star, ArrowRight } from 'lucide-react';
-import { db } from '../lib/mockDb';
-import ScrollAnimate from './ScrollAnimate';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { getBackendUrl } from "../utils/backendUrl";
+import { ChevronRight, MapPin, Heart, Star, ArrowRight } from "lucide-react";
+import { db } from "../lib/mockDb";
+import ScrollAnimate from "./ScrollAnimate";
 
 interface MongoDoctor {
   _id?: string;
@@ -30,10 +30,10 @@ export default function FeaturedDoctorsSection() {
     const backendUrl = getBackendUrl();
 
     fetch(`${backendUrl}/doctors`, { signal: AbortSignal.timeout(6000) })
-      .then(res => res.ok ? res.json() : Promise.reject(res.status))
+      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
       .then((data: MongoDoctor[]) => {
         const verified = data
-          .filter(d => d.verificationStatus === 'verified')
+          .filter((d) => d.verificationStatus === "verified")
           .slice(0, 3);
         setFeaturedDocs(verified);
       })
@@ -41,7 +41,7 @@ export default function FeaturedDoctorsSection() {
         // Fallback to local data
         const local = db
           .getDoctors()
-          .filter(d => d.verificationStatus === 'verified')
+          .filter((d) => d.verificationStatus === "verified")
           .slice(0, 3);
         setFeaturedDocs(local as any);
       });
@@ -49,14 +49,11 @@ export default function FeaturedDoctorsSection() {
 
   return (
     <ScrollAnimate>
-      <section className="py-20 px-6 md:px-12 lg:px-16 bg-gradient-to-b from-slate-55 to-slate-100/50 dark:from-zinc-950 dark:to-zinc-900 border-b border-slate-200/60 dark:border-zinc-800/40 transition-colors duration-300">
+      <section className="py-20 px-0 w-full mx-auto bg-gradient-to-b from-slate-55 to-slate-100/50 dark:from-zinc-950 dark:to-zinc-900 border-b border-slate-200/60 dark:border-zinc-800/40 transition-colors duration-300">
         <div className="container mx-auto max-w-7xl space-y-12">
           {/* Section Header */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="text-center sm:text-left space-y-3">
-              <span className="text-[10px] font-extrabold tracking-[0.2em] text-rose-600 dark:text-rose-400 uppercase bg-rose-500/10 dark:bg-rose-500/20 px-3.5 py-1.5 rounded-full inline-block">
-                Our Specialists
-              </span>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-800 dark:text-zinc-100 tracking-tight font-outfit">
                 Verified Specialists
               </h2>
@@ -98,7 +95,7 @@ export default function FeaturedDoctorsSection() {
                 {/* Doctor Details */}
                 <div className="p-6 space-y-5">
                   <div className="space-y-2">
-                    <span className="inline-flex border border-rose-500/20 bg-rose-500/10 px-2.5 py-0.5 rounded-md text-[9px] font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wide">
+                    <span className="inline-flex border border-rose-500/20 bg-rose-500/10 px-2.5 py-0.5 rounded-md text-[9px] font-bold text-rose-600 dark:text-rose-500  uppercase tracking-wide">
                       {doc.specialization}
                     </span>
                     <h3 className="text-base font-bold text-slate-800 dark:text-white group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors truncate">
@@ -106,7 +103,9 @@ export default function FeaturedDoctorsSection() {
                     </h3>
                     <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-white/60">
                       <MapPin className="h-3.5 w-3.5 text-slate-400 dark:text-white/50 shrink-0" />
-                      <span className="truncate font-medium">{doc.hospitalName}</span>
+                      <span className="truncate font-medium">
+                        {doc.hospitalName}
+                      </span>
                     </div>
                   </div>
 
@@ -117,7 +116,8 @@ export default function FeaturedDoctorsSection() {
                         consultation fee
                       </div>
                       <div className="font-extrabold text-slate-800 dark:text-white text-sm mt-0.5 flex items-center">
-                        <i className="fa-solid fa-bangladeshi-taka-sign text-xs mr-0.5"></i>{doc.consultationFee}
+                        <i className="fa-solid fa-bangladeshi-taka-sign text-xs mr-0.5"></i>
+                        {doc.consultationFee}
                       </div>
                     </div>
                     <div>

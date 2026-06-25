@@ -1,11 +1,20 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { Stethoscope, Users, Calendar, Star } from 'lucide-react';
-import { db } from '../lib/mockDb';
-import AnimatedCounter from './AnimatedCounter';
-import ScrollAnimate from './ScrollAnimate';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import React, { useEffect, useState } from "react";
+import { Stethoscope, Users, Calendar, Star } from "lucide-react";
+import { db } from "../lib/mockDb";
+import AnimatedCounter from "./AnimatedCounter";
+import ScrollAnimate from "./ScrollAnimate";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from "recharts";
+import { getBackendUrl } from "../utils/backendUrl";
 
 export default function PlatformStats() {
   const [mounted, setMounted] = useState(false);
@@ -21,7 +30,8 @@ export default function PlatformStats() {
 
     const fetchStats = async () => {
       try {
-        const response = await fetch('https://backend-nu-rosy-20.vercel.app/stats');
+        const response = await fetch(`${getBackendUrl()}/stats`);
+
         if (response.ok) {
           const data = await response.json();
           setStats({
@@ -33,12 +43,17 @@ export default function PlatformStats() {
           return;
         }
       } catch (err) {
-        console.log('Backend stats fetch failed, falling back to local DB:', err);
+        console.log(
+          "Backend stats fetch failed, falling back to local DB:",
+          err,
+        );
       }
 
       // Fallback
       const docsCount = db.getDoctors().length;
-      const patsCount = db.getUsers().filter(u => u.role === 'patient').length;
+      const patsCount = db
+        .getUsers()
+        .filter((u) => u.role === "patient").length;
       const aptsCount = db.getAppointments().length;
       const revsCount = db.getReviews().length;
 
@@ -55,72 +70,76 @@ export default function PlatformStats() {
 
   const statItems = [
     {
-      id: 'stat-docs',
-      label: 'Total Doctors',
+      id: "stat-docs",
+      label: "Total Doctors",
       value: stats.doctors,
-      accentColor: 'text-rose-500',
-      bgGlow: 'bg-rose-500/8 dark:bg-rose-500/10',
-      bgIcon: <Stethoscope className="w-28 h-28 text-rose-500/20 dark:text-rose-400/15" />,
-      desc: 'Active specialists'
+      accentColor: "text-rose-500",
+      bgGlow: "bg-rose-500/8 dark:bg-rose-500/10",
+      bgIcon: (
+        <Stethoscope className="w-28 h-28 text-rose-500/20 dark:text-rose-500/15" />
+      ),
+      desc: "Active specialists",
     },
     {
-      id: 'stat-pats',
-      label: 'Total Patients',
+      id: "stat-pats",
+      label: "Total Patients",
       value: stats.patients,
-      accentColor: 'text-emerald-500',
-      bgGlow: 'bg-emerald-500/8 dark:bg-emerald-500/10',
-      bgIcon: <Users className="w-28 h-28 text-emerald-500/20 dark:text-emerald-400/15" />,
-      desc: 'Registered users'
+      accentColor: "text-emerald-500",
+      bgGlow: "bg-emerald-500/8 dark:bg-emerald-500/10",
+      bgIcon: (
+        <Users className="w-28 h-28 text-emerald-500/20 dark:text-emerald-400/15" />
+      ),
+      desc: "Registered users",
     },
     {
-      id: 'stat-apts',
-      label: 'Total Appointments',
+      id: "stat-apts",
+      label: "Total Appointments",
       value: stats.appointments,
-      accentColor: 'text-blue-500',
-      bgGlow: 'bg-blue-500/8 dark:bg-blue-500/10',
-      bgIcon: <Calendar className="w-28 h-28 text-blue-500/20 dark:text-blue-400/15" />,
-      desc: 'Scheduled visits'
+      accentColor: "text-blue-500",
+      bgGlow: "bg-blue-500/8 dark:bg-blue-500/10",
+      bgIcon: (
+        <Calendar className="w-28 h-28 text-blue-500/20 dark:text-blue-400/15" />
+      ),
+      desc: "Scheduled visits",
     },
     {
-      id: 'stat-revs',
-      label: 'Total Reviews',
+      id: "stat-revs",
+      label: "Total Reviews",
       value: stats.reviews,
-      accentColor: 'text-amber-500',
-      bgGlow: 'bg-amber-500/8 dark:bg-amber-500/10',
-      bgIcon: <Star className="w-28 h-28 text-amber-500/20 dark:text-amber-400/15" />,
-      desc: 'Verified patient feedback'
-    }
+      accentColor: "text-amber-500",
+      bgGlow: "bg-amber-500/8 dark:bg-amber-500/10",
+      bgIcon: (
+        <Star className="w-28 h-28 text-amber-500/20 dark:text-amber-400/15" />
+      ),
+      desc: "Verified patient feedback",
+    },
   ];
 
   // Data array formatted for Recharts consumption
   const chartData = [
-    { name: 'Doctors', value: stats.doctors, gradientId: 'roseGrad' },
-    { name: 'Patients', value: stats.patients, gradientId: 'emeraldGrad' },
-    { name: 'Appointments', value: stats.appointments, gradientId: 'blueGrad' },
-    { name: 'Reviews', value: stats.reviews, gradientId: 'amberGrad' }
+    { name: "Doctors", value: stats.doctors, gradientId: "roseGrad" },
+    { name: "Patients", value: stats.patients, gradientId: "emeraldGrad" },
+    { name: "Appointments", value: stats.appointments, gradientId: "blueGrad" },
+    { name: "Reviews", value: stats.reviews, gradientId: "amberGrad" },
   ];
 
   return (
     <ScrollAnimate>
       <section className="w-full bg-slate-50 dark:bg-zinc-950 text-slate-800 dark:text-white select-none border-b border-slate-200/60 dark:border-zinc-900 rounded-none py-16 md:py-20 transition-colors duration-300">
-        <div className="container mx-auto px-6 max-w-7xl space-y-10 rounded-none">
+        <div className="container mx-auto px-0 max-w-7xl space-y-10 rounded-none">
           {/* Header Block */}
           <div className="space-y-3">
-            <div className="flex items-center gap-1.5 text-rose-600 dark:text-rose-500 font-bold text-xs uppercase tracking-wider">
-              <span className="text-sm font-black">+</span>
-              <span>Platform Statistics</span>
-            </div>
-            <h2 className="text-2xl md:text-3.5xl font-black text-slate-900 dark:text-white font-outfit tracking-tight">
+            <h2 className="text-2xl md:text-4xl font-bold text-slate-900 dark:text-white font-outfit tracking-tight">
               Live Coordination Metrics
             </h2>
             <p className="text-base text-slate-650 dark:text-zinc-400 leading-relaxed font-semibold max-w-3xl">
-              Real-time health activity tracking. Our coordination network serves practitioners and patients seamlessly across the region.
+              Real-time health activity tracking. Our coordination network
+              serves practitioners and patients seamlessly across the region.
             </p>
           </div>
 
           {/* Side-by-Side Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch pt-2">
-
             {/* Left Column: 2x2 Numeric Summary Cards (5/12 width) */}
             <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {statItems.map((item) => (
@@ -134,20 +153,26 @@ export default function PlatformStats() {
                   </div>
 
                   {/* Subtle top-left glow accent */}
-                  <div className={`absolute -top-8 -left-8 w-20 h-20 ${item.bgGlow} rounded-full blur-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                  <div
+                    className={`absolute -top-8 -left-8 w-20 h-20 ${item.bgGlow} rounded-full blur-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                  />
 
                   <div className="space-y-3 relative z-10">
-                    <span className="text-[11px] font-extrabold text-slate-500 dark:text-zinc-400 uppercase tracking-widest block">{item.label}</span>
-                    <div className={`text-4xl font-black tracking-tight font-outfit ${item.accentColor}`}>
+                    <span className="text-[11px] font-extrabold text-slate-500 dark:text-zinc-400 uppercase tracking-widest block">
+                      {item.label}
+                    </span>
+                    <div
+                      className={`text-4xl font-bold tracking-tight font-outfit ${item.accentColor}`}
+                    >
                       {mounted && item.value > 0 ? (
                         <AnimatedCounter target={item.value} showPlus={true} />
                       ) : (
-                        '0'
+                        "0"
                       )}
                     </div>
                   </div>
 
-                  <p className="text-xs text-slate-500 dark:text-zinc-400 mt-4 pt-3 border-t border-slate-100/80 dark:border-zinc-800/50 font-medium leading-relaxed relative z-10">
+                  <p className="text-xs text-slate-500 dark:text-zinc-400 mt-4 pt-2 font-medium leading-relaxed relative z-10">
                     {item.desc}
                   </p>
                 </div>
@@ -157,31 +182,95 @@ export default function PlatformStats() {
             {/* Right Column: Recharts Custom Visualizer Card (7/12 width) */}
             <div className="lg:col-span-7 bg-white dark:bg-zinc-900 p-6 flex flex-col justify-between shadow-xs rounded-[12px] border-none min-h-[350px]">
               <div className="space-y-1 pb-4">
-                <h3 className="text-sm font-bold text-slate-800 dark:text-zinc-200 uppercase tracking-wider">Metrics Distribution Analysis</h3>
-                <p className="text-[11px] text-slate-400 dark:text-zinc-500 font-medium">Graphical scale mapping patient interactions and specialist activity</p>
+                <h3 className="text-sm font-bold text-slate-800 dark:text-zinc-200 uppercase tracking-wider">
+                  Metrics Distribution Analysis
+                </h3>
+                <p className="text-[11px] text-slate-400 dark:text-zinc-500 font-medium">
+                  Graphical scale mapping patient interactions and specialist
+                  activity
+                </p>
               </div>
 
               {/* Chart Wrapper Container with safety mount validation */}
               <div className="flex-1 w-full h-[260px] relative mt-2">
                 {mounted ? (
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={chartData} margin={{ top: 15, right: 10, left: -25, bottom: 5 }}>
+                    <BarChart
+                      data={chartData}
+                      margin={{ top: 15, right: 10, left: -25, bottom: 5 }}
+                    >
                       <defs>
-                        <linearGradient id="roseGrad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#f43f5e" stopOpacity={0.8}/>
-                          <stop offset="100%" stopColor="#f43f5e" stopOpacity={0.15}/>
+                        <linearGradient
+                          id="roseGrad"
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="0%"
+                            stopColor="#5B65DC"
+                            stopOpacity={0.8}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor="#5B65DC"
+                            stopOpacity={0.15}
+                          />
                         </linearGradient>
-                        <linearGradient id="emeraldGrad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#10b981" stopOpacity={0.8}/>
-                          <stop offset="100%" stopColor="#10b981" stopOpacity={0.15}/>
+                        <linearGradient
+                          id="emeraldGrad"
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="0%"
+                            stopColor="#10b981"
+                            stopOpacity={0.8}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor="#10b981"
+                            stopOpacity={0.15}
+                          />
                         </linearGradient>
-                        <linearGradient id="blueGrad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.8}/>
-                          <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.15}/>
+                        <linearGradient
+                          id="blueGrad"
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="0%"
+                            stopColor="#3b82f6"
+                            stopOpacity={0.8}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor="#3b82f6"
+                            stopOpacity={0.15}
+                          />
                         </linearGradient>
-                        <linearGradient id="amberGrad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#f59e0b" stopOpacity={0.8}/>
-                          <stop offset="100%" stopColor="#f59e0b" stopOpacity={0.15}/>
+                        <linearGradient
+                          id="amberGrad"
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="1"
+                        >
+                          <stop
+                            offset="0%"
+                            stopColor="#f59e0b"
+                            stopOpacity={0.8}
+                          />
+                          <stop
+                            offset="100%"
+                            stopColor="#f59e0b"
+                            stopOpacity={0.15}
+                          />
                         </linearGradient>
                       </defs>
                       <XAxis
@@ -199,19 +288,26 @@ export default function PlatformStats() {
                         allowDecimals={false}
                       />
                       <Tooltip
-                        cursor={{ fill: 'rgba(244, 63, 94, 0.03)' }}
+                        cursor={{ fill: "rgba(91, 101, 220, 0.03)" }}
                         contentStyle={{
-                          backgroundColor: 'var(--color-bg, #ffffff)',
-                          borderColor: 'rgba(226, 232, 240, 0.8)',
-                          borderRadius: '8px',
-                          fontSize: '11px',
-                          fontWeight: 'bold',
+                          backgroundColor: "var(--color-bg, #ffffff)",
+                          borderColor: "rgba(226, 232, 240, 0.8)",
+                          borderRadius: "8px",
+                          fontSize: "11px",
+                          fontWeight: "bold",
                         }}
-                        itemStyle={{ color: '#f43f5e' }}
+                        itemStyle={{ color: "#5B65DC" }}
                       />
-                      <Bar dataKey="value" radius={[6, 6, 0, 0]} maxBarSize={48}>
+                      <Bar
+                        dataKey="value"
+                        radius={[6, 6, 0, 0]}
+                        maxBarSize={48}
+                      >
                         {chartData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={`url(#${entry.gradientId})`} />
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={`url(#${entry.gradientId})`}
+                          />
                         ))}
                       </Bar>
                     </BarChart>
@@ -223,7 +319,6 @@ export default function PlatformStats() {
                 )}
               </div>
             </div>
-
           </div>
         </div>
       </section>

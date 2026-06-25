@@ -138,19 +138,67 @@ export default function Footer() {
                 <span className="block text-white font-bold mb-0.5">Email Support:</span>
                 <a href="mailto:info@medi-doc.com" className="hover:text-rose-500 text-zinc-455 transition-colors block">info@medi-doc.com</a>
               </div>
-              
-              {/* Emergency Hotline Card */}
-              <div className="pt-2">
-                <div className="bg-red-500/10 border border-red-500/35 rounded-md p-3 text-center shadow-inner">
-                  <span className="block text-[10px] text-red-300 font-bold uppercase tracking-wider mb-0.5">Emergency Hotline</span>
-                  <a href="tel:911" className="text-xs font-extrabold text-red-400 hover:text-red-300 transition-colors block tracking-wide">
-                    911 (Or call +1 555-019-9111)
-                  </a>
-                </div>
-              </div>
             </div>
           </div>
         </div>
+
+
+        {/* === 3 Feature Cards: Emergency | Fast Service | Safe Treatment === */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 py-6">
+
+          {/* Card 1 — Emergency Ward */}
+          <div className="group relative overflow-hidden rounded-2xl h-44 cursor-pointer">
+            <div
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+              style={{ backgroundImage: "url('/assets/footer/emergency_ward.png')" }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-red-900/90 via-red-800/60 to-transparent" />
+            <div className="absolute inset-0 p-5 flex flex-col justify-end">
+              <span className="text-[9px] font-black uppercase tracking-widest text-red-300 mb-1">24 / 7 Active</span>
+              <h4 className="text-base font-extrabold text-white leading-tight mb-1">Emergency Ward</h4>
+              <p className="text-[11px] text-white/65 leading-snug">Immediate critical care, always ready for life-threatening situations.</p>
+            </div>
+            <div className="absolute top-4 right-4 h-7 w-7 rounded-full bg-red-500/30 border border-red-400/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+              <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+            </div>
+          </div>
+
+          {/* Card 2 — Fast Service */}
+          <div className="group relative overflow-hidden rounded-2xl h-44 cursor-pointer">
+            <div
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&q=80&w=800')" }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-sky-900/90 via-sky-800/60 to-transparent" />
+            <div className="absolute inset-0 p-5 flex flex-col justify-end">
+              <span className="text-[9px] font-black uppercase tracking-widest text-sky-300 mb-1">Zero Wait Time</span>
+              <h4 className="text-base font-extrabold text-white leading-tight mb-1">Fast Service</h4>
+              <p className="text-[11px] text-white/65 leading-snug">Instant appointment booking and priority queue access for patients.</p>
+            </div>
+            <div className="absolute top-4 right-4 h-7 w-7 rounded-full bg-sky-500/30 border border-sky-400/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+              <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+            </div>
+          </div>
+
+          {/* Card 3 — Safe Treatment */}
+          <div className="group relative overflow-hidden rounded-2xl h-44 cursor-pointer">
+            <div
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=800')" }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/90 via-emerald-800/60 to-transparent" />
+            <div className="absolute inset-0 p-5 flex flex-col justify-end">
+              <span className="text-[9px] font-black uppercase tracking-widest text-emerald-300 mb-1">100% Verified</span>
+              <h4 className="text-base font-extrabold text-white leading-tight mb-1">No Issue with Treatment</h4>
+              <p className="text-[11px] text-white/65 leading-snug">Board-certified doctors, HIPAA-compliant records, and safe procedures.</p>
+            </div>
+            <div className="absolute top-4 right-4 h-7 w-7 rounded-full bg-emerald-500/30 border border-emerald-400/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+              <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            </div>
+          </div>
+
+        </div>
+
 
         {/* Brand & Social Media Links */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-6 border-t border-white/10">
