@@ -277,21 +277,22 @@ body {
 
 /* Premium Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #09090b;
-  border-left: 1px solid #18181b;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #6366f1;
+  border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #4f46e5;
+  border-radius: 999px;
 }
 
 /* Custom overrides to allow rounded corners specifically for the Rose themed login page */
@@ -440,23 +441,9 @@ a.figma-border:not(.keep-rounded) {
   }
 }
 
-/* ── Custom thin scrollbar ─────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: #e11d48;
-  border-radius: 999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #be123c;
-}
+/* ── Custom thin scrollbar ───────────────────────────────────────── */
 /* Firefox */
-* {
+html {
   scrollbar-width: thin;
-  scrollbar-color: #e11d48 transparent;
+  scrollbar-color: #6366f1 transparent;
 }
