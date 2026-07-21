@@ -6,7 +6,6 @@
 <img src="https://img.shields.io/badge/Stripe-Payments-635BFF?style=for-the-badge&logo=stripe&logoColor=white" />
 <img src="https://img.shields.io/badge/Deployed-Vercel-black?style=for-the-badge&logo=vercel" />
 
-`<br/><br/>`
 
 <h1>
   <img src="https://img.shields.io/badge/%F0%9F%A9%BA-MEDI--DOC-e11d48?style=flat-square&labelColor=0f172a" height="34"/>
